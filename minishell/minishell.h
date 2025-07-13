@@ -1,0 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gafreire <gafreire@student.42.fr>          #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-07-08 14:10:34 by gafreire          #+#    #+#             */
+/*   Updated: 2025-07-08 14:10:34 by gafreire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+#include <stdio.h>
+#include <readline/readline.h> 
+#include <readline/history.h>
+
+typedef enum Tokens 
+{
+    COMMAND,
+    ARGUMENT,
+    OPERATORS,
+    VARIABLES
+} Tokens;
+
+# endif
