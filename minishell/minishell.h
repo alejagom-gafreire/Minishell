@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 10:22:50 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:52:10 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,33 @@
 # include <string.h>
 # include <unistd.h>
 
-typedef enum Tokens
+typedef enum tokens
 {
-	COMMAND,
-	ARGUMENT,
-	OPERATORS,
-	VARIABLES
-}	Tokens;
+	T_NAME_CMD, // grep ls echo etc....
+	T_PIPE, // |
+	T_REDIR_IN, // < , << simbolos.
+	T_REDIR_OUT, // > >> simbolos.
+	T_INFILE, //primer txt.
+	T_OUTFILE, //salida del txt ultimo.
+	T_GENERAL //otras cosas.
+}		tokens;
+
+typedef struct s_lexer
+{
+	int	id;
+	char *inf;
+	tokens token;
+	struct t_lexer *next;
+	struct t_lexer *last;
+}		t_lexer;
+
+typedef struct s_parcer
+{
+	char *cmd_args;
+	char *name_infile;
+	char *name_outfile;
+	struct t_parcer *next;
+}		t_parcer;
 
 int	check_token(int argc, char *argv[]);
 
