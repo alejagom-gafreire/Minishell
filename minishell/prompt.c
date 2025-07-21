@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:21:25 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 10:44:23 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:17:29 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,12 @@ int	check_token(int argc, char *argv[])
 			printf("exit\n");
 			break ;
 		}
-        else
-        {
-            printf("%s\n",line);
-        }
 
 		if (*line)
 			add_history(line); // guarda en historial si no está vacío
 
 		// Aqui imprimir, parsear, ejecutar...
+		check_line(line);
 		free(line);
 	}
 	return (0);
