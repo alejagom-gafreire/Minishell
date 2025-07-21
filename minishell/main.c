@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:09:27 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 20:17:46 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:20:16 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int main (int argc, char *argv[])
         check_token(argc,argv);
     else
         printf("Esta mal\n");
-    
+    printf("hola");
     return (0);
 }
