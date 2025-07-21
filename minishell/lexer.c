@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 13:45:40 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/21 19:14:28 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@ Check the line character by character to find the special operators
 void	check_line(char *line) // change type variable
 {
 	int i;
-
+    Tokens res;
 	i = 0;
 
 	while (line[i] != '\0')
 	{
         if (line[i] == '|')
-        {
-		    printf("Encontre un: %c\n", line[i]);
-        }
+            aux_inside_inf(line[i], T_PIPE)
         else if (line[i] == '<')
         {
+            aux_inside_inf(line[i], T_REDIR_IN);
 		    printf("Encontre un: %c\n", line[i]);
         }
         else if (line[i] == '>')
@@ -42,7 +41,9 @@ void	check_line(char *line) // change type variable
 		        printf("Encontre uno simple: %c\n", line[i]);
                 
         }
-		// printf("%c", line[i]);
+        char *grep = "grep"
+        if ()
+		// printf("%c", line[i]); 
 		i++;
 	}
 	printf("\n");
