@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/22 13:04:39 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/22 17:38:34 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,8 @@ void	check_line(char *line) // change type variable
 			{
 				char *word = strndup(&line[start], i - start);
 					// cambiar por ft_substr de la libft??
-				if (first_word)                               
-					// Si es la primera palabra
-				{
-					add_token(&lexer_list, word, T_NAME_CMD);
-					first_word = 0; // ya no es la primera palabra
-					last_token = T_NAME_CMD;
-				}
-				else if (last_token == T_REDIR_IN)
+				
+				if (last_token == T_REDIR_IN)
 					// Si viene de <,entonces T_INFILE
 				{
 					add_token(&lexer_list, word, T_INFILE);
@@ -127,11 +121,18 @@ void	check_line(char *line) // change type variable
 					add_token(&lexer_list, word, T_OUTFILE);
 					last_token = T_OUTFILE;
 				}
+				else if (first_word)                               
+					// Si es la primera palabra
+				{
+					add_token(&lexer_list, word, T_NAME_CMD);
+					last_token = T_NAME_CMD;
+				}
 				else
 				{
-					add_token(&lexer_list, word, T_GENERAL);
-					last_token = T_GENERAL;
+					add_token(&lexer_list, word, T_NAME_CMD);
+					last_token = T_NAME_CMD;
 				}
+				first_word = 0;
 			}
 		}
 	}
