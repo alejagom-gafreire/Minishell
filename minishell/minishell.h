@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 20:13:46 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/22 10:18:47 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,33 @@
 
 typedef enum tokens
 {
-	T_NAME_CMD, // grep ls echo etc....
-	T_PIPE, // |
-	T_REDIR_IN, // < , << simbolos.
+	T_NAME_CMD,  // grep ls echo etc....
+	T_PIPE,      // |
+	T_REDIR_IN,  // < , << simbolos.
 	T_REDIR_OUT, // > >> simbolos.
-	T_INFILE, //primer txt.
-	T_OUTFILE, //salida del txt ultimo.
-	T_GENERAL //otras cosas.
-}		tokens;
+	T_INFILE,    // primer txt.
+	T_OUTFILE,   // salida del txt ultimo.
+	T_GENERAL    // otras cosas.
+}					tokens;
 
 typedef struct s_lexer
 {
-	int	id;
-	char *inf;
-	tokens token;
-	struct t_lexer *next;
-	struct t_lexer *last;
-}		t_lexer;
+	int				id;
+	char			*inf;
+	tokens			token;
+	struct s_lexer	*next;
+	struct s_lexer	*last;
+}					t_lexer;
 
 typedef struct s_parcer
 {
-	char *cmd_args;
-	char *name_infile;
-	char *name_outfile;
-	struct t_parcer *next;
-}		t_parcer;
+	char			*cmd_args;
+	char			*name_infile;
+	char			*name_outfile;
+	struct t_parcer	*next;
+}					t_parcer;
 
-int	check_token(int argc, char *argv[]);
+int					check_token(int argc, char *argv[]);
+void				check_line(char *line);
 
 #endif
