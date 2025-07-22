@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:09:27 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 16:27:25 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/21 20:20:16 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main (int argc, char *argv[])
     if (argc == 1)
         check_token(argc,argv);
     else
-        printf("Esta mal");
-        //prueba.
+        printf("Esta mal\n");
+    printf("hola");
     return (0);
 }
