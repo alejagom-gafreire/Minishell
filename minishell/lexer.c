@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/23 15:43:48 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/23 21:11:50 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	check_line(char *line) // change type variable
 				else if (last_token == T_REDIR_OUT)
 					// Si viene de > o >> entonces T_OUTFILE
 				{
+					printf("here\n");
 					add_token(&lexer_list, word, T_OUTFILE);
 					last_token = T_OUTFILE;
 				}

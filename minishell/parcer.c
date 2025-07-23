@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:18:03 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/23 15:20:55 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/23 21:55:26 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	inside_parcer(t_parcer **head, t_parcer *new_node)
 {
 	t_parcer *tmp;
 
-	printf("añadiendo nodo\n");
 	if (!head || !new_node)
 		return;
 	if (*head == NULL)
@@ -45,92 +44,49 @@ static t_parcer	*mem_parcer(void)
 	return(parcer);
 }
 
-// void	add_parcer(t_lexer *lexer, t_parcer **parcer)
-// {
-// 	t_lexer *aux = lexer;
-// 	t_parcer *new_parcer;
-// 	char	*cmd = NULL;
-// 	int	i = 0;
-
-// 	while (aux->next != NULL)
-// 	{
-// 		i = 0;
-// 		if (aux->token == T_REDIR_IN || aux->token == T_PIPE)
-// 			aux = aux->next;
-// 		new_parcer = mem_parcer();
-// 		while (aux && aux && aux->next->token != T_PIPE)
-// 		{
-// 			if (aux->token == T_INFILE)
-// 				 new_parcer->name_infile = ft_strdup(aux->inf);
-// 			else if (aux->token == T_NAME_CMD && i == 0)
-// 			{
-// 				i = 1;
-// 				if (aux->next->token == T_NAME_CMD)
-// 				{
-// 					cmd = ft_strjoin(aux->inf, aux->next->inf);
-// 					new_parcer->cmd_args = ft_strdup(cmd);
-// 				}
-// 				else
-// 					new_parcer->cmd_args = ft_strdup(aux->inf);
-// 			}
-// 			else if (aux->token == T_OUTFILE)
-// 				new_parcer->name_outfile = ft_strdup(aux->inf);
-// 			aux = aux->next;
-// 		}
-// 		free(cmd);
-// 		inside_parcer(&(*parcer), new_parcer);
-// 		aux = aux->next;
-// 	}
-// }
-
-void	add_parcer(t_lexer *lexer, t_parcer **parcer)
+void add_parcer(t_lexer *lexer, t_parcer **parcer)
 {
 	t_lexer		*aux = lexer;
 	t_parcer	*new_parcer;
-	char		*cmd = NULL;
-	char		*tmp = NULL;
-	
-	while (aux && aux->next != NULL)
+	char		*cmd;
+	char		*tmp;
+
+	while (aux)
 	{
-		if (aux->token == T_REDIR_IN || aux->token == T_PIPE)
-			aux = aux->next;
-		new_parcer = mem_parcer();
+		new_parcer = mem_parcer(); //creo nuevo nodo.
 		if (!new_parcer)
 			return ;
-
-		while (aux && aux->next && aux->next->token != T_PIPE)
+		cmd = NULL;
+		while (aux && aux->token != T_PIPE) //lo separo verificando que no sea pipe.
 		{
-			if (aux->token == T_INFILE)
-			{
+			if (aux->token == T_REDIR_IN) //avanzo en redirecciones.
+				aux = aux->next;			
+			if (aux && aux->token == T_INFILE)
 				new_parcer->name_infile = ft_strdup(aux->inf);
-				aux = aux->next;
-			}
+			else if (aux && aux->token == T_OUTFILE)
+					new_parcer->name_outfile = ft_strdup(aux->inf);
 			else if (aux->token == T_NAME_CMD)
 			{
-				printf("lexer tiene esto: %s\n", aux->inf);
-				printf("lexer tiene esto: %d\n", aux->next->token);
-				if (aux->next && aux->next->token == T_GENERAL) //verificar bien los enum error en los tipos!
-				{
-					tmp = ft_strjoin(aux->inf, " ");
-					printf("tmp tiene esto: %s\n", tmp);
-					cmd = ft_strjoin(tmp, aux->next->inf);
-					new_parcer->cmd_args = ft_strdup(cmd);
-					free(tmp);
-					aux = aux->next;
-				}
+				if (!cmd)
+					cmd = ft_strdup(aux->inf);
 				else
-					new_parcer->cmd_args = ft_strdup(aux->inf);
+				{
+					tmp = ft_strjoin(cmd, " ");
+					free(cmd);
+					cmd = ft_strjoin(tmp, aux->inf); //ya tiene el siguiente comando :)
+					free(tmp);
+				}
 			}
-			else if (aux->token == T_OUTFILE)
-				new_parcer->name_outfile = ft_strdup(aux->inf);
-			aux = aux->next;
+			aux = aux->next; //recorro el nodo en caso de "grep -e -e" cmd + tmp todo el rato hasta el pipe.
 		}
 		if (cmd)
+		{
+			new_parcer->cmd_args = ft_strdup(cmd);
 			free(cmd);
-
-		inside_parcer(parcer, new_parcer);
-
-		if (aux)
-			aux = aux->next;
+		}
+		inside_parcer(parcer, new_parcer); //agrego el nodo.
+		if (aux && aux->token == T_PIPE)
+			aux = aux->next; // salto el pipe cuando lo encuentro.
 	}
 }
+

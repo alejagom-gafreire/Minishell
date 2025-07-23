@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/22 21:14:48 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/23 18:54:29 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ typedef struct s_parcer
 	struct s_parcer	*next;
 }					t_parcer;
 
-// typedef	struct  s_mini
-// {
-// 	t_parcer *parcer;
-// 	t_lexer	*lexer;
-// }		t_mini; //revisar estructutra global para liberar memoria a futuro.
+typedef	struct  s_mini
+{
+	t_parcer *parcer;
+	t_lexer	*lexer;
+}		t_mini; //revisar estructutra global para liberar memoria a futuro.
 
 //lexer
 int					check_token(int argc, char *argv[]);
