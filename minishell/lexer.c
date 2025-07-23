@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/22 17:38:34 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/23 12:09:08 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	add_token(t_lexer **lexer, char *info, tokens type)
 }
 
 /*
-Check the line character by character to find the special operators
+Comprobar linea por linea para detectar todos los tokens
 */
-void	check_line(char *line) // change type variable
+void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
 {
 	int i;
 	t_lexer *lexer_list = NULL;
@@ -98,6 +98,25 @@ void	check_line(char *line) // change type variable
 				i++;
 			}
 		}
+		// si esta en comillas simples
+		else if (line[i] == '\'')
+		{
+			int start = check_simple_quotes(line,i); // compruebo si esta entre dos comillas simples
+			char *word_quotes = strndup(&line[i + 1], start - (i + 1)); // duplico la frase
+			add_token(&lexer_list, word_quotes, T_GENERAL); 
+			i = start;
+			i++;
+		}
+		// si esta en comillas dobles
+		else if (line[i] == '"')
+		{
+			int start = check_double_quotes(line,i);  // compruebo si esta entre dos comillas dobles
+			char *word_quotes = strndup(&line[i + 1], start - (i + 1)); // duplico la frase
+			add_token(&lexer_list, word_quotes, T_GENERAL);
+			i = start;
+			i++;
+		}
+		// si es una palabra
 		else
 		{
 			int start = i;
@@ -106,23 +125,19 @@ void	check_line(char *line) // change type variable
 				i++;
 			if (i > start)
 			{
-				char *word = strndup(&line[start], i - start);
-					// cambiar por ft_substr de la libft??
+				char *word = strndup(&line[start], i - start); // cambiar por ft_substr de la libft??
 				
-				if (last_token == T_REDIR_IN)
-					// Si viene de <,entonces T_INFILE
+				if (last_token == T_REDIR_IN) // Si viene de <,entonces T_INFILE
 				{
 					add_token(&lexer_list, word, T_INFILE);
 					last_token = T_INFILE;
 				}
-				else if (last_token == T_REDIR_OUT)
-					// Si viene de > o >> entonces T_OUTFILE
+				else if (last_token == T_REDIR_OUT) // Si viene de > o >> entonces T_OUTFILE
 				{
 					add_token(&lexer_list, word, T_OUTFILE);
 					last_token = T_OUTFILE;
 				}
-				else if (first_word)                               
-					// Si es la primera palabra
+				else if (first_word) // Si es la primera palabra
 				{
 					add_token(&lexer_list, word, T_NAME_CMD);
 					last_token = T_NAME_CMD;
@@ -136,11 +151,5 @@ void	check_line(char *line) // change type variable
 			}
 		}
 	}
-	// añadir para T_NAME_CMD Acces??
-	// añadir para T_INFILE
-	// añadir para T_OUTFILE
-	// añadir para T_GENERAL
-	// printf("%c", line[i]);
-	printf("\n");
 	print_tokens(lexer_list);
 }  
