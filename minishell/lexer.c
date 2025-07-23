@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/22 17:38:34 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:43:48 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_parcer(t_parcer *parcer)
+{
+	while (parcer)
+	{
+		printf("voy aqui\n");
+		printf("cmd: %s (infile; %s) (outfile; %s)\n", parcer->cmd_args, parcer->name_infile, parcer->name_outfile);
+		parcer = parcer->next;
+	}
+}
 
 void	print_tokens(t_lexer *lexer)
 {
@@ -51,6 +61,7 @@ void	check_line(char *line) // change type variable
 {
 	int i;
 	t_lexer *lexer_list = NULL;
+	t_parcer *parcer = NULL;
 	int first_word = 1;
 	tokens last_token = T_GENERAL;
 	i = 0;
@@ -136,11 +147,15 @@ void	check_line(char *line) // change type variable
 			}
 		}
 	}
+	add_parcer(lexer_list, &parcer);
 	// añadir para T_NAME_CMD Acces??
 	// añadir para T_INFILE
 	// añadir para T_OUTFILE
 	// añadir para T_GENERAL
 	// printf("%c", line[i]);
+	
 	printf("\n");
 	print_tokens(lexer_list);
+	printf("\n");
+	print_parcer(parcer);
 }  
