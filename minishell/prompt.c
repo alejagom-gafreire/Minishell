@@ -6,21 +6,21 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:21:25 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/21 19:17:29 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/23 12:09:48 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// delete ??
+// borrar ??
 #define GREEN "\033[1;32m"
 #define BLUE  "\033[1;34m"
 #define RESET "\033[0m"
 
-// create prompt
+// crear prompt
 
 
-// check token
+// comprobar token
 int	check_token(int argc, char *argv[])
 {
 	char *line;
