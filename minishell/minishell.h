@@ -6,13 +6,10 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/07/23 18:54:29 by alejogogi        ###   ########.fr       */
-=======
-/*   Updated: 2025/07/22 21:14:48 by alejogogi        ###   ########.fr       */
->>>>>>> ec2a2b83c4c664e9bd575dc7e6562055ad642abc
+/*   Updated: 2025/07/23 22:17:15 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
