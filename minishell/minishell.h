@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/22 10:18:47 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/23 11:59:16 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,14 @@ typedef struct s_parcer
 	struct t_parcer	*next;
 }					t_parcer;
 
+// lexer
 int					check_token(int argc, char *argv[]);
 void				check_line(char *line);
+// lexer quotes
+int					check_simple_quotes(char *line, int pos);
+int					check_double_quotes(char *line, int pos);
+// lexer token
+void				add_token(t_lexer **lexer, char *info, tokens type);
+
 
 #endif

@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SRC = main.c prompt.c lexer.c
+SRC = main.c prompt.c lexer.c lexer_quotes.c
 OBJ = $(SRC:.c=.o)
 RM = rm -f
 
