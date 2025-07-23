@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:18:03 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/22 21:48:29 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/23 15:20:55 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ void	add_parcer(t_lexer *lexer, t_parcer **parcer)
 		while (aux && aux->next && aux->next->token != T_PIPE)
 		{
 			if (aux->token == T_INFILE)
+			{
 				new_parcer->name_infile = ft_strdup(aux->inf);
+				aux = aux->next;
+			}
 			else if (aux->token == T_NAME_CMD)
 			{
 				printf("lexer tiene esto: %s\n", aux->inf);
@@ -109,11 +112,10 @@ void	add_parcer(t_lexer *lexer, t_parcer **parcer)
 				if (aux->next && aux->next->token == T_GENERAL) //verificar bien los enum error en los tipos!
 				{
 					tmp = ft_strjoin(aux->inf, " ");
-					cmd = ft_strjoin(aux->next->inf, tmp);
-					//free(tmp);
-					new_parcer->cmd_args = cmd;
-					printf("cmd arrojo esto: %s\n", new_parcer->cmd_args);
-					//free(cmd);
+					printf("tmp tiene esto: %s\n", tmp);
+					cmd = ft_strjoin(tmp, aux->next->inf);
+					new_parcer->cmd_args = ft_strdup(cmd);
+					free(tmp);
 					aux = aux->next;
 				}
 				else
