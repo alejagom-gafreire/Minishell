@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/23 22:17:15 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/24 18:18:05 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,11 @@ void				check_line(char *line);
 //parser
 void				add_parcer(t_lexer *lexer, t_parcer **parcer);
 void				print_parcer(t_parcer *parcer);//borrar
+// lexer quotes
+int					check_simple_quotes(char *line, int pos);
+int					check_double_quotes(char *line, int pos);
+// lexer token
+void				add_token(t_lexer **lexer, char *info, tokens type);
+
 
 #endif
