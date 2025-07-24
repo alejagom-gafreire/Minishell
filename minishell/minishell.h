@@ -6,9 +6,10 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/23 11:59:16 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:18:05 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -19,6 +20,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include "./libft/libft.h"
 
 typedef enum tokens
 {
@@ -45,12 +47,22 @@ typedef struct s_parcer
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
-	struct t_parcer	*next;
+	struct s_parcer	*next;
 }					t_parcer;
 
-// lexer
+// typedef	struct  s_mini
+// {
+// 	t_parcer *parcer;
+// 	t_lexer	*lexer;
+// }		t_mini; //revisar estructutra global para liberar memoria a futuro.
+
+//lexer
 int					check_token(int argc, char *argv[]);
 void				check_line(char *line);
+
+//parser
+void				add_parcer(t_lexer *lexer, t_parcer **parcer);
+void				print_parcer(t_parcer *parcer);//borrar
 // lexer quotes
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);

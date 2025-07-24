@@ -6,11 +6,21 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/23 12:09:08 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/24 18:17:03 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_parcer(t_parcer *parcer)
+{
+	while (parcer)
+	{
+		printf("voy aqui\n");
+		printf("cmd: %s (infile; %s) (outfile; %s)\n", parcer->cmd_args, parcer->name_infile, parcer->name_outfile);
+		parcer = parcer->next;
+	}
+}
 
 void	print_tokens(t_lexer *lexer)
 {
@@ -51,6 +61,7 @@ void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
 {
 	int i;
 	t_lexer *lexer_list = NULL;
+	t_parcer *parcer = NULL;
 	int first_word = 1;
 	tokens last_token = T_GENERAL;
 	i = 0;
@@ -134,6 +145,7 @@ void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
 				}
 				else if (last_token == T_REDIR_OUT) // Si viene de > o >> entonces T_OUTFILE
 				{
+					printf("here\n");
 					add_token(&lexer_list, word, T_OUTFILE);
 					last_token = T_OUTFILE;
 				}
@@ -151,5 +163,15 @@ void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
 			}
 		}
 	}
+	add_parcer(lexer_list, &parcer);
+	// añadir para T_NAME_CMD Acces??
+	// añadir para T_INFILE
+	// añadir para T_OUTFILE
+	// añadir para T_GENERAL
+	// printf("%c", line[i]);
+	
+	printf("\n");
 	print_tokens(lexer_list);
+	printf("\n");
+	print_parcer(parcer);
 }  
