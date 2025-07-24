@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
+#    By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/07/24 18:17:39 by gafreire         ###   ########.fr        #
+#    Updated: 2025/07/24 20:01:25 by alejogogi        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SRC = main.c prompt.c lexer.c parcer.c lexer_quotes.c
+SRC = main.c prompt.c lexer.c parcer.c parcer_aux.c lexer_quotes.c
 OBJ = $(SRC:.c=.o)
 RM = rm -f
 
