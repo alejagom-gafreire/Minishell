@@ -3,21 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/24 18:17:03 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:44:34 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_pipe(t_lexer **lexer_list, int *last_token, int *first_word)
+{
+	add_token(lexer_list, "|", T_PIPE);
+	*last_token = T_PIPE;
+	*first_word = 1;
+}
 
 void	print_parcer(t_parcer *parcer)
 {
 	while (parcer)
 	{
 		printf("voy aqui\n");
-		printf("cmd: %s (infile; %s) (outfile; %s)\n", parcer->cmd_args, parcer->name_infile, parcer->name_outfile);
+		printf("cmd: %s (infile; %s) (outfile; %s)\n", parcer->cmd_args,
+			parcer->name_infile, parcer->name_outfile);
 		parcer = parcer->next;
 	}
 }
@@ -37,13 +45,12 @@ void	add_token(t_lexer **lexer, char *info, tokens type)
 	t_lexer	*tmp;
 
 	new_lexer = (t_lexer *)malloc(sizeof(t_lexer));
-	// inicializar nodo
 	new_lexer->next = NULL;
 	new_lexer->last = NULL;
-	new_lexer->inf = strdup(info); // usar la libft?
+	new_lexer->inf = ft_strdup(info);
 	new_lexer->token = type;
 	if (*lexer == NULL)
-		*lexer = new_lexer; // Si esta la lista vacia
+		*lexer = new_lexer;
 	else
 	{
 		tmp = *lexer;
@@ -57,111 +64,71 @@ void	add_token(t_lexer **lexer, char *info, tokens type)
 /*
 Comprobar linea por linea para detectar todos los tokens
 */
-void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
-{
-	int i;
-	t_lexer *lexer_list = NULL;
-	t_parcer *parcer = NULL;
-	int first_word = 1;
-	tokens last_token = T_GENERAL;
-	i = 0;
 
-	while (line[i] != '\0')
+t_lexer	*aux_line(char *line, t_mini *mini)
+{
+	t_lexer *list;
+	int 	i;
+	int	first_word;
+	int 	last_token;
+
+	list = NULL;
+	first_word = 1;
+	last_token = T_GENERAL;
+	i = 0;
+	while (line[i])
 	{
 		if (line[i] == ' ')
-		{
 			i++;
-		}
 		else if (line[i] == '|')
 		{
-			add_token(&lexer_list, "|", T_PIPE);
-			last_token = T_PIPE;
-			first_word = 1; // despues de un pipe siempre viene un comando
+			handle_pipe(&list, &last_token, &first_word);
 			i++;
 		}
 		else if (line[i] == '<')
-		{
-			if (line[i + 1] == '<')
-			{
-				add_token(&lexer_list, "<<", T_REDIR_IN);
-				last_token = T_REDIR_IN;
-				i += 2;
-			}
-			else
-			{
-				add_token(&lexer_list, "<", T_REDIR_IN);
-				last_token = T_REDIR_IN;
-				i++;
-			}
-		}
+			i = handle_input_redirect(line, i, &list, &last_token);
 		else if (line[i] == '>')
-		{
-			if (line[i + 1] == '>')
-			{
-				add_token(&lexer_list, ">>", T_REDIR_OUT);
-				last_token = T_REDIR_OUT;
-				i += 2;
-			}
-			else
-			{
-				add_token(&lexer_list, ">", T_REDIR_OUT);
-				last_token = T_REDIR_OUT;
-				i++;
-			}
-		}
-		// si esta en comillas simples
+			i = handle_output_redirect(line, i, &list, &last_token);
 		else if (line[i] == '\'')
-		{
-			int start = check_simple_quotes(line,i); // compruebo si esta entre dos comillas simples
-			char *word_quotes = strndup(&line[i + 1], start - (i + 1)); // duplico la frase
-			add_token(&lexer_list, word_quotes, T_GENERAL); 
-			i = start;
-			i++;
-		}
-		// si esta en comillas dobles
+			i = handle_simple_quotes(line, i, &list);
 		else if (line[i] == '"')
+			i = handle_double_quotes(line, i, &list);
+		else
+			i = handle_word(line, i, &list, &last_token, &first_word);
+	}
+	return(list);
+}
+
+void	check_line(char *line)
+{
+	int			i;
+	t_mini			*mini;
+	int			first_word;
+	int			last_token;
+
+	mini = NULL;
+	first_word = 1;
+	last_token = T_GENERAL;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == ' ')
+			i++;
+		else if (line[i] == '|')
 		{
-			int start = check_double_quotes(line,i);  // compruebo si esta entre dos comillas dobles
-			char *word_quotes = strndup(&line[i + 1], start - (i + 1)); // duplico la frase
-			add_token(&lexer_list, word_quotes, T_GENERAL);
-			i = start;
+			handle_pipe(&lexer_list, &last_token, &first_word);
 			i++;
 		}
-		// si es una palabra
+		else if (line[i] == '<')
+			i = handle_input_redirect(line, i, &lexer_list, &last_token);
+		else if (line[i] == '>')
+			i = handle_output_redirect(line, i, &lexer_list, &last_token);
+		else if (line[i] == '\'')
+			i = handle_simple_quotes(line, i, &lexer_list);
+		else if (line[i] == '"')
+			i = handle_double_quotes(line, i, &lexer_list);
 		else
-		{
-			int start = i;
-			while (line[i] != '\0' && line[i] != ' ' && line[i] != '<'
-				&& line[i] != '>' && line[i] != '|')
-				i++;
-			if (i > start)
-			{
-				char *word = strndup(&line[start], i - start); // cambiar por ft_substr de la libft??
-				
-				if (last_token == T_REDIR_IN) // Si viene de <,entonces T_INFILE
-				{
-					add_token(&lexer_list, word, T_INFILE);
-					last_token = T_INFILE;
-				}
-				else if (last_token == T_REDIR_OUT) // Si viene de > o >> entonces T_OUTFILE
-				{
-					printf("here\n");
-					add_token(&lexer_list, word, T_OUTFILE);
-					last_token = T_OUTFILE;
-				}
-				else if (first_word) // Si es la primera palabra
-				{
-					add_token(&lexer_list, word, T_NAME_CMD);
-					last_token = T_NAME_CMD;
-				}
-				else
-				{
-					add_token(&lexer_list, word, T_NAME_CMD);
-					last_token = T_NAME_CMD;
-				}
-				first_word = 0;
-			}
-		}
+			i = handle_word(line, i, &lexer_list, &last_token, &first_word);
 	}
 	add_parcer(lexer_list, &parcer);
 	// añadir para T_NAME_CMD Acces??
@@ -169,9 +136,8 @@ void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
 	// añadir para T_OUTFILE
 	// añadir para T_GENERAL
 	// printf("%c", line[i]);
-	
 	printf("\n");
 	print_tokens(lexer_list);
 	printf("\n");
 	print_parcer(parcer);
-}  
+}

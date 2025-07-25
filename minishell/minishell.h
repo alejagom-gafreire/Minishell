@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/24 20:01:03 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/25 13:24:59 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ typedef struct s_parcer
 	struct s_parcer	*next;
 }					t_parcer;
 
-// typedef	struct  s_mini
-// {
-// 	t_parcer *parcer;
-// 	t_lexer	*lexer;
-// }		t_mini; //revisar estructutra global para liberar memoria a futuro.
+typedef	struct  s_mini
+{
+	t_parcer *parcer;
+	t_lexer	*lexer;
+}		t_mini;
 
 //lexer
 int					check_token(int argc, char *argv[]);
@@ -71,5 +71,12 @@ int					check_double_quotes(char *line, int pos);
 // lexer token
 void				add_token(t_lexer **lexer, char *info, tokens type);
 
+//lexer_aux
+int	handle_word(char *line, int i, t_lexer **lexer_list, int *last_token, int *first_word);
+int	handle_double_quotes(char *line, int i, t_lexer **lexer_list);
+int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list);
+int	handle_output_redirect(char *line, int i, t_lexer **lexer_list, int *last_token);
+int	handle_input_redirect(char *line, int i, t_lexer **lexer_list, int *last_token);
+void	handle_pipe(t_lexer **lexer_list, int *last_token, int *first_word);
 
 #endif
