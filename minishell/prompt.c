@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:21:25 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/23 12:09:48 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:26:09 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,36 @@
 
 // borrar ??
 #define GREEN "\033[1;32m"
-#define BLUE  "\033[1;34m"
+#define BLUE "\033[1;34m"
 #define RESET "\033[0m"
 
 // crear prompt
-
-
 // comprobar token
+/*
+	if !line => // Ctrl+D
+	if *line=> // guarda en historial si no está vacío
+*/
 int	check_token(int argc, char *argv[])
 {
-	char *line;
-	// char *prompt;
+	char	*line;
 
 	(void)argc;
 	(void)argv;
-
 	while (1)
 	{
-		// prompt = create_prompt();
-		// if (!prompt)
-		// 	break ;
-
 		line = readline("parshell$ ");
-		// free(prompt);
-        
-		if (!line) // Ctrl+D
+		if (!line)
 		{
 			printf("exit\n");
 			break ;
 		}
-
 		if (*line)
-			add_history(line); // guarda en historial si no está vacío
-
-		// Aqui imprimir, parsear, ejecutar...
+			add_history(line);
 		check_line(line);
 		free(line);
 	}
 	return (0);
 }
-
 
 // --------------------------------------------------------------------
 // demo custom_promt
