@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/24 18:17:03 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/25 15:38:45 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_tokens(t_lexer *lexer)
 	}
 }
 
-void	add_token(t_lexer **lexer, char *info, tokens type)
+void	add_token(t_lexer **lexer, char *info, t_tokens type)
 {
 	t_lexer	*new_lexer;
 	t_lexer	*tmp;
@@ -63,7 +63,7 @@ void	check_line(char *line) // cambiar el tipo de variable/ posiblemente
 	t_lexer *lexer_list = NULL;
 	t_parcer *parcer = NULL;
 	int first_word = 1;
-	tokens last_token = T_GENERAL;
+	t_tokens last_token = T_GENERAL;
 	i = 0;
 
 	while (line[i] != '\0')
