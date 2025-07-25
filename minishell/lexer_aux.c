@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 23:09:59 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/25 12:51:02 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/25 18:29:40 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	return (end + 1);
 }
 
-int	handle_word(char *line, int i, t_lexer **lexer_list, int *last_token,
-		int *first_word)
+int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	int		start;
 	char	*word;
@@ -75,7 +74,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *last_token,
 		&& line[i] != '|')
 		i++;
 	word = ft_substr(line, start, i - start);
-	if (*last_token == T_REDIR_IN)
+	if (&(*lexer_list)->last->last_token == T_REDIR_IN)
 	{
 		add_token(lexer_list, word, T_INFILE);
 		*last_token = T_INFILE;

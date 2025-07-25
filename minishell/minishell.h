@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/25 15:58:09 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/25 18:31:18 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef enum tokens
 typedef struct s_lexer
 {
 	int				id;
+	int				last_token;
 	char			*inf;
 	t_tokens		token;
 	struct s_lexer	*next;
@@ -59,32 +60,39 @@ typedef struct s_parcer
 	struct s_parcer	*next;
 }					t_parcer;
 
-typedef	struct  s_mini
+typedef struct s_mini
 {
-	t_parcer *parcer;
-	t_lexer	*lexer;
-}		t_mini;
+	t_parcer		*parcer;
+	t_lexer			*lexer;
+}					t_mini;
 
 // lexer
 int					check_token(int argc, char *argv[]);
 void				check_line(char *line);
+//functios print
+void				print_parcer(t_parcer *parcer);
+void				print_tokens(t_lexer *lexer);
 
 // parser
-void				add_parcer(t_lexer *lexer, t_parcer **parcer);
-void				print_parcer(t_parcer *parcer);
+t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
 
 // lexer quotes
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);
 // lexer token
-void				add_token(t_lexer **lexer, char *info, t_tokens type);
-//lexer_aux
-int	handle_word(char *line, int i, t_lexer **lexer_list, int *last_token, int *first_word);
-int	handle_double_quotes(char *line, int i, t_lexer **lexer_list);
-int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list);
-int	handle_output_redirect(char *line, int i, t_lexer **lexer_list, int *last_token);
-int	handle_input_redirect(char *line, int i, t_lexer **lexer_list, int *last_token);
-void	handle_pipe(t_lexer **lexer_list, int *last_token, int *first_word);
+void				add_token(t_lexer **lexer, char *info, t_tokens type, t_tokens last_token);
+// lexer_aux
+int					handle_word(char *line, int i, t_lexer **lexer_list,
+						int *last_token, int *first_word);
+int					handle_double_quotes(char *line, int i,
+						t_lexer **lexer_list);
+int					handle_simple_quotes(char *line, int i,
+						t_lexer **lexer_list);
+int					handle_output_redirect(char *line, int i,
+						t_lexer **lexer_list, int *last_token);
+int					handle_input_redirect(char *line, int i,
+						t_lexer **lexer_list, int *last_token);
+void					handle_pipe(t_lexer **lexer_list, t_tokens *last_token, int *first_word);
 
 #endif

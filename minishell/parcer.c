@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:18:03 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/24 23:08:08 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/25 18:19:23 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,35 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 	}
 }
 
-static void	finalize_parcer(t_parcer **parcer, t_parcer *new_parcer, char *cmd)
+static void	finalize_parcer(t_parcer *new_parcer, char *cmd)
 {
 	if (cmd)
 	{
 		new_parcer->cmd_args = ft_strdup(cmd);
 		free(cmd);
 	}
-	inside_parcer(parcer, new_parcer);
 }
 
-void	add_parcer(t_lexer *lexer, t_parcer **parcer)
+t_parcer	*add_parcer(t_lexer *lexer)
 {
 	t_lexer		*aux;
+	t_parcer	*parcer;
 	t_parcer	*new_parcer;
 	char		*cmd;
 
+	parcer = NULL;
 	aux = lexer;
 	while (aux)
 	{
 		cmd = NULL;
 		new_parcer = mem_parcer();
 		if (!new_parcer)
-			return ;
+			return (NULL);
 		process_tokens(&aux, new_parcer, &cmd);
-		finalize_parcer(parcer, new_parcer, cmd);
+		finalize_parcer(new_parcer, cmd);
 		if (aux && aux->token == T_PIPE)
 			aux = aux->next;
+		inside_parcer(&parcer, new_parcer);
 	}
+	return (parcer);
 }
