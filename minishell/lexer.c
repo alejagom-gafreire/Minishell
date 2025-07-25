@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/25 15:44:34 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/25 15:59:58 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	print_tokens(t_lexer *lexer)
 	}
 }
 
-void	add_token(t_lexer **lexer, char *info, tokens type)
+void	add_token(t_lexer **lexer, char *info, t_tokens type)
 {
 	t_lexer	*new_lexer;
 	t_lexer	*tmp;
@@ -74,7 +74,7 @@ t_lexer	*aux_line(char *line, t_mini *mini)
 
 	list = NULL;
 	first_word = 1;
-	last_token = T_GENERAL;
+	t_last_token = T_GENERAL;
 	i = 0;
 	while (line[i])
 	{
