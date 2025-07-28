@@ -6,14 +6,14 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:49:09 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 09:18:55 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:44:43 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-	// cambiar salida por error
+	cambiar el exit por un error
 */
 int	check_simple_quotes(char *line, int pos)
 {
