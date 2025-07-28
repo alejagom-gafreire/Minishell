@@ -6,18 +6,18 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:11:26 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 11:13:20 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:00:31 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_redirect(char *line, int i, t_lexer **lexer_list, int last_token)
+int	check_redirect(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	if (line[i] == '|')
 	{
-		handle_pipe(lexer_list, &last_token);
-		i++;
+		handle_pipe(lexer_list, first_word);
+		return (i + 1);
 	}
 	else if (line[i] == '<')
 		i = handle_input_redirect(line, i, lexer_list);

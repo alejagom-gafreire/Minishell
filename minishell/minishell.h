@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 11:10:10 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:01:04 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int					handle_double_quotes(char *line, int i,
 int					handle_simple_quotes(char *line, int i,
 						t_lexer **lexer_list);
 int					check_redirect(char *line, int i, t_lexer **lexer_list,
-						int last_token);
+						int *first_word);
 int					handle_output_redirect(char *line, int i,
 						t_lexer **lexer_list);
 int					handle_input_redirect(char *line, int i,

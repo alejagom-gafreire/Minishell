@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 23:09:59 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/28 11:31:37 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:17:36 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	int			start;
 	char		*word;
-	t_tokens	tipo;
+	t_tokens	type;
 
 	start = i;
 	while (line[i] && line[i] != ' ' && line[i] != '<' && line[i] != '>'
@@ -57,16 +57,14 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 		i++;
 	word = ft_substr(line, start, i - start);
 	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
-		tipo = T_INFILE;
+		type = T_INFILE;
 	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
-		tipo = T_OUTFILE;
-	else if (*first_word)
-		tipo = T_NAME_CMD;
+		type = T_OUTFILE;
 	else
-		tipo = T_GENERAL;
-	add_token(lexer_list, word, tipo);
-	(*lexer_list)->last_token = tipo;
-	if (tipo == T_NAME_CMD)
+		type = T_NAME_CMD;
+	add_token(lexer_list, word, type);
+	(*lexer_list)->last_token = type;
+	if (type == T_NAME_CMD)
 		*first_word = 0;
 	return (free(word), i);
 }

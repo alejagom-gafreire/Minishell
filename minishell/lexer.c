@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 11:09:49 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:06:29 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,16 @@ t_lexer	*aux_line(char *line)
 	t_lexer	*list;
 	int		i;
 	int		first_word;
-	int		last_token;
 
 	list = NULL;
 	first_word = 1;
-	last_token = T_GENERAL;
 	i = 0;
 	while (line[i])
 	{
 		if (line[i] == ' ')
 			i++;
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
-			i = check_redirect(line, i, &list, last_token);
+			i = check_redirect(line, i, &list, &first_word);
 		else if (line[i] == '\'' || line[i] == '"')
 			i = check_quotes(line, i, &list);
 		else
