@@ -1,52 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_quotes.c                                     :+:      :+:    :+:   */
+/*   prints.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/23 10:49:09 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 12:44:43 by gafreire         ###   ########.fr       */
+/*   Created: 2025/07/25 17:03:39 by alejogogi         #+#    #+#             */
+/*   Updated: 2025/07/28 10:16:06 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-	cambiar el exit por un error
-*/
-int	check_simple_quotes(char *line, int pos)
+void	print_parcer(t_parcer *parcer)
 {
-	int	i;
-
-	i = pos + 1;
-	while (line[i] != '\0' && line[i] != '\'')
+	while (parcer)
 	{
-		i++;
+		printf("voy aqui\n");
+		printf("cmd: %s (infile; %s) (outfile; %s)\n", parcer->cmd_args,
+			parcer->name_infile, parcer->name_outfile);
+		parcer = parcer->next;
 	}
-	if (line[i] == '\0')
-	{
-		printf("ERROR\n");
-		exit(1);
-	}
-	printf("\n");
-	return (i);
 }
 
-int	check_double_quotes(char *line, int pos)
+void	print_tokens(t_lexer *lexer)
 {
-	int	i;
-
-	i = pos + 1;
-	while (line[i] != '\0' && line[i] != '"')
+	while (lexer)
 	{
-		i++;
+		printf("Token: %s (tipo %d)\n", lexer->inf, lexer->token);
+		lexer = lexer->next;
 	}
-	if (line[i] == '\0')
-	{
-		printf("ERROR\n");
-		exit(1);
-	}
-	printf("\n");
-	return (i);
 }

@@ -1,0 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_handles.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/24 23:09:59 by alejogogi         #+#    #+#             */
+/*   Updated: 2025/07/28 12:17:36 by gafreire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	check_quotes(char *line, int i, t_lexer **lexer_list)
+{
+	if (line[i] == '\'')
+		i = handle_simple_quotes(line, i, lexer_list);
+	else if (line[i] == '"')
+		i = handle_double_quotes(line, i, lexer_list);
+	return (i);
+}
+
+int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list)
+{
+	int		end;
+	char	*word;
+
+	end = check_simple_quotes(line, i);
+	word = ft_substr(line, i + 1, end - (i + 1));
+	add_token(lexer_list, word, T_GENERAL);
+	free(word);
+	return (end + 1);
+}
+
+int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
+{
+	int		end;
+	char	*word;
+
+	end = check_double_quotes(line, i);
+	word = ft_substr(line, i + 1, end - (i + 1));
+	add_token(lexer_list, word, T_GENERAL);
+	free(word);
+	return (end + 1);
+}
+
+int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
+{
+	int			start;
+	char		*word;
+	t_tokens	type;
+
+	start = i;
+	while (line[i] && line[i] != ' ' && line[i] != '<' && line[i] != '>'
+		&& line[i] != '|')
+		i++;
+	word = ft_substr(line, start, i - start);
+	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
+		type = T_INFILE;
+	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
+		type = T_OUTFILE;
+	else
+		type = T_NAME_CMD;
+	add_token(lexer_list, word, type);
+	(*lexer_list)->last_token = type;
+	if (type == T_NAME_CMD)
+		*first_word = 0;
+	return (free(word), i);
+}
