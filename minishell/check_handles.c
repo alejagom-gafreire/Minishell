@@ -1,43 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_aux.c                                        :+:      :+:    :+:   */
+/*   check_handles.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 23:09:59 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/25 18:29:40 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/28 11:31:37 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_input_redirect(char *line, int i, t_lexer **lexer_list,
-		int *last_token)
+int	check_quotes(char *line, int i, t_lexer **lexer_list)
 {
-	if (line[i + 1] == '<')
-	{
-		add_token(lexer_list, "<<", T_REDIR_IN);
-		*last_token = T_REDIR_IN;
-		return (i + 2);
-	}
-	add_token(lexer_list, "<", T_REDIR_IN);
-	*last_token = T_REDIR_IN;
-	return (i + 1);
-}
-
-int	handle_output_redirect(char *line, int i, t_lexer **lexer_list,
-		int *last_token)
-{
-	if (line[i + 1] == '>')
-	{
-		add_token(lexer_list, ">>", T_REDIR_OUT);
-		*last_token = T_REDIR_OUT;
-		return (i + 2);
-	}
-	add_token(lexer_list, ">", T_REDIR_OUT);
-	*last_token = T_REDIR_OUT;
-	return (i + 1);
+	if (line[i] == '\'')
+		i = handle_simple_quotes(line, i, lexer_list);
+	else if (line[i] == '"')
+		i = handle_double_quotes(line, i, lexer_list);
+	return (i);
 }
 
 int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list)
@@ -66,30 +47,26 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 
 int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
-	int		start;
-	char	*word;
+	int			start;
+	char		*word;
+	t_tokens	tipo;
 
 	start = i;
 	while (line[i] && line[i] != ' ' && line[i] != '<' && line[i] != '>'
 		&& line[i] != '|')
 		i++;
 	word = ft_substr(line, start, i - start);
-	if (&(*lexer_list)->last->last_token == T_REDIR_IN)
-	{
-		add_token(lexer_list, word, T_INFILE);
-		*last_token = T_INFILE;
-	}
-	else if (*last_token == T_REDIR_OUT)
-	{
-		add_token(lexer_list, word, T_OUTFILE);
-		*last_token = T_OUTFILE;
-	}
+	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
+		tipo = T_INFILE;
+	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
+		tipo = T_OUTFILE;
+	else if (*first_word)
+		tipo = T_NAME_CMD;
 	else
-	{
-		add_token(lexer_list, word, T_NAME_CMD);
-		*last_token = T_NAME_CMD;
-	}
-	*first_word = 0;
-	free(word);
-	return (i);
+		tipo = T_GENERAL;
+	add_token(lexer_list, word, tipo);
+	(*lexer_list)->last_token = tipo;
+	if (tipo == T_NAME_CMD)
+		*first_word = 0;
+	return (free(word), i);
 }
