@@ -6,14 +6,24 @@
 #    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/07/29 09:38:29 by gafreire         ###   ########.fr        #
+#    Updated: 2025/07/29 18:25:17 by gafreire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
-SRC = main.c prompt.c lexer.c parcer.c parcer_aux.c lexer_quotes.c check_handles.c check_operators.c prints.c ft_free.c
+CFLAGS = -Wall -Werror -Wextra -I./include -I./libft
+SRC = \
+	src/main.c \
+	src/prompt.c \
+	src/lexer/lexer.c \
+	src/parser/parcer.c \
+	src/parser/parcer_aux.c \
+	src/lexer/lexer_quotes.c \
+	src/lexer/check_handles.c \
+	src/lexer/check_operators.c \
+	src/prints.c \
+	src/ft_free.c
 OBJ = $(SRC:.c=.o)
 RM = rm -f
 
