@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 12:06:29 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/29 09:38:04 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	check_line(char *line)
 	print_tokens(mini->lexer);
 	printf("\n");
 	print_parcer(mini->parcer);
+	free_minishell(mini);
 }
