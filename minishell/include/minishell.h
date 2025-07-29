@@ -6,14 +6,14 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/29 09:37:25 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/29 18:15:04 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./libft/libft.h"
+# include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
