@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parcer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 18:18:03 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/25 18:19:23 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/07/29 09:44:08 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,14 @@ static t_parcer	*mem_parcer(void)
 static char	*aux_parcer(char *cmd, char *sec)
 {
 	char	*res;
+	char	*temp;
 
 	res = NULL;
-	res = ft_strjoin(cmd, " ");
+	temp = NULL;
+	temp = ft_strjoin(cmd, " ");
 	free(cmd);
-	res = ft_strjoin(res, sec);
+	res = ft_strjoin(temp, sec);
+	free(temp);
 	return (res);
 }
 
