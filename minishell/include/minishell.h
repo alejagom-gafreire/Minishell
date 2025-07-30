@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/29 18:15:04 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:43:50 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ void				handle_pipe(t_lexer **lexer_list, int *first_word);
 
 // free
 void				free_minishell(t_mini *mini);
+void				free_lexer(t_lexer *lexer);
 
 #endif
