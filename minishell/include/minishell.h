@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/29 18:15:04 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 20:25:18 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 /*
 	T_NAME_CMD => "grep ls echo etc...."
@@ -31,6 +32,14 @@
 	T_OUTFILE => "salida del txt ultimo."
 	T_GENERAL => "otras cosas."
 */
+
+typedef struct s_execute
+{
+	int	infile;
+	int	outfile;
+	int	cmds;
+}		t_execute;
+
 typedef enum tokens
 {
 	T_NAME_CMD,
@@ -64,7 +73,11 @@ typedef struct s_mini
 {
 	t_parcer		*parcer;
 	t_lexer			*lexer;
+	t_execute		*exec;
 }					t_mini;
+
+// execute
+void				create_process(t_mini *mini);
 
 // lexer
 int					check_token(int argc, char *argv[]);
@@ -81,6 +94,8 @@ void				inside_parcer(t_parcer **head, t_parcer *new_node);
 int					check_quotes(char *line, int i, t_lexer **lexer_list);
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);
+void				num_comands(t_mini *mini);
+
 // lexer token
 void				add_token(t_lexer **lexer, char *info, t_tokens type);
 // lexer_aux

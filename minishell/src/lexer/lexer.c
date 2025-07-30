@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/29 09:38:04 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:23:00 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ void	check_line(char *line)
 		return ;
 	mini->lexer = aux_line(line);
 	mini->parcer = add_parcer(mini->lexer);
+	num_comands(mini);
+	create_process(mini);
+	printf("numero de comandos en struct exec: %d\n", mini->exec->cmds);
 	printf("\n");
 	print_tokens(mini->lexer);
 	printf("\n");
