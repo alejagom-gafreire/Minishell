@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:29:11 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 10:33:20 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:12:53 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_lexer(t_lexer *lexer)
 	{
 		temp = lexer;
 		lexer = lexer->next;
-        free(temp->inf);
+		free(temp->inf);
 		free(temp);
 	}
 }
@@ -42,6 +42,7 @@ void	free_parcer(t_parcer *parcer)
 		free(temp);
 	}
 }
+
 void	free_minishell(t_mini *mini)
 {
 	if (mini != NULL)

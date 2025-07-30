@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 12:03:47 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:14:50 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ t_lexer	*aux_line(char *line)
 		{
 			i = check_quotes(line, i, &list);
 			if (i < 0)
-			{
-				free_lexer(list);
-				return (NULL);
-			}
+				return (free_lexer(list), NULL);
 		}
 		else
 			i = handle_word(line, i, &list, &first_word);

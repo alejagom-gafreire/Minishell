@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:49:09 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 11:46:34 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:11:45 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ int	check_simple_quotes(char *line, int pos)
 	{
 		i++;
 	}
-	// if (line[i] == '\0')
-	// {
-	// 	printf("ERROR\n");
-	// 	exit(1);
-	// }
 	if (line[i] == '\0')
 	{
 		printf("Error: comilla simple no cerrada\n");
