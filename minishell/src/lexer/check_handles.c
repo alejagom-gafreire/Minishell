@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 23:09:59 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/28 12:17:36 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:41:08 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list)
 	char	*word;
 
 	end = check_simple_quotes(line, i);
+	if (end < 0)
+		return (-1);
 	word = ft_substr(line, i + 1, end - (i + 1));
 	add_token(lexer_list, word, T_GENERAL);
 	free(word);
@@ -39,6 +41,8 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	char	*word;
 
 	end = check_double_quotes(line, i);
+	if (end < 0)
+		return (-1);
 	word = ft_substr(line, i + 1, end - (i + 1));
 	add_token(lexer_list, word, T_GENERAL);
 	free(word);

@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:49:09 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/28 12:44:43 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/07/31 10:59:49 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	check_simple_quotes(char *line, int pos)
 	}
 	if (line[i] == '\0')
 	{
-		printf("ERROR\n");
-		exit(1);
+		printf("Error: command not valid");
+		return (-1);
 	}
 	printf("\n");
 	return (i);
@@ -44,8 +44,8 @@ int	check_double_quotes(char *line, int pos)
 	}
 	if (line[i] == '\0')
 	{
-		printf("ERROR\n");
-		exit(1);
+		printf("Error: command not valid");
+		return (-1);
 	}
 	printf("\n");
 	return (i);
