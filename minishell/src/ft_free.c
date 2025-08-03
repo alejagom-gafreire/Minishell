@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:29:11 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/29 10:37:52 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/03 19:30:18 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	free_lexer(t_lexer *lexer)
 	{
 		temp = lexer;
 		lexer = lexer->next;
-        free(temp->inf);
+		free(temp->inf);
 		free(temp);
 	}
 }
@@ -42,6 +42,7 @@ static void	free_parcer(t_parcer *parcer)
 		free(temp);
 	}
 }
+
 void	free_minishell(t_mini *mini)
 {
 	if (mini != NULL)

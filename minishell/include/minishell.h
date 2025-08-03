@@ -6,22 +6,22 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/03 13:54:41 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/03 19:24:47 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <fcntl.h>
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/wait.h>
 # include <unistd.h>
-# include <fcntl.h>
-#include <sys/wait.h>
 
 /*
 	T_NAME_CMD => "grep ls echo etc...."
@@ -36,13 +36,13 @@
 
 typedef struct s_execute
 {
-	int	infile;
-	int	outfile;
-	int	cmds;
-	char	*abs_path;
-	char	*path_env;
-	char	*full_path;
-}		t_execute;
+	int				infile;
+	int				outfile;
+	int				cmds;
+	char			*abs_path;
+	char			*path_env;
+	char			*full_path;
+}					t_execute;
 
 typedef enum tokens
 {
@@ -82,6 +82,10 @@ typedef struct s_mini
 
 // execute
 void				create_process(t_mini *mini, char **envp);
+void				free_split(char **split);
+char				*find_executable(char *cmd, char **envp, t_execute *exec);
+char				*check_absolute_path(char *cmd);
+char				*get_path_env(char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);

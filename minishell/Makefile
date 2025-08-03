@@ -6,7 +6,7 @@
 #    By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/07/30 22:23:41 by alejogogi        ###   ########.fr        #
+#    Updated: 2025/08/03 19:25:40 by alejogogi        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC = \
 	src/lexer/check_operators.c \
 	src/prints.c \
 	src/execute/pipex.c\
+	src/execute/pipex_aux.c\
 	src/ft_free.c
 OBJ = $(SRC:.c=.o)
 RM = rm -f

@@ -20,7 +20,7 @@ void	num_comands(t_mini *mini)
 {
 	int			i;
 	t_parcer	*list;
-	
+
 	mini->exec = malloc(sizeof(t_execute));
 	if (!mini->exec)
 		exit(EXIT_FAILURE);

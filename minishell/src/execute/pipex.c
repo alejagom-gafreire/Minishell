@@ -6,121 +6,104 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:47:45 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/08/03 14:08:35 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/03 19:21:40 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_split(char **split)
+static void	handle_redirections(t_execute *exec)
 {
-	int	i;
-
-	i = 0;
-	if (!split)
-		return ;
-	while (split[i])
+	if (exec->infile != -1)
 	{
-		free(split[i]);
-		i++;
+		dup2(exec->infile, STDIN_FILENO);
+		close(exec->infile);
 	}
-	free(split);
-}
-
-char	*get_path_env(char **envp)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i])
+	if (exec->outfile == -1)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (envp[i] + 5);
-		i++;
+		printf("Error outifle\n");
+		exit(1);
 	}
-	return (NULL);
+	dup2(exec->outfile, STDOUT_FILENO);
+	close(exec->outfile);
 }
 
-char	*check_absolute_path(char *cmd)
+static char	**prepare_command(char *cmd)
 {
-	if (ft_strchr(cmd, '/'))
+	char	**exec_cmd;
+
+	exec_cmd = ft_split(cmd, ' ');
+	if (!exec_cmd)
 	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
+		printf("Error exec_cmd\n");
+		exit(1);
 	}
-	return (NULL);
+	return (exec_cmd);
 }
 
-char	*find_executable(char *cmd, char **envp, t_execute *exec)
+void	execute_command(t_execute *exec, char *cmd, char **envp)
 {
-	char	**paths;
-	char	*temp;
-	int		i;
+	char	*cmd_path;
+	char	**exec_cmd;
 
-	i = 0;
-	exec->abs_path = check_absolute_path(cmd);
-	if (exec->abs_path)
-		return (exec->abs_path);
-	exec->path_env = get_path_env(envp);
-	if (!exec->path_env)
-		return (NULL);
-	paths = ft_split(exec->path_env, ':');	
-	while (paths[i])
+	handle_redirections(exec);
+	exec_cmd = prepare_command(cmd);
+	cmd_path = find_executable(exec_cmd[0], envp, exec);
+	if (!cmd_path)
 	{
-		temp = ft_strjoin(paths[i], "/");
-		exec->full_path = ft_strjoin(temp, cmd);
-		free(temp);
-		if (access(exec->full_path, X_OK) == 0)
-			return (free_split(paths), exec->full_path);
-		free(exec->full_path);
-		i++;
+		free_split(exec_cmd);
+		printf("Error cmd_path\n");
+		exit(1);
 	}
-	return (free_split(paths), NULL);
+	if (execve(cmd_path, exec_cmd, envp) == -1)
+	{
+		free_split(exec_cmd);
+		printf("Error execve\n");
+		exit(1);
+	}
 }
 
-void    execute_command(t_execute *exec, char *cmd, char **envp)
-{
-    char    *cmd_path;
-    char    **exec_cmd;
+// void	execute_command(t_execute *exec, char *cmd, char **envp)
+// {
+// 	char	*cmd_path;
+// 	char	**exec_cmd;
 
-    if (exec->infile != -1)
-    {
-        dup2(exec->infile, STDIN_FILENO);
-        close(exec->infile);
-    }
-    if (exec->outfile == -1)
-    {
-	    printf("Error outifle\n");
-	    exit(1);
-    }
-    dup2(exec->outfile, STDOUT_FILENO);
-    close(exec->outfile);
-    
-    exec_cmd = ft_split(cmd, ' ');
-    if (!exec_cmd)
-    {
-	    printf("Error exec_cmd\n");
-	    exit(1);
-    }    
-    cmd_path = find_executable(exec_cmd[0], envp, exec);
-    if (!cmd_path)
-    {
-	    free_split(exec_cmd);
-	    printf("Error cmd_path\n");
-	    exit(1);
-    }    
-    if (execve(cmd_path, exec_cmd, envp) == -1)
-    {
-	free_split(exec_cmd);
-	printf("Error execve\n");
-	exit(1);
-    }
-}
+// 	if (exec->infile != -1)
+// 	{
+// 		dup2(exec->infile, STDIN_FILENO);
+// 		close(exec->infile);
+// 	}
+// 	if (exec->outfile == -1)
+// 	{
+// 		printf("Error outifle\n");
+// 		exit(1);
+// 	}
+// 	dup2(exec->outfile, STDOUT_FILENO);
+// 	close(exec->outfile);
+// 	exec_cmd = ft_split(cmd, ' ');
+// 	if (!exec_cmd)
+// 	{
+// 		printf("Error exec_cmd\n");
+// 		exit(1);
+// 	}
+// 	cmd_path = find_executable(exec_cmd[0], envp, exec);
+// 	if (!cmd_path)
+// 	{
+// 		free_split(exec_cmd);
+// 		printf("Error cmd_path\n");
+// 		exit(1);
+// 	}
+// 	if (execve(cmd_path, exec_cmd, envp) == -1)
+// 	{
+// 		free_split(exec_cmd);
+// 		printf("Error execve\n");
+// 		exit(1);
+// 	}
+// }
 
 void	create_child(t_mini *mini, t_parcer *list, char **envp)
 {
-	pid_t 	pid1;
+	pid_t	pid1;
 
 	pid1 = fork();
 	if (pid1 < 0)
@@ -143,7 +126,8 @@ void	create_process(t_mini *mini, char **envp)
 	mini->exec->infile = open(list->name_infile, O_RDONLY);
 	if (mini->exec->infile == -1)
 		printf("Error open infile\n");
-	mini->exec->outfile = open(list->name_outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	mini->exec->outfile = open(list->name_outfile, O_WRONLY | O_CREAT | O_TRUNC,
+			0644);
 	if (mini->exec->outfile == -1)
 		printf("Error open outfile\n");
 	create_child(mini, list, envp);
@@ -153,10 +137,10 @@ void	create_process(t_mini *mini, char **envp)
 		close(mini->exec->outfile);
 }
 
-//contar la cantidad de comandos que hay separados por pipes
-//crear un pipe por cada par de comandos
-//crear los procesos hijos (fork)
-//buscar los comandos en el path
-//hacerlos si se le quita las variables de entorno
+// contar la cantidad de comandos que hay separados por pipes
+// crear un pipe por cada par de comandos
+// crear los procesos hijos (fork)
+// buscar los comandos en el path
+// hacerlos si se le quita las variables de entorno
 // > elimina si existe y añade lo nuevo TRUCATE
 // >> si existe el archivo lo añade al final del archivo O_APPEND.
