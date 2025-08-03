@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:21:25 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 19:53:37 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/03 13:53:50 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 	if !line => // Ctrl+D
 	if *line=> // guarda en historial si no está vacío
 */
-int	check_token(int argc, char *argv[])
+int	check_token(int argc, char *argv[], char **envp)
 {
 	char	*line;
 
@@ -39,7 +39,7 @@ int	check_token(int argc, char *argv[])
 		}
 		if (*line)
 			add_history(line);
-		check_line(line);
+		check_line(line, envp);
 		free(line);
 	}
 	return (0);

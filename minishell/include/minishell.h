@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 20:25:18 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/03 13:54:41 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
+#include <sys/wait.h>
 
 /*
 	T_NAME_CMD => "grep ls echo etc...."
@@ -38,6 +39,9 @@ typedef struct s_execute
 	int	infile;
 	int	outfile;
 	int	cmds;
+	char	*abs_path;
+	char	*path_env;
+	char	*full_path;
 }		t_execute;
 
 typedef enum tokens
@@ -77,11 +81,11 @@ typedef struct s_mini
 }					t_mini;
 
 // execute
-void				create_process(t_mini *mini);
+void				create_process(t_mini *mini, char **envp);
 
 // lexer
-int					check_token(int argc, char *argv[]);
-void				check_line(char *line);
+int					check_token(int argc, char *argv[], char **envp);
+void				check_line(char *line, char **envp);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);

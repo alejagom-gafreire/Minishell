@@ -6,7 +6,7 @@
 /*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 22:23:00 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/03 13:53:10 by alejogogi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_lexer	*aux_line(char *line)
 	return (list);
 }
 
-void	check_line(char *line)
+void	check_line(char *line, char **envp)
 {
 	t_mini	*mini;
 
@@ -79,7 +79,7 @@ void	check_line(char *line)
 	mini->lexer = aux_line(line);
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
-	create_process(mini);
+	create_process(mini, envp);
 	printf("numero de comandos en struct exec: %d\n", mini->exec->cmds);
 	printf("\n");
 	print_tokens(mini->lexer);
