@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 11:43:50 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/04 12:38:36 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ typedef enum tokens
 	T_OUTFILE,
 	T_GENERAL
 }					t_tokens;
+
+typedef enum status
+{
+	T_No_QUOTES,
+	T_SIMPLES_QUOTES,
+	T_DOUBLES_QUOTES
+}					t_status;
 
 typedef struct s_lexer
 {
