@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/31 10:59:56 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:56:38 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_lexer	*aux_line(char *line)
 	return (list);
 }
 
-void	check_line(char *line)
+void	check_line(char *line, char **envp)
 {
 	t_mini	*mini;
 
@@ -82,6 +82,9 @@ void	check_line(char *line)
 		return ;
 	mini->lexer = aux_line(line);
 	mini->parcer = add_parcer(mini->lexer);
+	num_comands(mini);
+	create_process(mini, envp);
+	printf("numero de comandos en struct exec: %d\n", mini->exec->cmds);
 	printf("\n");
 	print_tokens(mini->lexer);
 	printf("\n");

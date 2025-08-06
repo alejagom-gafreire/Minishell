@@ -6,7 +6,7 @@
 #    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/07/31 10:26:05 by gafreire         ###   ########.fr        #
+#    Updated: 2025/08/06 16:59:25 by gafreire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ SRC = \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
 	src/utils/prints.c \
+	src/execute/pipex.c\
+	src/execute/pipex_aux.c\
 	src/utils/ft_free.c
 OBJ = $(SRC:.c=.o)
 RM = rm -f

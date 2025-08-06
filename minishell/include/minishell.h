@@ -6,19 +6,21 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/07/30 11:43:50 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:56:02 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <fcntl.h>
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 /*
@@ -31,6 +33,17 @@
 	T_OUTFILE => "salida del txt ultimo."
 	T_GENERAL => "otras cosas."
 */
+
+typedef struct s_execute
+{
+	int				infile;
+	int				outfile;
+	int				cmds;
+	char			*abs_path;
+	char			*path_env;
+	char			*full_path;
+}					t_execute;
+
 typedef enum tokens
 {
 	T_NAME_CMD,
@@ -64,11 +77,19 @@ typedef struct s_mini
 {
 	t_parcer		*parcer;
 	t_lexer			*lexer;
+	t_execute		*exec;
 }					t_mini;
 
+// execute
+void				create_process(t_mini *mini, char **envp);
+void				free_split(char **split);
+char				*find_executable(char *cmd, char **envp, t_execute *exec);
+char				*check_absolute_path(char *cmd);
+char				*get_path_env(char **envp);
+
 // lexer
-int					check_token(int argc, char *argv[]);
-void				check_line(char *line);
+int					check_token(int argc, char *argv[], char **envp);
+void				check_line(char *line, char **envp);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
@@ -81,6 +102,8 @@ void				inside_parcer(t_parcer **head, t_parcer *new_node);
 int					check_quotes(char *line, int i, t_lexer **lexer_list);
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);
+void				num_comands(t_mini *mini);
+
 // lexer token
 void				add_token(t_lexer **lexer, char *info, t_tokens type);
 // lexer_aux
