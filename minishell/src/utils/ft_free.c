@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:29:11 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/03 19:30:18 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/06 16:57:16 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_lexer(t_lexer *lexer)
+void	free_lexer(t_lexer *lexer)
 {
 	t_lexer	*temp;
 
@@ -25,7 +25,7 @@ static void	free_lexer(t_lexer *lexer)
 	}
 }
 
-static void	free_parcer(t_parcer *parcer)
+void	free_parcer(t_parcer *parcer)
 {
 	t_parcer	*temp;
 

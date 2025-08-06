@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+         #
+#    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/08/03 19:25:40 by alejogogi        ###   ########.fr        #
+#    Updated: 2025/08/06 16:55:29 by gafreire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -I./include -I./libft
 SRC = \
 	src/main.c \
-	src/prompt.c \
+	src/prompt/prompt.c \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \

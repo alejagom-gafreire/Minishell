@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/03 13:53:10 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/06 16:56:38 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ t_lexer	*aux_line(char *line)
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
 			i = check_redirect(line, i, &list, &first_word);
 		else if (line[i] == '\'' || line[i] == '"')
+		{
 			i = check_quotes(line, i, &list);
+			if (i < 0)
+				return (free_lexer(list), NULL);
+		}
 		else
 			i = handle_word(line, i, &list, &first_word);
 	}
