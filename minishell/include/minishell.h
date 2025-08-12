@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/08 10:05:52 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/12 15:41:38 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
 
+// signals
+void				init_signals(void);
 // free
 void				free_minishell(t_mini *mini);
 void				free_lexer(t_lexer *lexer);
