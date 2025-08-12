@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/15 12:59:12 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/15 13:00:49 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_parcer
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
+	struct s_execute *exec;
 	struct s_parcer	*next;
 }					t_parcer;
 
@@ -90,12 +91,25 @@ typedef struct s_mini
 }					t_mini;
 
 // execute
-void	free_split(char **split);
+//void	free_split(char **split);
 char	*get_path_env(char **envp);
 char	*check_absolute_path(char *cmd);
 char	*find_executable(char *cmds, char **envp);
 void	exec_cmd(t_parcer *list, char **envp);
 void    execute_cmd(t_mini *mini, char **envp);
+// void 				create_child_processes(t_mini *mini, t_parcer *list, char **envp);
+
+//execute.c
+void    start_execute(t_mini *mini, char **envp);
+int		init_pipes(int	cmds, int pipes[cmds - 1][2]);
+void	init_forks(int (*pipes)[2], pid_t *pids, char **envp, t_mini *mini);
+void	child_process(int i, int cmds, int pipes[cmds - 1][2], t_parcer *list, char **envp);
+void	execute_command(t_parcer *list, char **envp);
+void	handle_redirecitons(t_parcer *list);
+
+//execute one command
+void    execute_cmd(t_mini *mini, char **envp);
+void	exec_cmd(t_parcer *list, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
