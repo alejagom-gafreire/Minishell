@@ -41,15 +41,53 @@ char	*get_path_env(char **envp)
 	return (NULL);
 }
 
-char	*check_absolute_path(char *cmd)
+// char	*check_absolute_path(char *cmd)
+// {
+// 	if (ft_strchr(cmd, '/'))
+// 	{
+// 	printf("comando: %s\n", cmd);
+// 		if (access(cmd, X_OK) == 0)
+// 		{
+// 			return (ft_strdup(cmd));	
+// 		}
+// 		return (NULL);
+// 	}
+// 	return (NULL);
+// }
+
+// char *check_absolute_path(char *cmd)
+// {
+//     if (ft_strchr(cmd, '/'))
+//     {
+//         if (access(cmd, X_OK) == 0)
+//             return (ft_strdup(cmd));    
+//         return (NULL);
+//     }
+//     return (NULL);
+// }
+
+char *check_absolute_path(char *cmd)
 {
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
-	return (NULL);
+    printf("check_absolute_path() -> cmd pointer = %p\n", (void*)cmd);
+    if (!cmd)
+    {
+        printf("ERROR: cmd es NULL\n");
+        return NULL;
+    }
+
+    // Imprime solo una parte para no crashear si es corrupto
+    printf("check_absolute_path() -> cmd (primeros 50 chars): %.*s\n", 50, cmd);
+
+    char *found = ft_strchr(cmd, '/');
+    printf("ft_strchr result: %p\n", (void*)found);
+
+    if (found)
+    {
+        if (access(cmd, X_OK) == 0)
+            return ft_strdup(cmd);
+        return NULL;
+    }
+    return NULL;
 }
 
 char	*find_executable(char *cmd, char **envp, t_execute *exec)
@@ -63,9 +101,13 @@ char	*find_executable(char *cmd, char **envp, t_execute *exec)
 	if (exec->abs_path)
 		return (exec->abs_path);
 	exec->path_env = get_path_env(envp);
+	printf("PATH = %s\n", exec->path_env);
 	if (!exec->path_env)
 		return (NULL);
+	printf("voy aqui find execute\n");
 	paths = ft_split(exec->path_env, ':');
+	for (int j=0; paths[j]; j++)
+    	printf("paths[%d] = %s\n", j, paths[j]);
 	while (paths[i])
 	{
 		temp = ft_strjoin(paths[i], "/");

@@ -83,7 +83,8 @@ void	check_line(char *line, char **envp)
 	mini->lexer = aux_line(line);
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
-	create_process(mini, envp);
+	//start_execute(mini, envp);
+	execute_cmd(mini, envp);
 	printf("numero de comandos en struct exec: %d\n", mini->exec->cmds);
 	printf("\n");
 	print_tokens(mini->lexer);

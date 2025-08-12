@@ -23,8 +23,8 @@ SRC = \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
 	src/utils/prints.c \
-	src/execute/pipex.c\
 	src/execute/pipex_aux.c\
+	src/execute/one_cmd.c\
 	src/utils/ft_free.c
 OBJ = $(SRC:.c=.o)
 RM = rm -f
