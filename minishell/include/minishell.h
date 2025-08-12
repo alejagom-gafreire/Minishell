@@ -83,6 +83,7 @@ typedef struct s_parcer
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
+	struct s_execute *exec;
 	struct s_parcer	*next;
 }					t_parcer;
 
