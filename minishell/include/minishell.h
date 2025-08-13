@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/15 13:00:49 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/15 13:04:43 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,25 @@ typedef enum kind
 	T_SQ
 }					t_kind;
 
+/*
+	PLAIN -> fuera de comillas
+	DQ -> comillas dobles
+	SQ -> comillas simples
+*/
+typedef enum kind
+{
+	T_PLAIN,
+	T_DQ,
+	T_SQ
+}					t_kind;
+
 typedef struct s_lexer
 {
 	int				id;
 	char			*inf;
 	t_tokens		token;
 	t_tokens		last_token;
+	t_kind			kind;
 	t_kind			kind;
 	struct s_lexer	*next;
 	struct s_lexer	*last;
