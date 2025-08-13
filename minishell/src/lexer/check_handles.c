@@ -100,7 +100,9 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 	}
 	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
 		type = T_DELIM;
-	else 
+		kind = T_PLAIN;
+	}
+	else
 	{
 		type = compare_buildings(word);
 		kind = T_PLAIN;
