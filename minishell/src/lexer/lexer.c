@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/06 16:56:38 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/13 10:50:40 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	handle_pipe(t_lexer **lexer_list, int *first_word)
 {
-	add_token(lexer_list, "|", T_PIPE);
+	add_token(lexer_list, "|", T_PIPE,T_PLAIN);
 	(*lexer_list)->last_token = T_PIPE;
 	*first_word = 1;
 }
 
-void	add_token(t_lexer **lexer, char *info, t_tokens type)
+void	add_token(t_lexer **lexer, char *info, t_tokens type , t_kind kind)
 {
 	t_lexer	*new_lexer;
 	t_lexer	*tmp;
@@ -30,6 +30,7 @@ void	add_token(t_lexer **lexer, char *info, t_tokens type)
 	new_lexer->inf = ft_strdup(info);
 	new_lexer->token = type;
 	new_lexer->last_token = type;
+	new_lexer->kind = kind;
 	if (*lexer == NULL)
 		*lexer = new_lexer;
 	else
@@ -81,6 +82,7 @@ void	check_line(char *line, char **envp)
 	if (!mini)
 		return ;
 	mini->lexer = aux_line(line);
+	expand_tokens(&mini->lexer,envp);
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
 	execute_cmd(mini, envp);
