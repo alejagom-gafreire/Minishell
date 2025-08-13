@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/08 10:05:52 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:57:53 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,25 @@ typedef enum tokens
 	T_GENERAL
 }					t_tokens;
 
+/*
+	PLAIN -> fuera de comillas
+	DQ -> comillas dobles
+	SQ -> comillas simples
+*/
+typedef enum kind
+{
+	T_PLAIN,
+	T_DQ,
+	T_SQ
+}					t_kind;
+
 typedef struct s_lexer
 {
 	int				id;
 	char			*inf;
 	t_tokens		token;
 	t_tokens		last_token;
+	t_kind			kind;
 	struct s_lexer	*next;
 	struct s_lexer	*last;
 }					t_lexer;
@@ -86,6 +99,9 @@ void    execute_cmd(t_mini *mini, char **envp);
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
 void				check_line(char *line, char **envp);
+
+// expander
+int					expand_tokens(t_lexer **lexer_list, char **envp);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
@@ -102,7 +118,8 @@ int					check_double_quotes(char *line, int pos);
 void				num_comands(t_mini *mini);
 
 // lexer token
-void				add_token(t_lexer **lexer, char *info, t_tokens type);
+void				add_token(t_lexer **lexer, char *info, t_tokens type,
+						t_kind kind);
 // lexer_aux
 int					handle_word(char *line, int i, t_lexer **lexer_list,
 						int *first_word);
