@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prints.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 17:03:39 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/30 20:04:30 by alejogogi        ###   ########.fr       */
+/*   Updated: 2025/08/12 10:51:45 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_tokens(t_lexer *lexer)
 {
 	while (lexer)
 	{
-		printf("Token: %s (tipo %d)\n", lexer->inf, lexer->token);
+		printf("Token: %s (tipo %d)  (kind %d)\n", lexer->inf, lexer->token, lexer->kind);
 		lexer = lexer->next;
 	}
 }
