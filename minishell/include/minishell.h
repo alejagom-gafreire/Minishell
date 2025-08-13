@@ -79,7 +79,6 @@ typedef struct s_parcer
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
-	struct s_execute *exec;
 	struct s_parcer	*next;
 }					t_parcer;
 
@@ -110,6 +109,7 @@ void	handle_redirecitons(t_parcer *list);
 //execute one command
 void    execute_cmd(t_mini *mini, char **envp);
 void	exec_cmd(t_parcer *list, char **envp);
+t_execute	*init_exec(void);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
