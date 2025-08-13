@@ -85,10 +85,10 @@ void	check_line(char *line, char **envp)
 	num_comands(mini);
 	//start_execute(mini, envp);
 	execute_cmd(mini, envp);
-	printf("numero de comandos en struct exec: %d\n", mini->exec->cmds);
+	printf("numero de comandos en struct exec: %d\n", mini->num_cmd);
 	printf("\n");
 	print_tokens(mini->lexer);
 	printf("\n");
 	print_parcer(mini->parcer);
-	free_minishell(mini);
+	//free_minishell(mini);
 }

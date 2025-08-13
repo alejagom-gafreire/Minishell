@@ -23,7 +23,7 @@ void	exec_cmd(t_parcer *list, char **envp)
 	if (!exec_cmd)
 		return ;
 	cmd_path = find_executable(exec_cmd[0], envp, list->exec);
-	printf("Ruta ejecutable: %s\n", cmd_path);
+	printf("PRINTEAR ESTO %s\n", cmd_path);
 	if (!cmd_path)
 		return ;
 	if (execve(cmd_path, exec_cmd, envp) == -1)

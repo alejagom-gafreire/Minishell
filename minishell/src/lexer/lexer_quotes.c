@@ -21,17 +21,15 @@ void	num_comands(t_mini *mini)
 	int			i;
 	t_parcer	*list;
 
-	mini->exec = malloc(sizeof(t_execute));
-	if (!mini->exec)
-		exit(EXIT_FAILURE);
 	i = 0;
+	mini->num_cmd = 0;
 	list = mini->parcer;
 	while (list)
 	{
 		i++;
 		list = list->next;
 	}
-	mini->exec->cmds = i;
+	mini->num_cmd = i;
 }
 
 int	check_simple_quotes(char *line, int pos)
