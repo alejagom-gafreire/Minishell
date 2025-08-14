@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 12:48:14 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/13 10:50:40 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/14 15:43:30 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	check_line(char *line, char **envp)
 	if (!mini)
 		return ;
 	mini->lexer = aux_line(line);
-	expand_tokens(&mini->lexer,envp);
+	if(expand_tokens(&mini->lexer, 0) != 0)
+		return ;
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
 	execute_cmd(mini, envp);
