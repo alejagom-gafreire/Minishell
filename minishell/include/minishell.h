@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/15 12:58:40 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/15 12:58:53 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ int					check_token(int argc, char *argv[], char **envp);
 void				check_line(char *line, char **envp);
 
 // expander
-int					expand_tokens(t_lexer **lexer_list, char **envp);
+int					expand_tokens(t_lexer **lexer_list, int last_status);
+char				*itoa_status(int st, char buf[32]);
+char				*dup_cstr(const char *s);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);

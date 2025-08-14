@@ -6,7 +6,7 @@
 #    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/08/13 10:51:35 by gafreire         ###   ########.fr        #
+#    Updated: 2025/08/14 17:43:45 by gafreire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRC = \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
 	src/expander/expander.c \
+	src/expander/expander_utils.c \
 	src/utils/prints.c \
 	src/execute/pipex_aux.c \
 	src/execute/one_cmd.c \
