@@ -42,26 +42,26 @@ static char	*aux_parcer(char *cmd, char *sec)
 	return (res);
 }
 
-int	open_outfile(t_lexer **aux, t_parcer *new_node)
+int	open_outfile(t_lexer **aux)
 {
 	int	fd;
 
 	fd = -1;
-	if (ft_strcmp((*aux)->inf, ">", 2) == 0)
+	if (ft_strncmp((*aux)->inf, ">", 2) == 0)
 	{
 		fd = open((*aux)->next->inf, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 		{
-			perro("opoen");
+			perror("opoen");
 			return (-1);
 		}
 	}
-	else if (ft_strcmp((*aux)->inf, ">>", 3) == 0)
+	else if (ft_strncmp((*aux)->inf, ">>", 3) == 0)
 	{
 		fd = open((*aux)->next->inf, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 		{
-			perro("opoen");
+			perror("opoen");
 			return (-1);
 		}
 	}
@@ -85,7 +85,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 			if ((*aux)->next && (*aux)->next->token == T_OUTFILE)
 			{
 				new_parcer->name_outfile = ft_strdup((*aux)->next->inf);
-				new_parcer->outfile = open_outfile((*aux), new_parcer);
+				new_parcer->outfile = open_outfile(&(*aux));
 			}
 		}
 		else if ((*aux)->token == T_NAME_CMD)

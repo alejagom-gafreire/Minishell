@@ -76,25 +76,12 @@ typedef struct s_mini
 }					t_mini;
 
 // execute
-//void				create_process(t_mini *mini, char **envp);
-void				free_split(char **split);
-char				*find_executable(char *cmd, char **envp, t_execute *exec);
-char				*check_absolute_path(char *cmd);
-char				*get_path_env(char **envp);
-// void 				create_child_processes(t_mini *mini, t_parcer *list, char **envp);
-
-//execute.c
-void    start_execute(t_mini *mini, char **envp);
-int		init_pipes(int	cmds, int pipes[cmds - 1][2]);
-void	init_forks(int (*pipes)[2], pid_t *pids, char **envp, t_mini *mini);
-void	child_process(int i, int cmds, int pipes[cmds - 1][2], t_parcer *list, char **envp);
-void	execute_command(t_parcer *list, char **envp);
-void	handle_redirecitons(t_parcer *list);
-
-//execute one command
-void    execute_cmd(t_mini *mini, char **envp);
+void	free_split(char **split);
+char	*get_path_env(char **envp);
+char	*check_absolute_path(char *cmd);
+char	*find_executable(char *cmds, char **envp);
 void	exec_cmd(t_parcer *list, char **envp);
-t_execute	*init_exec(void);
+void    execute_cmd(t_mini *mini, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
@@ -106,6 +93,7 @@ void				print_tokens(t_lexer *lexer);
 // parser
 t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
+int					open_outfile(t_lexer **aux);
 
 // lexer quotes
 int					check_quotes(char *line, int i, t_lexer **lexer_list);

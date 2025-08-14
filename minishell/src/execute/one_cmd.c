@@ -12,18 +12,85 @@
 
 #include "minishell.h"
 
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	if (!split)
+		return ;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+char	*get_path_env(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*check_absolute_path(char *cmd)
+{
+	if (ft_strchr(cmd, '/'))
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (NULL);
+	}
+	return (NULL);
+}
+
+char	*find_executable(char *cmds, char **envp)
+{
+	char	*abs_path;
+	char	*path_env;
+	char	*full_path;
+	char	*temp;
+	char	**paths;
+	int	i;
+
+	i = 0;
+	abs_path = check_absolute_path(cmds);
+	if (abs_path)
+		return (abs_path);
+	path_env = get_path_env(envp);
+	if (!path_env)
+		return (NULL);
+	paths = ft_split(path_env, ':');
+	while (paths[i])
+	{
+		temp = ft_strjoin(paths[i], "/");
+		full_path = ft_strjoin(temp, cmds);
+		free(temp);
+		if (access(full_path, X_OK) == 0)
+			return (free_split(paths), full_path);
+		free(full_path);
+		i++;
+	}
+	return (free_split(paths), NULL);
+}
+
 void	exec_cmd(t_parcer *list, char **envp)
 {
 	char	*cmd_path;
-	char	**exec_cmd;
+	char 	**exec_cmd;
 
 	exec_cmd = ft_split(list->cmd_args, ' ');
-	for (int i = 0; exec_cmd[i]; i++)  
-    		printf("argv[%d] = %s\n", i, exec_cmd[i]);
 	if (!exec_cmd)
 		return ;
-	cmd_path = find_executable(exec_cmd[0], envp, list->exec);
-	printf("PRINTEAR ESTO %s\n", cmd_path);
+	cmd_path = find_executable(exec_cmd[0], envp);
 	if (!cmd_path)
 		return ;
 	if (execve(cmd_path, exec_cmd, envp) == -1)
