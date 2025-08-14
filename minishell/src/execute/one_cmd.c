@@ -92,9 +92,16 @@ void	exec_cmd(t_parcer *list, char **envp)
 		return ;
 	cmd_path = find_executable(exec_cmd[0], envp);
 	if (!cmd_path)
+	{
+		free_split(exec_cmd);
 		return ;
+	}
 	if (execve(cmd_path, exec_cmd, envp) == -1)
+	{
+		free(cmd_path);
+		free_split(exec_cmd);
 		return ;
+	}
 }
 
 void    execute_cmd(t_mini *mini, char **envp)
