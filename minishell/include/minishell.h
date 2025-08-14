@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+#define	READ_END  0
+#define WRITE_END 1
 /*
 	T_NAME_CMD => "grep ls echo etc...."
 	T_PIPE => "|"
@@ -34,16 +36,6 @@
 	T_OUTFILE => "salida del txt ultimo."
 	T_GENERAL => "otras cosas."
 */
-
-typedef struct s_execute
-{
-	int				infile;
-	int				outfile;
-	int				cmds;
-	char			*abs_path;
-	char			*path_env;
-	char			*full_path;
-}					t_execute;
 
 typedef enum tokens
 {
@@ -68,6 +60,8 @@ typedef struct s_lexer
 
 typedef struct s_parcer
 {
+	int				infile;
+	int				outfile;
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
@@ -76,17 +70,18 @@ typedef struct s_parcer
 
 typedef struct s_mini
 {
+	int	num_cmd;
 	t_parcer		*parcer;
 	t_lexer			*lexer;
-	t_execute		*exec;
 }					t_mini;
 
 // execute
-void				create_process(t_mini *mini, char **envp);
-void				free_split(char **split);
-char				*find_executable(char *cmd, char **envp, t_execute *exec);
-char				*check_absolute_path(char *cmd);
-char				*get_path_env(char **envp);
+void	free_split(char **split);
+char	*get_path_env(char **envp);
+char	*check_absolute_path(char *cmd);
+char	*find_executable(char *cmds, char **envp);
+void	exec_cmd(t_parcer *list, char **envp);
+void    execute_cmd(t_mini *mini, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
@@ -98,6 +93,7 @@ void				print_tokens(t_lexer *lexer);
 // parser
 t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
+int					open_outfile(t_lexer **aux);
 
 // lexer quotes
 int					check_quotes(char *line, int i, t_lexer **lexer_list);
