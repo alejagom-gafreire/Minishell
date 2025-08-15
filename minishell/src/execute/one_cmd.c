@@ -186,13 +186,27 @@ int	wait_childrens(pid_t *pids, int num_cmd)
 
 void    execute_cmd(t_mini *mini, char **envp)
 {
-	int	pipes[mini->num_cmd - 1][2];
+	int	(*pipes)[2];
 	pid_t	pids[mini->num_cmd];
 
-	if (init_pipes(mini, pipes) == -1)
-		return ;
+	pipes = NULL;
+	if(mini->num_cmd > 1)
+	{
+		pipes = malloc(sizeof(int[mini->num_cmd - 1][2]));
+		if (!pipes)
+			return ;
+		if (init_pipes(mini, pipes) == -1)
+		{
+			free(pipes);
+			return ;
+		}
+	}
 	init_proccess(mini, pids, pipes, envp);
-	close_pipes(pipes, mini->num_cmd - 1);
+	if (mini->num_cmd > 1)
+	{
+		close_pipes(pipes, mini->num_cmd - 1);
+		free(pipes);
+	}
 	mini->last_status = wait_childrens(pids, mini->num_cmd);
 	printf("Last exit status: %d\n", mini->last_status);
 	// pid = fork();
