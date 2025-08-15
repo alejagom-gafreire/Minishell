@@ -71,6 +71,7 @@ typedef struct s_parcer
 typedef struct s_mini
 {
 	int	num_cmd;
+	int	last_status; //variable para el $
 	t_parcer		*parcer;
 	t_lexer			*lexer;
 }					t_mini;
@@ -82,6 +83,10 @@ char	*check_absolute_path(char *cmd);
 char	*find_executable(char *cmds, char **envp);
 void	exec_cmd(t_parcer *list, char **envp);
 void    execute_cmd(t_mini *mini, char **envp);
+int	init_pipes(t_mini *mini, int pipes[][2]);
+void	close_pipes(int pipes[][2], int	num_pipes);
+void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], char **envp);
+int	wait_childrens(pid_t *pids, int num_cmd);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);

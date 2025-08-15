@@ -104,22 +104,105 @@ void	exec_cmd(t_parcer *list, char **envp)
 	}
 }
 
+int	init_pipes(t_mini *mini, int pipes[][2])
+{
+	int	i;
+
+	i = 0;
+	while (i < mini->num_cmd)
+	{
+		if (pipe(pipes[i]) == -1)
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+void	close_pipes(int pipes[][2], int	num_pipes)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_pipes)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
+}
+
+void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], char **envp)
+{
+	int	i;
+	t_parcer 	*list;
+ 
+	list = mini->parcer;
+	i = 0;
+	while (i < mini->num_cmd)
+	{
+		pids[i] = fork();
+		if (pids[i] == 0)
+		{
+			if (list->infile != -1)
+				dup2(list->infile, STDIN_FILENO);
+			else if (i > 0)
+				dup2(pipes[i - 1][0], STDIN_FILENO);
+			if (list->outfile != -1)
+				dup2(list->outfile, STDOUT_FILENO);
+			else if (i < mini->num_cmd - 1)
+				dup2(pipes[i][1], STDOUT_FILENO);
+			close_pipes(pipes, mini->num_cmd - 1);
+			if (list->infile != -1)
+				close(list->infile);
+			if (list->outfile != -1)
+				close(list->outfile);
+			exec_cmd(list, envp);
+			perror("exec");
+		}
+		list = list->next;
+		i++;
+	}
+}
+
+int	wait_childrens(pid_t *pids, int num_cmd)
+{
+	int	i;
+	int	status;
+	int	last_status;
+
+	i = 0;
+	last_status = 0;
+	while (i < num_cmd)
+	{
+		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+			last_status = WIFEXITED(status); //codigo de salida.
+		else if (WIFSIGNALED(status))
+			last_status = 128 + WTERMSIG(status); //termino por señal.
+		i++;
+	}
+	return (last_status);
+}
+
 void    execute_cmd(t_mini *mini, char **envp)
 {
-	t_parcer *list;
-	pid_t	pid;
-	int	status;
+	int	pipes[mini->num_cmd - 1][2];
+	pid_t	pids[mini->num_cmd];
 
-	list = mini->parcer;
-	printf("el comando es este: %s\n", list->cmd_args);
-	pid = fork();
-	if (pid == 0)
-	{
-		exec_cmd(list, envp);
-		exit(1);
-	}
-	else if (pid > 0)
-		waitpid(pid, &status, 0);
-	else
-		perror("fork");
+	if (init_pipes(mini, pipes) == -1)
+		return ;
+	init_proccess(mini, pids, pipes, envp);
+	close_pipes(pipes, mini->num_cmd - 1);
+	mini->last_status = wait_childrens(pids, mini->num_cmd);
+	printf("Last exit status: %d\n", mini->last_status);
+	// pid = fork();
+	// if (pid == 0)
+	// {
+	// 	exec_cmd(list, envp);
+	// 	exit(1);
+	// }
+	// else if (pid > 0)
+	// 	waitpid(pid, &status, 0);
+	// else
+	// 	perror("fork");
 }
