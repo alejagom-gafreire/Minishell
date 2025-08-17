@@ -109,7 +109,7 @@ int	init_pipes(t_mini *mini, int pipes[][2])
 	int	i;
 
 	i = 0;
-	while (i < mini->num_cmd)
+	while (i < mini->num_cmd - 1)
 	{
 		if (pipe(pipes[i]) == -1)
 			return (-1);
@@ -159,6 +159,14 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], char **envp)
 			exec_cmd(list, envp);
 			perror("exec");
 		}
+		else if (pids[i] > 0)
+		{
+			if (i > 0)
+			{
+				close(pipes[i - 1][0]);
+				close(pipes[i - 1][1]);
+			}
+		}
 		list = list->next;
 		i++;
 	}
@@ -176,7 +184,7 @@ int	wait_childrens(pid_t *pids, int num_cmd)
 	{
 		waitpid(pids[i], &status, 0);
 		if (WIFEXITED(status))
-			last_status = WIFEXITED(status); //codigo de salida.
+			last_status = WEXITSTATUS(status); //codigo de salida.
 		else if (WIFSIGNALED(status))
 			last_status = 128 + WTERMSIG(status); //termino por señal.
 		i++;
