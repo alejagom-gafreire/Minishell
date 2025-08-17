@@ -48,23 +48,23 @@ int	read_heredoc(char *delim)
 	return (pipefd[0]);
 }
 
-int	open_outfile(t_lexer **aux)
+int	open_outfile(char	*file, int	appened)
 {
 	int	fd;
 
 	fd = -1;
-	if (ft_strncmp((*aux)->inf, ">", 2) == 0)
+	if (appened)
 	{
-		fd = open((*aux)->next->inf, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		fd = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 		{
 			perror("opoen");
 			return (-1);
 		}
 	}
-	else if (ft_strncmp((*aux)->inf, ">>", 3) == 0)
+	else
 	{
-		fd = open((*aux)->next->inf, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 		{
 			perror("opoen");

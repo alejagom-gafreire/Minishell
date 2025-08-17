@@ -47,6 +47,8 @@ t_lexer		*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
 
 t_lexer		*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
 {
+	int	appened;
+
 	if (!aux || !aux->next || aux->next->token != T_OUTFILE)
 	{
 		if (!aux)
@@ -54,7 +56,8 @@ t_lexer		*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
 		return (aux->next);
 	}
 	new_parcer->name_outfile = ft_strdup(aux->next->inf);
-	new_parcer->outfile = open_outfile(&aux);
+	appened = (ft_strncmp(aux->inf, ">>", 3) == 0);
+	new_parcer->outfile = open_outfile(aux->next->inf, appened);
 	return (aux->next->next);
 }
 

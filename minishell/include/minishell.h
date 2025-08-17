@@ -104,7 +104,7 @@ t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
 
 //parser_aux
-int					open_outfile(t_lexer **aux);
+int					open_outfile(char	*file, int	appened);
 int					read_heredoc(char *delim);
 
 //parser handles
