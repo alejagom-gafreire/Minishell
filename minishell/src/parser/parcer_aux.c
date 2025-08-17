@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+// Ctrl+C (SIGINT): si el usuario interrumpe en medio del heredoc, debes cancelar el heredoc y limpiar.
+// → Aquí se suele hacer un fork especial para el heredoc y el padre espera.
+
+// Expandir variables $VAR dentro del heredoc (a menos que el delimitador esté entre comillas).
+// → Eso lo puedes añadir después con una función de expansión.
+
+// Liberar memoria: ojo con leaks de line.
+
 int	read_heredoc(char *delim)
 {
 	int	pipefd[2];
