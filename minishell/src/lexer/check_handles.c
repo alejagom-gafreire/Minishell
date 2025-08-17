@@ -64,6 +64,8 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 		type = T_INFILE;
 	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
 		type = T_OUTFILE;
+	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
+		type = T_DELIM;
 	else
 		type = T_NAME_CMD;
 	add_token(lexer_list, word, type);

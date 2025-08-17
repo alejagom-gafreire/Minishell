@@ -40,6 +40,7 @@ SRC = \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \
+	src/parser/check_parcer_handle.c\
 	src/lexer/lexer_quotes.c \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \

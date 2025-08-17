@@ -30,6 +30,8 @@
 	T_NAME_CMD => "grep ls echo etc...."
 	T_PIPE => "|"
 	T_REDIR_IN => "< , << simbolos."
+	T_HEREDOC =>  "simbolo <<"
+	T_DELIM => "delimitador del heredoc"
 	T_REDIR_OUT => "> >> simbolos."
 	T_REDIR_OUT => "> >> simbolos."
 	T_INFILE => "primer txt."
@@ -41,6 +43,8 @@ typedef enum tokens
 {
 	T_NAME_CMD,
 	T_PIPE,
+	T_HEREDOC,
+	T_DELIM,
 	T_REDIR_IN,
 	T_REDIR_OUT,
 	T_INFILE,
@@ -98,7 +102,16 @@ void				print_tokens(t_lexer *lexer);
 // parser
 t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
+
+//parser_aux
 int					open_outfile(t_lexer **aux);
+int					read_heredoc(char *delim);
+
+//parser handles
+t_lexer		*handle_inflie(t_lexer *aux, t_parcer *new_parcer);
+t_lexer		*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
+t_lexer		*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
+t_lexer		*handle_cmd(t_lexer *aux, char **cmd);
 
 // lexer quotes
 int					check_quotes(char *line, int i, t_lexer **lexer_list);

@@ -30,8 +30,8 @@ int	handle_input_redirect(char *line, int i, t_lexer **lexer_list)
 {
 	if (line[i + 1] == '<')
 	{
-		add_token(lexer_list, "<<", T_REDIR_IN);
-		(*lexer_list)->last_token = T_PIPE;
+		add_token(lexer_list, "<<", T_HEREDOC);
+		(*lexer_list)->last_token = T_HEREDOC;
 		return (i + 2);
 	}
 	add_token(lexer_list, "<", T_REDIR_IN);
