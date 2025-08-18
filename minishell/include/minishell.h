@@ -66,25 +66,12 @@ typedef enum kind
 	T_SQ
 }					t_kind;
 
-/*
-	PLAIN -> fuera de comillas
-	DQ -> comillas dobles
-	SQ -> comillas simples
-*/
-typedef enum kind
-{
-	T_PLAIN,
-	T_DQ,
-	T_SQ
-}					t_kind;
-
 typedef struct s_lexer
 {
 	int				id;
 	char			*inf;
 	t_tokens		token;
 	t_tokens		last_token;
-	t_kind			kind;
 	t_kind			kind;
 	struct s_lexer	*next;
 	struct s_lexer	*last;
