@@ -13,12 +13,25 @@
 #include "minishell.h"
 
 /* ===================== Utils ===================== */
+void	advance_nodes(t_lexer **prev, t_lexer **node)
+{
+	*prev = *node;
+	*node = (*node)->next;
+}
+
+int	is_empty_tok(t_lexer *n)
+{
+	return (!n->inf || n->inf[0] == '\0');
+}
+
 char	*dup_cstr(const char *s)
 {
 	size_t	L;
 	char	*p;
+	size_t	i;
 
 	L = 0;
+	i = 0;
 	if (!s)
 		return (NULL);
 	while (s[L])
@@ -26,8 +39,11 @@ char	*dup_cstr(const char *s)
 	p = (char *)malloc(L + 1);
 	if (!p)
 		return (NULL);
-	for (size_t i = 0; i <= L; ++i)
+	while (i <= L)
+	{
 		p[i] = s[i];
+		i++;
+	}
 	return (p);
 }
 
@@ -57,4 +73,12 @@ char	*itoa_status(int st, char buf[32])
 		buf[j++] = tmp[i];
 	buf[j] = '\0';
 	return (buf);
+}
+
+void free_lexer_node(t_lexer *node) 
+{
+    if (!node) 
+    	return;
+    free(node->inf);
+    free(node);
 }
