@@ -56,6 +56,7 @@ SRC = \
 	src/lexer/lexer_quotes.c \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
+	src/expander/expander_demo.c \
 	src/expander/expander.c \
 	src/expander/expander_utils.c \
 	src/utils/prints.c \
