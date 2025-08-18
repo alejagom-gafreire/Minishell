@@ -37,7 +37,7 @@ t_lexer		*handle_inflie(t_lexer *aux, t_parcer *new_parcer)
 
 t_lexer		*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
 {
-	if (aux->next)
+	if (aux->next && aux->next->token == T_DELIM)
 	{
 		new_parcer->infile = read_heredoc(aux->next->inf);
 		return (aux->next->next);
