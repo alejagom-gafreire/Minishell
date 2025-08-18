@@ -49,7 +49,8 @@ typedef enum tokens
 	T_REDIR_OUT,
 	T_INFILE,
 	T_OUTFILE,
-	T_GENERAL
+	T_GENERAL,
+	T_BUILDINGS,
 }					t_tokens;
 
 typedef struct s_lexer
@@ -135,6 +136,7 @@ int					handle_output_redirect(char *line, int i,
 int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
+t_tokens				compare_buildings(char *word);
 
 // signals
 void				init_signals(void);

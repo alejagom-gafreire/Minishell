@@ -49,6 +49,29 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	return (end + 1);
 }
 
+t_tokens	compare_buildings(char *word)
+{
+	t_tokens	type;
+
+	if (ft_strcmp("cd", word) == 0)
+		type = T_BUILDINGS;
+	else if (ft_strcmp("echo", word) == 0)
+		type = T_BUILDINGS;
+	else if (ft_strcmp("pwd", word) == 0)
+		type = T_BUILDINGS;
+	else if (ft_strcmp("export", word) == 0)
+		type = T_BUILDINGS;
+	else if (ft_strcmp("unset", word) == 0)
+		type = T_BUILDINGS;
+	else if (ft_strcmp("env", word) == 0)
+		type = T_BUILDINGS;
+	else if (ft_strcmp("exit", word) == 0)
+		type = T_BUILDINGS;
+	else
+		type = T_NAME_CMD;
+	return (type);
+}
+
 int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	int			start;
@@ -60,14 +83,16 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 		&& line[i] != '|')
 		i++;
 	word = ft_substr(line, start, i - start);
+	if (!word)
+		return (-1);
 	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
 		type = T_INFILE;
 	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
 		type = T_OUTFILE;
 	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
 		type = T_DELIM;
-	else
-		type = T_NAME_CMD;
+	else 
+		type = compare_buildings(word);
 	add_token(lexer_list, word, type);
 	(*lexer_list)->last_token = type;
 	if (type == T_NAME_CMD)
