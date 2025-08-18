@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:10:34 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/15 13:05:45 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/15 13:11:42 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,12 @@ typedef enum kind
 	T_SQ
 }					t_kind;
 
-/*
-	PLAIN -> fuera de comillas
-	DQ -> comillas dobles
-	SQ -> comillas simples
-*/
-typedef enum kind
-{
-	T_PLAIN,
-	T_DQ,
-	T_SQ
-}					t_kind;
-
 typedef struct s_lexer
 {
 	int				id;
 	char			*inf;
 	t_tokens		token;
 	t_tokens		last_token;
-	t_kind			kind;
 	t_kind			kind;
 	struct s_lexer	*next;
 	struct s_lexer	*last;
@@ -109,20 +96,6 @@ char	*check_absolute_path(char *cmd);
 char	*find_executable(char *cmds, char **envp);
 void	exec_cmd(t_parcer *list, char **envp);
 void    execute_cmd(t_mini *mini, char **envp);
-// void 				create_child_processes(t_mini *mini, t_parcer *list, char **envp);
-
-//execute.c
-void    start_execute(t_mini *mini, char **envp);
-int		init_pipes(int	cmds, int pipes[cmds - 1][2]);
-void	init_forks(int (*pipes)[2], pid_t *pids, char **envp, t_mini *mini);
-void	child_process(int i, int cmds, int pipes[cmds - 1][2], t_parcer *list, char **envp);
-void	execute_command(t_parcer *list, char **envp);
-void	handle_redirecitons(t_parcer *list);
-
-//execute one command
-void    execute_cmd(t_mini *mini, char **envp);
-void	exec_cmd(t_parcer *list, char **envp);
-t_execute	*init_exec(void);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
