@@ -26,16 +26,16 @@ static char	*aux_parcer(char *cmd, char *sec)
 	return (res);
 }
 
-t_lexer		*handle_inflie(t_lexer *aux, t_parcer *new_parcer)
+t_lexer	*handle_inflie(t_lexer *aux, t_parcer *new_parcer)
 {
 	if (!aux)
-		return  (NULL);
+		return (NULL);
 	new_parcer->name_infile = ft_strdup(aux->inf);
 	new_parcer->infile = open(aux->inf, O_RDONLY);
 	return (aux->next);
 }
 
-t_lexer		*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
+t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
 {
 	if (aux->next && aux->next->token == T_DELIM)
 	{
@@ -45,7 +45,7 @@ t_lexer		*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
 	return (aux->next);
 }
 
-t_lexer		*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
+t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
 {
 	int	appened;
 
@@ -61,13 +61,13 @@ t_lexer		*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
 	return (aux->next->next);
 }
 
-t_lexer		*handle_cmd(t_lexer *aux, char **cmd)
+t_lexer	*handle_cmd(t_lexer *aux, char **cmd)
 {
 	if (!aux)
 		return (NULL);
 	if (!*cmd)
 		*cmd = ft_strdup(aux->inf);
-	else	
+	else
 		*cmd = aux_parcer(*cmd, aux->inf);
 	return (aux->next);
 }

@@ -91,7 +91,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 		type = T_OUTFILE;
 	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
 		type = T_DELIM;
-	else 
+	else
 		type = compare_buildings(word);
 	add_token(lexer_list, word, type);
 	(*lexer_list)->last_token = type;

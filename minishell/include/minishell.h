@@ -24,8 +24,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-#define	READ_END  0
-#define WRITE_END 1
+# define READ_END 0
+# define WRITE_END 1
 /*
 	T_NAME_CMD => "grep ls echo etc...."
 	T_PIPE => "|"
@@ -75,23 +75,32 @@ typedef struct s_parcer
 
 typedef struct s_mini
 {
-	int	num_cmd;
-	int	last_status; //variable para el $
+	int				num_cmd;
+	int				last_status; //variable para el $
 	t_parcer		*parcer;
 	t_lexer			*lexer;
 }					t_mini;
 
 // execute
-void	free_split(char **split);
-char	*get_path_env(char **envp);
-char	*check_absolute_path(char *cmd);
-char	*find_executable(char *cmds, char **envp);
-void	exec_cmd(t_parcer *list, char **envp);
-void    execute_cmd(t_mini *mini, char **envp);
-int	init_pipes(t_mini *mini, int pipes[][2]);
-void	close_pipes(int pipes[][2], int	num_pipes);
-void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], char **envp);
-int	wait_childrens(pid_t *pids, int num_cmd);
+int					init_pipes(t_mini *mini, int pipes[][2]);
+int					safe_pipes(t_mini *mini, int (**pipes)[2]);
+void				close_pipes(int pipes[][2], int num_pipes);
+void				execute_cmd(t_mini *mini, char **envp);
+
+// proccess_execve
+int					wait_childrens(pid_t *pids, int num_cmd);
+void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
+						int pipes[][2]);
+void				exec_cmd(t_parcer *list, char **envp);
+void				init_proccess(t_mini *mini, pid_t *pids,
+						int pipes[][2], char **envp);
+
+// execute_aux
+void				free_split(char **split);
+char				*get_path_env(char **envp);
+char				*check_absolute_path(char *cmd);
+char				*build_path(char *dir, char *cmd);
+char				*find_executable(char *cmds, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
@@ -105,14 +114,14 @@ t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
 
 //parser_aux
-int					open_outfile(char	*file, int	appened);
+int					open_outfile(char *file, int appened);
 int					read_heredoc(char *delim);
 
 //parser handles
-t_lexer		*handle_inflie(t_lexer *aux, t_parcer *new_parcer);
-t_lexer		*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
-t_lexer		*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
-t_lexer		*handle_cmd(t_lexer *aux, char **cmd);
+t_lexer				*handle_inflie(t_lexer *aux, t_parcer *new_parcer);
+t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
+t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
+t_lexer				*handle_cmd(t_lexer *aux, char **cmd);
 
 // lexer quotes
 int					check_quotes(char *line, int i, t_lexer **lexer_list);
@@ -136,7 +145,7 @@ int					handle_output_redirect(char *line, int i,
 int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
-t_tokens				compare_buildings(char *word);
+t_tokens			compare_buildings(char *word);
 
 // signals
 void				init_signals(void);

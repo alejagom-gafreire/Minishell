@@ -48,7 +48,7 @@ int	read_heredoc(char *delim)
 	return (pipefd[0]);
 }
 
-int	open_outfile(char	*file, int	appened)
+int	open_outfile(char *file, int appened)
 {
 	int	fd;
 
