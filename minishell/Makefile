@@ -6,7 +6,7 @@
 #    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/08/06 16:59:25 by gafreire         ###   ########.fr        #
+#    Updated: 2025/08/12 15:44:25 by gafreire         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ LDLIBS = -lreadline
 
 SRC = \
 	src/main.c \
+	src/signals/signals.c \
 	src/prompt/prompt.c \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
