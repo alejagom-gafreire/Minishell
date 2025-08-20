@@ -29,7 +29,7 @@ void	add_token(t_lexer **lexer, char *info, t_tokens type)
 	new_lexer->last = NULL;
 	new_lexer->inf = ft_strdup(info);
 	new_lexer->token = type;
-	new_lexer->last_token = T_GENERAL;
+	new_lexer->last_token = type;
 	if (*lexer == NULL)
 		*lexer = new_lexer;
 	else
@@ -83,12 +83,10 @@ void	check_line(char *line, char **envp)
 	mini->lexer = aux_line(line);
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
-	//start_execute(mini, envp);
 	execute_cmd(mini, envp);
-	printf("numero de comandos en struct exec: %d\n", mini->num_cmd);
 	printf("\n");
 	print_tokens(mini->lexer);
 	printf("\n");
 	print_parcer(mini->parcer);
-	//free_minishell(mini);
+	free_minishell(mini);
 }

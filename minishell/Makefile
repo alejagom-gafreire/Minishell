@@ -40,12 +40,14 @@ SRC = \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \
+	src/parser/check_parcer_handle.c\
 	src/lexer/lexer_quotes.c \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
 	src/utils/prints.c \
-	src/execute/pipex_aux.c \
-	src/execute/one_cmd.c \
+	src/execute/execute.c \
+	src/execute/execute_aux.c \
+	src/execute/proccess_execve.c \
 	src/utils/ft_free.c
 
 OBJ = $(SRC:.c=.o)
