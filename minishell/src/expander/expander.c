@@ -21,11 +21,15 @@
    - Operadores: no se tocan
 */
 
+/*
+	delete_current:
+	- Elimina el nodo actul de la listas enlazada del lexer
+*/
 static void	delete_current(t_lexer **head, t_lexer **prev, t_lexer **node)
 {
-	t_lexer	*del;
+	t_lexer	*dlt;
 
-	del = *node;
+	dlt = *node;
 	if (*prev == NULL)
 	{
 		*head = (*node)->next;
@@ -36,23 +40,33 @@ static void	delete_current(t_lexer **head, t_lexer **prev, t_lexer **node)
 		(*prev)->next = (*node)->next;
 		*node = (*prev)->next;
 	}
-	free_lexer_node(del);
+	free_lexer_node(dlt);
 }
 
-static int	expand_if_needed(t_lexer *node, int last_status)
+/*
+	check_variable:
+	- Chequea si el contenido requiere expansión
+*/
+static int	check_variable(t_lexer *node, int last_status)
 {
-	char	*e;
+	char	*expand;
 
 	if (node->kind != T_DQ && node->kind != T_PLAIN)
 		return (0);
-	e = expand_vars_two_pass(node->inf, last_status);
-	if (!e)
+	expand = expand_vars_two_pass(node->inf, last_status);
+	if (!expand)
 		return (1);
 	free(node->inf);
-	node->inf = e;
+	node->inf = expand;
 	return (0);
 }
 
+/*
+	(Revisar creo que no es necesario)
+	handle_redir:
+	- Se encarga de manejar las redirecciones
+	- Chequea si esta vacio o espacios
+*/
 static int	handle_redir(t_lexer **prev, t_lexer **node)
 {
 	if (is_empty_tok(*node))
@@ -61,6 +75,12 @@ static int	handle_redir(t_lexer **prev, t_lexer **node)
 	return (0);
 }
 
+/*
+	(Revisar creo que no es necesario)
+	handle_plain_word:
+	- Se encarga de chequear palabras planas
+	- Chequea si esta vacio o espacios
+*/
 static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 {
 	if (is_empty_tok(*node) && (*node)->kind == T_PLAIN)
@@ -71,6 +91,11 @@ static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 	return (0);
 }
 
+/*
+	expand_tokens:
+	- Se encarga de aplicar cualquier funcion anterior
+	- Chequea si esta vacio o espacios
+*/
 int	expand_tokens(t_lexer **lexer_list, int last_status)
 {
 	t_lexer	*node;
@@ -84,7 +109,7 @@ int	expand_tokens(t_lexer **lexer_list, int last_status)
 	{
 		if (is_word_token(node->token))
 		{
-			if (expand_if_needed(node, last_status))
+			if (check_variable(node, last_status))
 				return (1);
 			if (node->token == T_INFILE || node->token == T_OUTFILE)
 			{
