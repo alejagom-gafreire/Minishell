@@ -42,6 +42,11 @@ t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
 		new_parcer->infile = read_heredoc(aux->next->inf);
 		return (aux->next->next);
 	}
+	else
+	{
+		printf("syntax error near unexpected token '%s'\n", aux->next->inf);
+		//sacar el heredoc aqui de la ejecucion.
+	}
 	return (aux->next);
 }
 
