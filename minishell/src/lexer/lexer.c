@@ -84,9 +84,9 @@ void	check_line(char *line, char **envp)
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
 	execute_cmd(mini, envp);
-	printf("\n");
-	print_tokens(mini->lexer);
-	printf("\n");
-	print_parcer(mini->parcer);
+	// printf("\n");
+	// print_tokens(mini->lexer);
+	// printf("\n");
+	// print_parcer(mini->parcer);
 	free_minishell(mini);
 }

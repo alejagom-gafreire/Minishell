@@ -25,6 +25,7 @@ static t_parcer	*mem_parcer(void)
 	parcer->outfile = -1;
 	parcer->name_infile = NULL;
 	parcer->name_outfile = NULL;
+	parcer->syntax_error = 0;
 	return (parcer);
 }
 

@@ -52,6 +52,11 @@ void	execute_cmd(t_mini *mini, char **envp)
 	int		(*pipes)[2];
 	pid_t	*pids;
 
+	if (!mini->parcer || mini->parcer->syntax_error)
+	{
+		mini->last_status = 2;
+		return ;
+	}	
 	pipes = NULL;
 	pids = malloc(sizeof(pid_t) * mini->num_cmd);
 	if (!pids)

@@ -70,6 +70,7 @@ typedef struct s_parcer
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
+	int				syntax_error;
 	struct s_parcer	*next;
 }					t_parcer;
 
