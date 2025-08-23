@@ -22,18 +22,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/07/22 19:27:35 by alejogogi         #+#    #+#              #
-#    Updated: 2025/08/06 16:59:25 by gafreire         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 CC = cc
 
@@ -56,9 +44,12 @@ SRC = \
 	src/lexer/lexer_quotes.c \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
-	src/expander/expander_demo.c \
+	src/expander/expander_write.c \
 	src/expander/expander.c \
 	src/expander/expander_utils.c \
+	src/expander/expander_status.c \
+	src/expander/expander_tokens.c \
+	src/expander/expander_check.c \
 	src/utils/prints.c \
 	src/execute/execute.c \
 	src/execute/execute_aux.c \

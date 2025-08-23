@@ -13,72 +13,49 @@
 #include "minishell.h"
 
 /* ===================== Utils ===================== */
+
+/*
+	advance_nodes:
+	-	Helper para iterar por la lista enlazada
+*/
 void	advance_nodes(t_lexer **prev, t_lexer **node)
 {
 	*prev = *node;
 	*node = (*node)->next;
 }
+/*
+	is_empty_tkn:
+	- indica si en el nodo la info esta vacía
+*/
 
-int	is_empty_tok(t_lexer *n)
+int	is_empty_tkn(t_lexer *node)
 {
-	return (!n->inf || n->inf[0] == '\0');
+	return (!node->inf || node->inf[0] == '\0');
 }
 
-char	*dup_cstr(const char *s)
+void	free_lexer_node(t_lexer *node)
 {
-	size_t	L;
-	char	*p;
-	size_t	i;
+	if (!node)
+		return ;
+	free(node->inf);
+	free(node);
+}
+/*
+	expand_vars_two_pass:
+	- Expande la cadena en dos pasadas
+*/
 
-	L = 0;
-	i = 0;
-	if (!s)
+char	*expand_vars_two_pass(const char *str, int last_status)
+{
+	size_t	size;
+	char	*out;
+
+	if (!str)
+		return (ft_strdup(""));
+	size = measure_expanded_len(str, last_status);
+	out = (char *)malloc(size + 1);
+	if (!out)
 		return (NULL);
-	while (s[L])
-		L++;
-	p = (char *)malloc(L + 1);
-	if (!p)
-		return (NULL);
-	while (i <= L)
-	{
-		p[i] = s[i];
-		i++;
-	}
-	return (p);
-}
-
-/* $?: itoa simple a buffer proporcionado */
-char	*itoa_status(int st, char buf[32])
-{
-	unsigned int	n;
-	int				i = 0, j = 0, neg;
-	char			tmp[32];
-
-	i = 0, j = 0, neg = (st < 0);
-	if (st == 0)
-	{
-		buf[0] = '0';
-		buf[1] = '\0';
-		return (buf);
-	}
-	n = neg ? (unsigned int)(-st) : (unsigned int)st;
-	while (n > 0 && i < (int)sizeof(tmp))
-	{
-		tmp[i++] = (char)('0' + (n % 10));
-		n /= 10;
-	}
-	if (neg)
-		tmp[i++] = '-';
-	while (i--)
-		buf[j++] = tmp[i];
-	buf[j] = '\0';
-	return (buf);
-}
-
-void free_lexer_node(t_lexer *node) 
-{
-    if (!node) 
-    	return;
-    free(node->inf);
-    free(node);
+	write_expanded(out, str, last_status);
+	return (out);
 }

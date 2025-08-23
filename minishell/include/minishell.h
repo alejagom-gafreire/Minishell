@@ -18,7 +18,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -124,16 +123,17 @@ void				check_line(char *line, char **envp);
 int					expand_tokens(t_lexer **lexer_list, int last_status);
 char				*itoa_status(int st, char buf[32]);
 char				*dup_cstr(const char *s);
-void 				free_lexer_node(t_lexer *node);
+void				free_lexer_node(t_lexer *node);
 size_t				measure_expanded_len(const char *str, int last_status);
-void 				write_expanded(char *dst, const char *s, int last_status);
+void				write_expanded(char *dst, const char *s, int last_status);
 char				*expand_vars_two_pass(const char *str, int last_status);
-int 				is_operator_token(int t);
-int 				is_var_char(char c);
-int 				is_var_start(char c);
+int					is_operator_token(int t);
+int					is_var_char(char c);
+int					is_var_start(char c);
 int					is_word_token(int t);
 void				advance_nodes(t_lexer **prev, t_lexer **node);
-int					is_empty_tok(t_lexer *n);
+int					is_empty_tkn(t_lexer *n);
+size_t				scan_var_end(const char *s, size_t start);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
