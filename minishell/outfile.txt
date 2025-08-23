@@ -1,8 +1,0 @@
-total 364
-drwxrwxr-x 2 alejandro alejandro   4096 ago 20 19:05 include
--rw-rw-r-- 1 alejandro alejandro     42 ago 20 19:05 infile.txt
-drwxrwxr-x 2 alejandro alejandro   4096 ago 23 15:14 libft
--rw-rw-r-- 1 alejandro alejandro   3725 ago 20 19:05 Makefile
--rwxrwxr-x 1 alejandro alejandro 354784 ago 23 15:14 minishell
--rw-r--r-- 1 alejandro alejandro      0 ago 23 15:15 outfile.txt
-drwxrwxr-x 8 alejandro alejandro   4096 ago 23 15:14 src
