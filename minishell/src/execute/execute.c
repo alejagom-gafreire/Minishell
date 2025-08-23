@@ -47,6 +47,18 @@ int	safe_pipes(t_mini *mini, int (**pipes)[2])
 	return (0);
 }
 
+static int	setup_pipes(t_mini *mini, int (**pipes)[2])
+{
+	if (safe_pipes(mini, &(*pipes)))
+		return (1);
+	if (init_pipes(mini, (*pipes)) == -1)
+	{
+		free(*pipes);
+		return (1);
+	}
+	return (0);
+}
+
 void	execute_cmd(t_mini *mini, char **envp)
 {
 	int		(*pipes)[2];
@@ -56,20 +68,15 @@ void	execute_cmd(t_mini *mini, char **envp)
 	{
 		mini->last_status = 2;
 		return ;
-	}	
+	}
 	pipes = NULL;
 	pids = malloc(sizeof(pid_t) * mini->num_cmd);
 	if (!pids)
 		return ;
-	if (mini->num_cmd > 1)
+	if (mini->num_cmd > 1 && setup_pipes(mini, &pipes))
 	{
-		if (safe_pipes(mini, &pipes))
-			return ;
-		if (init_pipes(mini, pipes) == -1)
-		{
-			free(pipes);
-			return ;
-		}
+		free(pids);
+		return ;
 	}
 	init_proccess(mini, pids, pipes, envp);
 	if (mini->num_cmd > 1)
