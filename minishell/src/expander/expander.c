@@ -69,7 +69,7 @@ static int	check_variable(t_lexer *node, int last_status)
 */
 static int	handle_redir(t_lexer **prev, t_lexer **node)
 {
-	if (is_empty_tok(*node))
+	if (is_empty_tkn(*node))
 		return (printf("minishell: ambiguous redirect\n"), 1);
 	advance_nodes(prev, node);
 	return (0);
@@ -83,7 +83,7 @@ static int	handle_redir(t_lexer **prev, t_lexer **node)
 */
 static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 {
-	if (is_empty_tok(*node) && (*node)->kind == T_PLAIN)
+	if (is_empty_tkn(*node) && (*node)->kind == T_PLAIN)
 	{
 		delete_current(head, prev, node);
 		return (1);

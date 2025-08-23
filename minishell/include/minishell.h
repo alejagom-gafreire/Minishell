@@ -18,15 +18,14 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
-#define	READ_END  0
-#define WRITE_END 1
+# define READ_END 0
+# define WRITE_END 1
 /*
 	T_NAME_CMD => "grep ls echo etc...."
 	T_PIPE => "|"
@@ -84,18 +83,18 @@ typedef struct s_parcer
 
 typedef struct s_mini
 {
-	int	num_cmd;
+	int				num_cmd;
 	t_parcer		*parcer;
 	t_lexer			*lexer;
 }					t_mini;
 
 // execute
-//void	free_split(char **split);
-char	*get_path_env(char **envp);
-char	*check_absolute_path(char *cmd);
-char	*find_executable(char *cmds, char **envp);
-void	exec_cmd(t_parcer *list, char **envp);
-void    execute_cmd(t_mini *mini, char **envp);
+// void	free_split(char **split);
+char				*get_path_env(char **envp);
+char				*check_absolute_path(char *cmd);
+char				*find_executable(char *cmds, char **envp);
+void				exec_cmd(t_parcer *list, char **envp);
+void				execute_cmd(t_mini *mini, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
@@ -105,16 +104,17 @@ void				check_line(char *line, char **envp);
 int					expand_tokens(t_lexer **lexer_list, int last_status);
 char				*itoa_status(int st, char buf[32]);
 char				*dup_cstr(const char *s);
-void 				free_lexer_node(t_lexer *node);
+void				free_lexer_node(t_lexer *node);
 size_t				measure_expanded_len(const char *str, int last_status);
-void 				write_expanded(char *dst, const char *s, int last_status);
+void				write_expanded(char *dst, const char *s, int last_status);
 char				*expand_vars_two_pass(const char *str, int last_status);
-int 				is_operator_token(int t);
-int 				is_var_char(char c);
-int 				is_var_start(char c);
+int					is_operator_token(int t);
+int					is_var_char(char c);
+int					is_var_start(char c);
 int					is_word_token(int t);
 void				advance_nodes(t_lexer **prev, t_lexer **node);
-int					is_empty_tok(t_lexer *n);
+int					is_empty_tkn(t_lexer *n);
+size_t				scan_var_end(const char *s, size_t start);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
