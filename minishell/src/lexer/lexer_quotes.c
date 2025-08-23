@@ -26,7 +26,8 @@ void	num_comands(t_mini *mini)
 	list = mini->parcer;
 	while (list)
 	{
-		i++;
+		if (list->cmd_args)
+			i++;
 		list = list->next;
 	}
 	mini->num_cmd = i;
