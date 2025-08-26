@@ -17,16 +17,16 @@
 	1ª pasada: medir longitud final 
 */
 
-static size_t	len_of_status(int st)
-{
-	char		buf[32];
-	const char	*s;
-	size_t		len;
+// static size_t	len_of_status(int st)
+// {
+// 	char		buf[32];
+// 	const char	*s;
+// 	size_t		len;
 
-	s = itoa_status(st, buf);
-	len = ft_strlen(s);
-	return (len);
-}
+// 	s = itoa_status(st, buf);
+// 	len = ft_strlen(s);
+// 	return (len);
+// }
 /*
 	scan_var_end:
 	fin de nombre de variable
@@ -83,6 +83,7 @@ static size_t	env_len_span(const char *s, size_t st, size_t en)
 static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
 		int last_status)
 {
+	(void)last_status;
 	if (s[*i] != '$')
 	{
 		(*out)++;
@@ -95,12 +96,12 @@ static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
 		(*i)++;
 		return (1);
 	}
-	if (s[*i + 1] == '?')
-	{
-		(*out) += len_of_status(last_status);
-		(*i) += 2;
-		return (1);
-	}
+	// if (s[*i + 1] == '?')
+	// {
+	// 	(*out) += len_of_status(last_status);
+	// 	(*i) += 2;
+	// 	return (1);
+	// }
 	if (!is_var_start(s[*i + 1]))
 	{
 		(*out)++;
