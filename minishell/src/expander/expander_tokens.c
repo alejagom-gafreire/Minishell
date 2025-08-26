@@ -16,11 +16,6 @@
  ===================== Reconocimiento =====================
 	Chequeo que token es
 */
-int	is_operator_token(int t)
-{
-	return (t == T_PIPE || t == T_REDIR_IN || t == T_REDIR_OUT);
-}
-
 int	is_word_token(int t)
 {
 	return (t == T_NAME_CMD || t == T_GENERAL || t == T_INFILE

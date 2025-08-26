@@ -127,7 +127,6 @@ void				free_lexer_node(t_lexer *node);
 size_t				measure_expanded_len(const char *str, int last_status);
 void				write_expanded(char *dst, const char *s, int last_status);
 char				*expand_vars_two_pass(const char *str, int last_status);
-int					is_operator_token(int t);
 int					is_var_char(char c);
 int					is_var_start(char c);
 int					is_word_token(int t);
