@@ -53,12 +53,25 @@ typedef enum tokens
 	T_BUILDINGS,
 }					t_tokens;
 
+/*
+	PLAIN -> fuera de comillas
+	DQ -> comillas dobles
+	SQ -> comillas simples
+*/
+typedef enum kind
+{
+	T_PLAIN,
+	T_DQ,
+	T_SQ
+}					t_kind;
+
 typedef struct s_lexer
 {
 	int				id;
 	char			*inf;
 	t_tokens		token;
 	t_tokens		last_token;
+	t_kind			kind;
 	struct s_lexer	*next;
 	struct s_lexer	*last;
 }					t_lexer;
@@ -105,6 +118,21 @@ char				*find_executable(char *cmds, char **envp);
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
 void				check_line(char *line, char **envp);
+
+// expander
+int					expand_tokens(t_lexer **lexer_list, int last_status);
+char				*itoa_status(int st, char buf[32]);
+char				*dup_cstr(const char *s);
+void				free_lexer_node(t_lexer *node);
+size_t				measure_expanded_len(const char *str, int last_status);
+void				write_expanded(char *dst, const char *s, int last_status);
+char				*expand_vars_two_pass(const char *str, int last_status);
+int					is_var_char(char c);
+int					is_var_start(char c);
+int					is_word_token(int t);
+void				advance_nodes(t_lexer **prev, t_lexer **node);
+int					is_empty_tkn(t_lexer *n);
+size_t				scan_var_end(const char *s, size_t start);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
@@ -130,7 +158,8 @@ int					check_double_quotes(char *line, int pos);
 void				num_comands(t_mini *mini);
 
 // lexer token
-void				add_token(t_lexer **lexer, char *info, t_tokens type);
+void				add_token(t_lexer **lexer, char *info, t_tokens type,
+						t_kind kind);
 // lexer_aux
 int					handle_word(char *line, int i, t_lexer **lexer_list,
 						int *first_word);

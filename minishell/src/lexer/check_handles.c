@@ -6,7 +6,7 @@
 /*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 23:09:59 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/30 11:41:08 by gafreire         ###   ########.fr       */
+/*   Updated: 2025/08/12 10:48:17 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list)
 	if (end < 0)
 		return (-1);
 	word = ft_substr(line, i + 1, end - (i + 1));
-	add_token(lexer_list, word, T_GENERAL);
+	add_token(lexer_list, word, T_GENERAL,T_SQ);
 	free(word);
 	return (end + 1);
 }
@@ -44,7 +44,7 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	if (end < 0)
 		return (-1);
 	word = ft_substr(line, i + 1, end - (i + 1));
-	add_token(lexer_list, word, T_GENERAL);
+	add_token(lexer_list, word, T_GENERAL,T_DQ);
 	free(word);
 	return (end + 1);
 }
@@ -77,6 +77,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 	int			start;
 	char		*word;
 	t_tokens	type;
+	t_kind		kind;
 
 	start = i;
 	while (line[i] && line[i] != ' ' && line[i] != '<' && line[i] != '>'
@@ -86,14 +87,25 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 	if (!word)
 		return (-1);
 	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
+	{
 		type = T_INFILE;
+		kind = T_PLAIN;
+	}
 	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
+	{
 		type = T_OUTFILE;
+	}
 	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
+	{
 		type = T_DELIM;
-	else
+		kind = T_PLAIN;
+	}
+	else 
+	{
 		type = compare_buildings(word);
-	add_token(lexer_list, word, type);
+		kind = T_PLAIN;
+	}
+	add_token(lexer_list, word, type, kind);
 	(*lexer_list)->last_token = type;
 	if (type == T_NAME_CMD)
 		*first_word = 0;
