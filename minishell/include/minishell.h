@@ -105,7 +105,7 @@ char				*find_executable(char *cmds, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
-void				check_line(char *line, char **envp);
+void				check_line(char *line, char **envp, int *last);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
