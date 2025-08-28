@@ -36,7 +36,7 @@ void	exec_cmd(t_parcer *list, char **envp)
 	if (!cmd_path)
 	{
 		free_split(exec_cmd);
-		return ;
+		exit(EXIT_FAILURE);
 	}
 	if (execve(cmd_path, exec_cmd, envp) == -1)
 	{
