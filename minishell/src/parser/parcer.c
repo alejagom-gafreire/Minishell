@@ -40,7 +40,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 			*aux = check_heredoc((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_BUILDINGS)
 			*aux = (*aux)->next;
-		else if ((*aux)->token == T_NAME_CMD)
+		else if ((*aux)->token == T_NAME_CMD || (*aux)->token == T_GENERAL)
 			*aux = handle_cmd((*aux), cmd);
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
 			*aux = handle_outfile((*aux), new_parcer);
