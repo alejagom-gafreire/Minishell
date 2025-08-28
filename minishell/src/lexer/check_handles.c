@@ -30,7 +30,7 @@ int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list)
 	if (end < 0)
 		return (-1);
 	word = ft_substr(line, i + 1, end - (i + 1));
-	add_token(lexer_list, word, T_GENERAL,T_SQ);
+	add_token(lexer_list, word, T_GENERAL, T_SQ);
 	free(word);
 	return (end + 1);
 }
@@ -44,7 +44,7 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	if (end < 0)
 		return (-1);
 	word = ft_substr(line, i + 1, end - (i + 1));
-	add_token(lexer_list, word, T_GENERAL,T_DQ);
+	add_token(lexer_list, word, T_GENERAL, T_DQ);
 	free(word);
 	return (end + 1);
 }
@@ -53,22 +53,23 @@ t_tokens	compare_buildings(char *word)
 {
 	t_tokens	type;
 
-	if (ft_strcmp("cd", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("echo", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("pwd", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("export", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("unset", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("env", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("exit", word) == 0)
-		type = T_BUILDINGS;
-	else
-		type = T_NAME_CMD;
+	(void)word;
+	// if (ft_strcmp("cd", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else if (ft_strcmp("echo", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else if (ft_strcmp("pwd", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else if (ft_strcmp("export", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else if (ft_strcmp("unset", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else if (ft_strcmp("env", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else if (ft_strcmp("exit", word) == 0)
+	// 	type = T_BUILDINGS;
+	// else
+	type = T_NAME_CMD;
 	return (type);
 }
 
@@ -100,7 +101,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 		type = T_DELIM;
 		kind = T_PLAIN;
 	}
-	else 
+	else
 	{
 		type = compare_buildings(word);
 		kind = T_PLAIN;

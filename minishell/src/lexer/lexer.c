@@ -14,12 +14,12 @@
 
 void	handle_pipe(t_lexer **lexer_list, int *first_word)
 {
-	add_token(lexer_list, "|", T_PIPE,T_PLAIN);
+	add_token(lexer_list, "|", T_PIPE, T_PLAIN);
 	(*lexer_list)->last_token = T_PIPE;
 	*first_word = 1;
 }
 
-void	add_token(t_lexer **lexer, char *info, t_tokens type , t_kind kind)
+void	add_token(t_lexer **lexer, char *info, t_tokens type, t_kind kind)
 {
 	t_lexer	*new_lexer;
 	t_lexer	*tmp;
@@ -82,14 +82,14 @@ void	check_line(char *line, char **envp)
 	if (!mini)
 		return ;
 	mini->lexer = aux_line(line);
-	if(expand_tokens(&mini->lexer, 0) != 0)
+	if (expand_tokens(&mini->lexer, 0) != 0)
 		return ;
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
 	execute_cmd(mini, envp);
-	printf("\n");
-	print_tokens(mini->lexer);
-	printf("\n");
-	print_parcer(mini->parcer);
+	// printf("\n");
+	// print_tokens(mini->lexer);
+	// printf("\n");
+	// print_parcer(mini->parcer);
 	free_minishell(mini);
 }
