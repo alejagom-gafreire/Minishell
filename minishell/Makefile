@@ -43,6 +43,7 @@ SRC = \
 	src/execute/execute_aux.c \
 	src/execute/proccess_execve.c \
 	src/utils/ft_free.c
+	src/built-ins/built-ins.c\
 
 OBJ = $(SRC:.c=.o)
 

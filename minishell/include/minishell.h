@@ -108,6 +108,8 @@ void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
 void				exec_cmd(t_parcer *list, char **envp);
 void				init_proccess(t_mini *mini, pid_t *pids,
 						int pipes[][2], char **envp);
+//built-ints
+t_tokens			compare_buildings(char *word);
 
 // execute_aux
 void				free_split(char **split);
@@ -175,7 +177,6 @@ int					handle_output_redirect(char *line, int i,
 int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
-t_tokens			compare_buildings(char *word);
 
 // signals
 void				init_signals(void);
