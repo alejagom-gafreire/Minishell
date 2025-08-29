@@ -49,30 +49,6 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	return (end + 1);
 }
 
-t_tokens	compare_buildings(char *word)
-{
-	t_tokens	type;
-
-	(void)word;
-	// if (ft_strcmp("cd", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else if (ft_strcmp("echo", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else if (ft_strcmp("pwd", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else if (ft_strcmp("export", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else if (ft_strcmp("unset", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else if (ft_strcmp("env", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else if (ft_strcmp("exit", word) == 0)
-	// 	type = T_BUILDINGS;
-	// else
-	type = T_NAME_CMD;
-	return (type);
-}
-
 int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	int			start;
