@@ -24,12 +24,27 @@
 	if *line=> // guarda en historial si no está vacío
 */
 
+char **chek_enviroment(char **envp)
+{
+	char	**envi_cpy;
+	int	count;
+
+	count = 0;
+	while(envp[count] != NULL)
+		count++;
+	envi_cpy = malloc(count + 1 * sizeof(char *));
+	if (!envi_cpy) return (NULL);
+	return (envi_cpy);
+}
+
 int	check_token(int argc, char *argv[], char **envp)
 {
 	char	*line;
+	char	**envi;
 	int	i;
 
 	i = 0;
+	envi = check_enviroment(envp);
 	(void)argc;
 	(void)argv;
 	while (1)
@@ -47,7 +62,7 @@ int	check_token(int argc, char *argv[], char **envp)
 		}
 		if (*line)
 			add_history(line);
-		check_line(line, envp, &i);
+		check_line(line, envi, &i);
 		free(line);
 	}
 	return (0);
