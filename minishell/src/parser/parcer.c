@@ -25,7 +25,13 @@ static t_parcer	*mem_parcer(void)
 	parcer->outfile = -1;
 	parcer->name_infile = NULL;
 	parcer->name_outfile = NULL;
+	parcer->syntax_error = 0;
 	return (parcer);
+}
+
+static void	print_error_syntax(void)
+{
+	printf("error sintáctico cerca del elemento inesperado `newline'\n");
 }
 
 static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
@@ -43,7 +49,17 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 		else if ((*aux)->token == T_NAME_CMD || (*aux)->token == T_GENERAL)
 			*aux = handle_cmd((*aux), cmd);
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
-			*aux = handle_outfile((*aux), new_parcer);
+		{
+			if ((*aux)->next)
+				*aux = handle_outfile((*aux), new_parcer);
+			else
+			{
+				print_error_syntax();
+				*aux = NULL;
+				new_parcer->syntax_error = 1;
+				return ;
+			}
+		}
 	}
 }
 

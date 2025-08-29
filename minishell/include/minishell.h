@@ -83,6 +83,7 @@ typedef struct s_parcer
 	char			*cmd_args;
 	char			*name_infile;
 	char			*name_outfile;
+	int				syntax_error;
 	struct s_parcer	*next;
 }					t_parcer;
 
@@ -117,7 +118,7 @@ char				*find_executable(char *cmds, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
-void				check_line(char *line, char **envp);
+void				check_line(char *line, char **envp, int *last);
 
 // expander
 int					expand_tokens(t_lexer **lexer_list, int last_status);

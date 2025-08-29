@@ -74,19 +74,26 @@ t_lexer	*aux_line(char *line)
 	return (list);
 }
 
-void	check_line(char *line, char **envp)
+void	check_line(char *line, char **envp, int *last)
 {
 	t_mini	*mini;
 
 	mini = malloc(sizeof(t_mini));
 	if (!mini)
 		return ;
+	if (last == 0)
+	{
+		mini->last_status = 0;
+		last++;
+	}
 	mini->lexer = aux_line(line);
 	if (expand_tokens(&mini->lexer, 0) != 0)
 		return ;
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
+	//exec_buildings(mini);
 	execute_cmd(mini, envp);
+	printf("last status %d\n", mini->last_status);
 	// printf("\n");
 	// print_tokens(mini->lexer);
 	// printf("\n");

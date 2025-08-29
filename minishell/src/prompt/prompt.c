@@ -27,7 +27,9 @@
 int	check_token(int argc, char *argv[], char **envp)
 {
 	char	*line;
+	int	i;
 
+	i = 0;
 	(void)argc;
 	(void)argv;
 	while (1)
@@ -45,7 +47,7 @@ int	check_token(int argc, char *argv[], char **envp)
 		}
 		if (*line)
 			add_history(line);
-		check_line(line, envp);
+		check_line(line, envp, &i);
 		free(line);
 	}
 	return (0);
