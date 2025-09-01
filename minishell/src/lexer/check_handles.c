@@ -49,6 +49,8 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	return (end + 1);
 }
 
+
+
 int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	int			start;
