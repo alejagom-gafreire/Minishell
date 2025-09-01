@@ -19,38 +19,45 @@
     flag solo sea n sirve pero en el momento que encuentre un caracter diferente
     se imprime tal cual con salto de línea
 */
-// int check_flag(char *argv)
-// {
-//     int i;
-//     int flag;
+int check_flag(char *argv)
+{
+    int i;
 
-//     i = 1;
-//     flag = 0;
+    if (!argv || argv[0] != '-' || argv[1] != 'n')
+        return (0);
+    i = 1;
+    while(argv[i] != '\0')
+    {
+        if (argv[i] != 'n')
+            return (0);
+        i++;
+    }
+    return (1);
+}
 
-//     while(argv[i] != '\0')
-//     {
-//         if (argv[i] != 'n')
-//             return (0);
-//         i++;
-//     }
-//     return (1);
-// }
+int	exec_echo(char **cmd)
+{
+    int no_flag;
+    int i;
 
-// int	exec_echo(char *argv)
-// {
-//     int no_flag;
+    no_flag = 0;
+    i = 1;
 
-//     no_flag = 1;
-//     while (ft_strcmp(argv,"-n") == 0 && check_flag(argv))
-//     {
-//         // no_flag = 0;
-//         //argv++;
-//     }
+    while (cmd[i] && check_flag(cmd[i]))
+    {
+        no_flag = 1;
+        i++;
+    }
 
-//     if (no_flag)
-//         printf("argv\n");
-//     else
-//         printf("argv");
+    while (cmd[i])
+    {
+        printf("%s",cmd[i]);
+        if (cmd[i + 1])
+            printf(" ");
+        i++;
+    }
 
-//     return (1);
-// }
+    if (!no_flag)
+        printf("\n");
+    return (0);
+}

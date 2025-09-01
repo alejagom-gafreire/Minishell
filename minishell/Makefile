@@ -28,10 +28,10 @@ SRC = \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \
-	src/parser/check_parcer_handle.c\
+	src/parser/check_parcer_handle.c \
 	src/lexer/lexer_quotes.c \
 	src/built-ins/built-ins.c \
-	src/built-ins/echo.c \
+	src/built-ins/ft_echo.c \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
 	src/expander/expander_write.c \
@@ -45,7 +45,7 @@ SRC = \
 	src/execute/execute_aux.c \
 	src/execute/proccess_execve.c \
 	src/utils/ft_free.c
-	src/built-ins/built-ins.c\
+
 
 OBJ = $(SRC:.c=.o)
 
@@ -76,51 +76,3 @@ fclean: clean
 	$(MAKE) -C $(LIB_DIR) fclean
 
 re: fclean all
-
-# NAME = minishell
-# CC = cc
-# CFLAGS = -Wall -Werror -Wextra -I./include -I./libft -g3 -fsanitize=address,leak,undefined
-
-# SRC = \
-# 	src/main.c \
-# 	src/prompt/prompt.c \
-# 	src/lexer/lexer.c \
-# 	src/parser/parcer.c \
-# 	src/parser/parcer_aux.c \
-# 	src/lexer/lexer_quotes.c \
-# 	src/lexer/check_handles.c \
-# 	src/lexer/check_operators.c \
-# 	src/utils/prints.c \
-# 	src/execute/pipex_aux.c\
-# 	src/execute/one_cmd.c\
-# 	src/utils/ft_free.c
-# OBJ = $(SRC:.c=.o)
-# RM = rm -f
-
-# LIB_DIR = ./libft
-# LIBFT = $(LIB_DIR)/libft.a
-
-# LIBFT_INCLUDE = libft
-
-# .PHONY: all clean fclean re
-
-# all: $(NAME) $(LIBFT)
-
-# $(LIBFT):
-# 	$(MAKE)	-C $(LIB_DIR)
-	
-# $(NAME): $(OBJ) $(LIBFT)
-# 	$(CC) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
-
-# %.o: %.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
-
-# clean:
-# 	$(RM) $(OBJ)
-# 	$(MAKE) -C $(LIB_DIR) clean
-
-# fclean: clean
-# 	$(RM) $(NAME)
-# 	$(MAKE) -C $(LIB_DIR) fclean
-
-# re: fclean all

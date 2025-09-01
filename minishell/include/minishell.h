@@ -50,7 +50,7 @@ typedef enum tokens
 	T_INFILE,
 	T_OUTFILE,
 	T_GENERAL,
-	T_BUILDINGS,
+	T_BUILTINS,
 }					t_tokens;
 
 /*
@@ -109,7 +109,9 @@ void				exec_cmd(t_parcer *list, char **envp);
 void				init_proccess(t_mini *mini, pid_t *pids,
 						int pipes[][2], char **envp);
 //built-ints
-t_tokens			compare_buildings(char *word);
+t_tokens			compare_builtins(char *word);
+int					exec_echo(char **cmd);
+
 
 // execute_aux
 void				free_split(char **split);

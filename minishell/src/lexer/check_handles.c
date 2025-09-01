@@ -81,7 +81,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 	}
 	else
 	{
-		type = compare_buildings(word);
+		type = compare_builtins(word);
 		kind = T_PLAIN;
 	}
 	add_token(lexer_list, word, type, kind);

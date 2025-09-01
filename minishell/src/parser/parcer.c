@@ -44,7 +44,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 			*aux = handle_inflie((*aux), new_parcer);
 		else if ((*aux)->token == T_HEREDOC)
 			*aux = check_heredoc((*aux), new_parcer);
-		else if (*aux && (*aux)->token == T_BUILDINGS)
+		else if (*aux && (*aux)->token == T_BUILTINS)
 			*aux = (*aux)->next;
 		else if ((*aux)->token == T_NAME_CMD || (*aux)->token == T_GENERAL)
 			*aux = handle_cmd((*aux), cmd);
