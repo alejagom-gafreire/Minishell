@@ -28,8 +28,10 @@ SRC = \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \
-	src/parser/check_parcer_handle.c\
+	src/parser/check_parcer_handle.c \
 	src/lexer/lexer_quotes.c \
+	src/built-ins/built-ins.c \
+	src/built-ins/ft_pwd.c \
 	src/lexer/check_handles.c \
 	src/lexer/check_operators.c \
 	src/expander/expander_write.c \
@@ -43,7 +45,6 @@ SRC = \
 	src/execute/execute_aux.c \
 	src/execute/proccess_execve.c \
 	src/utils/ft_free.c
-	src/built-ins/built-ins.c\
 
 OBJ = $(SRC:.c=.o)
 
