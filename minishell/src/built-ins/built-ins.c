@@ -13,38 +13,39 @@
 #include "minishell.h"
 
 /*
-	Lo separo en dos funciones para que en el ejecutor puedas 
+	Lo separo en dos funciones para que en el ejecutor puedas
 	checkear de manera rapida si es un builtin y si lo es ejecutarlo
 
 	exec_builtins debería devolver el valor del status
 */
 
-void exec_builtins(char *word)
+void	exec_builtins(char *word)
 {
-	// char *argv1[] = {"echo", "hola", NULL};
-    char *argv2[] = {"echo", "-nnnnnnnnnnnnnnnnnnnnnnnnn", "hola", NULL};
+	char	*argv1[] = {"echo", "hola", NULL};
 
+	// char *argv2[] = {"echo", "-nnnnnnnnnnnnnnnnnnnnnnnnn", "hola", NULL};
 	if (ft_strcmp(word, "echo") == 0)
 	{
-		// exec_echo(argv1);
-		exec_echo(argv2);
-	}	
+		exec_echo(argv1);
+		// exec_echo(argv2);
+	}
 	// else if (!ft_strcmp(builtin, "cd"))
-		// exec_cd
+	// exec_cd
 	// else if (!ft_strcmp(builtin, "pwd"))
-		//exec_pwd
+	// exec_pwd
 	// else if (!ft_strcmp(builtin, "export"))
-		//exec_export
+	// exec_export
 	// else if (!ft_strcmp(builtin, "unset"))
-		//exec_unset
+	// exec_unset
 	// else if (!ft_strcmp(builtin, "env"))
-		//exec_env
+	// exec_env
 	// else if (!ft_strcmp(builtin, "exit"))
-		//exec_exit
+	// exec_exit
 }
 t_tokens	compare_builtins(char *word)
 {
 	t_tokens	type;
+
 	// (void)word;
 	if (ft_strcmp("cd", word) == 0)
 		type = T_BUILTINS;
