@@ -46,14 +46,14 @@ void	exec_cmd(t_parcer *list, char **envp)
 	}
 }
 
-int	exec_buildings(t_parcer *list, char **envp)
+int	exec_buildings(t_parcer *list, t_shell *envp)
 {
 	if (ft_strcmp("cd", list->building) == 0)
 		return (ft_cd(list));
 	else if (ft_strcmp("echo", list->building) == 0)
 		return (ft_echo());
 	else if (ft_strcmp("env", list->building) == 0)
-		return (ft_env());
+		return (ft_env(envp));
 	else if (ft_strcmp("pwd", list->building) == 0)
 		retunr (ft_pwd());
 	else if (ft_strcmp("export", list->building) == 0)
