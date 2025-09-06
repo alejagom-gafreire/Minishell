@@ -21,13 +21,13 @@ t_tokens	compare_buildings(char *word)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("echo", word) == 0)
 		type = T_BUILDINGS;
+	else if (ft_strcmp("env", word) == 0)
+		type = T_BUILDINGS;
 	else if (ft_strcmp("pwd", word) == 0)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("export", word) == 0)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("unset", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("env", word) == 0)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("exit", word) == 0)
 		type = T_BUILDINGS;
