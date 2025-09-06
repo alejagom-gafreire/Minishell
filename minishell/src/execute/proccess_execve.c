@@ -48,20 +48,21 @@ void	exec_cmd(t_parcer *list, char **envp)
 
 int	exec_buildings(t_parcer *list, t_shell *envp)
 {
-	if (ft_strcmp("cd", list->building) == 0)
-		return (ft_cd(list));
-	else if (ft_strcmp("echo", list->building) == 0)
-		return (ft_echo());
-	else if (ft_strcmp("env", list->building) == 0)
+	// if (ft_strcmp("cd", list->building) == 0)
+	// 	return (ft_cd(list));
+	// else if (ft_strcmp("echo", list->building) == 0)
+	// 	return (ft_echo());
+	if (ft_strcmp("env", list->building) == 0)
 		return (ft_env(envp));
-	else if (ft_strcmp("pwd", list->building) == 0)
-		retunr (ft_pwd());
-	else if (ft_strcmp("export", list->building) == 0)
-		return (ft_export());
-	else if (ft_strcmp("unset", list->building) == 0)
-		return (ft_unset());
-	else if (ft_strcmp("exit", list->building) == 0)
-		return (ft_exit());
+	// else if (ft_strcmp("pwd", list->building) == 0)
+	// 	retunr (ft_pwd());
+	// else if (ft_strcmp("export", list->building) == 0)
+	// 	return (ft_export());
+	// else if (ft_strcmp("unset", list->building) == 0)
+	// 	return (ft_unset());
+	// else if (ft_strcmp("exit", list->building) == 0)
+	// 	return (ft_exit());
+	return (0);
 }
 
 void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
@@ -88,9 +89,16 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 			if (list->outfile != -1)
 				close(list->outfile);
 			if (list->building != NULL)
+			{
 				envp->last_status = exec_buildings(list, envp);
-			exec_cmd(list, envp->envi);
-			perror("exec");
+				exit(envp->last_status);
+			}
+			else
+			{
+				exec_cmd(list, envp->envi);
+				perror("exec");
+				exit(EXIT_FAILURE);
+			}
 		}
 		list = list->next;
 		i++;

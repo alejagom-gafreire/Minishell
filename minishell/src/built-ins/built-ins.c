@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int	ft_env(t_shell *envp)
+{
+	int	i;
+
+	i = 0;
+	while(envp->envi[i] != NULL)
+	{
+		printf("%s\n",envp->envi[i]);
+		i++;
+	}
+	return (0);
+}
+
 t_tokens	compare_buildings(char *word)
 {
 	t_tokens	type;

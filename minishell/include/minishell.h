@@ -119,6 +119,7 @@ int					exec_buildings(t_parcer *list, t_shell *envp);
 
 //built-ints
 t_tokens			compare_buildings(char *word);
+int					ft_env(t_shell *envp);
 
 // execute_aux
 void				free_split(char **split);
