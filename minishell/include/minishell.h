@@ -81,6 +81,7 @@ typedef struct s_parcer
 	int				infile;
 	int				outfile;
 	char			*cmd_args;
+	char			*arg_export;
 	char			*building;
 	char			*name_infile;
 	char			*name_outfile;
@@ -118,6 +119,7 @@ void				init_proccess(t_mini *mini, pid_t *pids,
 //built-ints
 t_tokens			compare_buildings(char *word);
 int 				exec_env(t_shell *envp);
+int					ft_export(t_shell *envp, t_parcer *list);
 int 				exec_exit(char **argv);
 int					exec_buildings(t_parcer *list,char **argv, t_shell *envp);
 int 				exec_cd(char **cmd,t_shell *envp);
@@ -165,7 +167,7 @@ int					read_heredoc(char *delim);
 t_lexer				*handle_inflie(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
-t_lexer				*handle_cmd(t_lexer *aux, char **cmd);
+t_lexer				*handle_cmd(t_lexer *aux, t_parcer *new_node);
 t_lexer				*check_buildings(t_lexer *aux, t_parcer *new_parcer);
 
 // lexer quotes
@@ -191,6 +193,9 @@ int					handle_output_redirect(char *line, int i,
 int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
+
+//promnt
+char 				**check_enviroment(char **envp);
 
 // signals
 void				init_signals(void);

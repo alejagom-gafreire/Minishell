@@ -21,6 +21,7 @@ static t_parcer	*mem_parcer(void)
 		return (NULL);
 	parcer->next = NULL;
 	parcer->cmd_args = NULL;
+	parcer->arg_export = NULL;
 	parcer->building = NULL;
 	parcer->infile = -1;
 	parcer->outfile = -1;
@@ -35,7 +36,7 @@ static void	print_error_syntax(void)
 	printf("error sintáctico cerca del elemento inesperado `newline'\n");
 }
 
-static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
+static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 {
 	while (*aux && (*aux)->token != T_PIPE)
 	{
@@ -48,7 +49,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 		else if (*aux && (*aux)->token == T_BUILDINGS)
 			*aux = check_buildings((*aux), new_parcer);
 		else if ((*aux)->token == T_NAME_CMD || (*aux)->token == T_GENERAL)
-			*aux = handle_cmd((*aux), cmd);
+			*aux = handle_cmd((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
 		{
 			if ((*aux)->next)
@@ -64,32 +65,30 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 	}
 }
 
-static void	finalize_parcer(t_parcer *new_parcer, char *cmd)
-{
-	if (cmd)
-	{
-		new_parcer->cmd_args = ft_strdup(cmd);
-		free(cmd);
-	}
-}
+// static void	finalize_parcer(t_parcer *new_parcer, char *cmd)
+// {
+// 	if (cmd)
+// 	{
+// 		new_parcer->cmd_args = ft_strdup(cmd);
+// 		free(cmd);
+// 	}
+// }
 
 t_parcer	*add_parcer(t_lexer *lexer)
 {
 	t_lexer		*aux;
 	t_parcer	*parcer;
 	t_parcer	*new_parcer;
-	char		*cmd;
 
 	parcer = NULL;
 	aux = lexer;
 	while (aux)
 	{
-		cmd = NULL;
 		new_parcer = mem_parcer();
 		if (!new_parcer)
 			return (NULL);
-		process_tokens(&aux, new_parcer, &cmd);
-		finalize_parcer(new_parcer, cmd);
+		process_tokens(&aux, new_parcer);
+		//finalize_parcer(new_parcer, cmd);
 		if (aux && aux->token == T_PIPE)
 			aux = aux->next;
 		inside_parcer(&parcer, new_parcer);

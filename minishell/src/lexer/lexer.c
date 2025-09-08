@@ -91,7 +91,12 @@ void	check_line(char *line, t_shell *envp, int *last)
 		return ;
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
-	//exec_buildings(mini);
+	t_lexer	*pru = mini->lexer;
+	while (pru != NULL)
+	{
+		printf("lista lexer: %s\n", pru->inf);
+		pru = pru->next;
+	}
 	execute_cmd(mini, envp);
 	// printf("last status %d\n", envp->last_status);
 	// printf("\n");

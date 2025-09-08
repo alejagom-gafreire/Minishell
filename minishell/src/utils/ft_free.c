@@ -34,6 +34,8 @@ void	free_parcer(t_parcer *parcer)
 		temp = parcer;
 		if (parcer->cmd_args)
 			free(parcer->cmd_args);
+		if (parcer->arg_export)
+			free(parcer->arg_export);
 		if (parcer->name_infile)
 			free(parcer->name_infile);
 		if (parcer->name_outfile)

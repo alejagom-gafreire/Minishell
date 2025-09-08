@@ -65,14 +65,22 @@ t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
 	return (aux->next->next);
 }
 
-t_lexer	*handle_cmd(t_lexer *aux, char **cmd)
+t_lexer	*handle_cmd(t_lexer *aux, t_parcer *new)
 {
 	if (!aux)
 		return (NULL);
-	if (!*cmd)
-		*cmd = ft_strdup(aux->inf);
-	else
-		*cmd = aux_parcer(*cmd, aux->inf);
+	if (!new->cmd_args && aux->token == T_NAME_CMD)
+	{
+		new->cmd_args = ft_strdup(aux->inf);
+		return (aux->next);
+	}
+	else if (new->cmd_args && aux->last->token == T_NAME_CMD)
+	{
+		new->cmd_args = aux_parcer(new->cmd_args, aux->inf);
+		return (aux->next);
+	}
+	if (aux->token == T_GENERAL)
+		new->arg_export = ft_strdup(aux->inf);
 	return (aux->next);
 }
 
