@@ -93,7 +93,7 @@ void	check_line(char *line, t_shell *envp, int *last)
 	num_comands(mini);
 	//exec_buildings(mini);
 	execute_cmd(mini, envp);
-	printf("last status %d\n", envp->last_status);
+	// printf("last status %d\n", envp->last_status);
 	// printf("\n");
 	// print_tokens(mini->lexer);
 	// printf("\n");

@@ -115,11 +115,14 @@ void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
 void				exec_cmd(t_parcer *list, char **envp);
 void				init_proccess(t_mini *mini, pid_t *pids,
 						int pipes[][2], t_shell *envp);
-int					exec_buildings(t_parcer *list, t_shell *envp);
-
 //built-ints
 t_tokens			compare_buildings(char *word);
-int					ft_env(t_shell *envp);
+int 				exec_env(t_shell *envp);
+int 				exec_exit(char **argv);
+int					exec_buildings(t_parcer *list,char **argv, t_shell *envp);
+int 				exec_cd(char **cmd,t_shell *envp);
+int					exec_echo(char **cmd);
+int 				exec_pwd();
 
 // execute_aux
 void				free_split(char **split);

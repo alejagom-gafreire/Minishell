@@ -46,35 +46,60 @@ void	exec_cmd(t_parcer *list, char **envp)
 	}
 }
 
-int	exec_buildings(t_parcer *list, t_shell *envp)
+static char	**builtin_argv(const char *name, const char *args_str)
 {
-	// if (ft_strcmp("cd", list->building) == 0)
-	// 	return (ft_cd(list));
-	// else if (ft_strcmp("echo", list->building) == 0)
-	// 	return (ft_echo());
-	if (ft_strcmp("env", list->building) == 0)
-		return (ft_env(envp));
-	// else if (ft_strcmp("pwd", list->building) == 0)
-	// 	retunr (ft_pwd());
-	// else if (ft_strcmp("export", list->building) == 0)
-	// 	return (ft_export());
-	// else if (ft_strcmp("unset", list->building) == 0)
-	// 	return (ft_unset());
-	// else if (ft_strcmp("exit", list->building) == 0)
-	// 	return (ft_exit());
-	return (0);
+	char	**argv;
+	char	**args;
+	int		i;
+	int		z;
+
+	if (!name)
+		return (NULL);
+	if (!args_str || args_str[0] == '\0')
+	{
+		argv = malloc(sizeof(char *) * 2);
+		if (!argv)
+			return (NULL);
+		argv[0] = ft_strdup(name);
+		argv[1] = NULL;
+		return (argv);
+	}
+	args = ft_split(args_str, ' ');
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (args[i])
+		i++;
+	argv = malloc(sizeof(char *) * (i + 2));
+	if (!argv)
+		return (free_split(args), NULL);
+	argv[0] = ft_strdup(name);
+	z = 0;
+	while (z < i)
+	{
+		argv[z + 1] = args[z];
+		z++;
+	}
+	argv[i + 1] = NULL;
+	return (free(args), argv);
 }
 
 void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 {
 	int			i;
 	t_parcer	*list;
+	char		**argv;
 
 	list = mini->parcer;
 	i = 0;
-	if (mini->num_cmd == 1 && list->building != NULL && list->infile == -1 && list->outfile == -1)
+	if (mini->num_cmd == 1 && list->building != NULL && list->infile == -1
+		&& list->outfile == -1)
 	{
-		envp->last_status = exec_buildings(list, envp);
+		argv = builtin_argv(list->building, list->cmd_args);
+		if (!argv)
+			return ;
+		envp->last_status = exec_buildings(list, argv, envp);
+		free_split(argv);
 		return ;
 	}
 	while (i < mini->num_cmd)
@@ -90,7 +115,10 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 				close(list->outfile);
 			if (list->building != NULL)
 			{
-				envp->last_status = exec_buildings(list, envp);
+				argv = builtin_argv(list->building, list->cmd_args);
+				if (!argv)
+					exit(1);
+				envp->last_status = exec_buildings(list, argv, envp);
 				exit(envp->last_status);
 			}
 			else

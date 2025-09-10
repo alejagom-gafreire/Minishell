@@ -12,16 +12,22 @@
 
 #include "minishell.h"
 
-int	ft_env(t_shell *envp)
+int	exec_buildings(t_parcer *list,char **argv, t_shell *envp)
 {
-	int	i;
-
-	i = 0;
-	while(envp->envi[i] != NULL)
-	{
-		printf("%s\n",envp->envi[i]);
-		i++;
-	}
+	if (ft_strcmp("env", list->building) == 0)
+		return (exec_env(envp));
+	else if (ft_strcmp("cd", list->building) == 0)
+		return (exec_cd(argv,envp));
+	else if (ft_strcmp("echo", list->building) == 0)
+		return (exec_echo(argv));
+	else if (ft_strcmp("pwd", list->building) == 0)
+		return (exec_pwd());
+	// else if (ft_strcmp("export", list->building) == 0)
+	// 	return (ft_export());
+	// else if (ft_strcmp("unset", list->building) == 0)
+	// 	return (ft_unset());
+	else if (ft_strcmp("exit", list->building) == 0)
+		return (exec_exit(argv));
 	return (0);
 }
 
