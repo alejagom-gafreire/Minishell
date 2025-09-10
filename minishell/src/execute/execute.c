@@ -59,14 +59,14 @@ static int	setup_pipes(t_mini *mini, int (**pipes)[2])
 	return (0);
 }
 
-void	execute_cmd(t_mini *mini, char **envp)
+void	execute_cmd(t_mini *mini, t_shell *envp)
 {
 	int		(*pipes)[2];
 	pid_t	*pids;
 
 	if (!mini->parcer || mini->parcer->syntax_error)
 	{
-		mini->last_status = 2;
+		envp->last_status = 2;
 		return ;
 	}
 	pipes = NULL;
@@ -84,6 +84,6 @@ void	execute_cmd(t_mini *mini, char **envp)
 		close_pipes(pipes, mini->num_cmd - 1);
 		free(pipes);
 	}
-	mini->last_status = wait_childrens(pids, mini->num_cmd);
+	envp->last_status = wait_childrens(pids, mini->num_cmd);
 	free(pids);
 }

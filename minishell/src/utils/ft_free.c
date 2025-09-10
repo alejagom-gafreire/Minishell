@@ -38,6 +38,8 @@ void	free_parcer(t_parcer *parcer)
 			free(parcer->name_infile);
 		if (parcer->name_outfile)
 			free(parcer->name_outfile);
+		if (parcer->building)
+			free(parcer->building);
 		parcer = parcer->next;
 		free(temp);
 	}

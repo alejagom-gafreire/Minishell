@@ -75,3 +75,13 @@ t_lexer	*handle_cmd(t_lexer *aux, char **cmd)
 		*cmd = aux_parcer(*cmd, aux->inf);
 	return (aux->next);
 }
+
+t_lexer	*check_buildings(t_lexer *aux, t_parcer *new_parcer)
+{
+	if (!aux)
+		return (NULL);
+	new_parcer->building = ft_strdup(aux->inf);
+	if (!new_parcer->building)
+		return (NULL);
+	return (aux->next);
+}

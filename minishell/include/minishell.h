@@ -81,11 +81,18 @@ typedef struct s_parcer
 	int				infile;
 	int				outfile;
 	char			*cmd_args;
+	char			*building;
 	char			*name_infile;
 	char			*name_outfile;
 	int				syntax_error;
 	struct s_parcer	*next;
 }					t_parcer;
+
+typedef struct s_shell
+{
+	char **envi;
+	int	last_status;
+}					t_shell;
 
 typedef struct s_mini
 {
@@ -99,7 +106,7 @@ typedef struct s_mini
 int					init_pipes(t_mini *mini, int pipes[][2]);
 int					safe_pipes(t_mini *mini, int (**pipes)[2]);
 void				close_pipes(int pipes[][2], int num_pipes);
-void				execute_cmd(t_mini *mini, char **envp);
+void				execute_cmd(t_mini *mini, t_shell *envp);
 
 // proccess_execve
 int					wait_childrens(pid_t *pids, int num_cmd);
@@ -107,9 +114,15 @@ void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
 						int pipes[][2]);
 void				exec_cmd(t_parcer *list, char **envp);
 void				init_proccess(t_mini *mini, pid_t *pids,
-						int pipes[][2], char **envp);
+						int pipes[][2], t_shell *envp);
 //built-ints
 t_tokens			compare_buildings(char *word);
+int 				exec_env(t_shell *envp);
+int 				exec_exit(char **argv);
+int					exec_buildings(t_parcer *list,char **argv, t_shell *envp);
+int 				exec_cd(char **cmd,t_shell *envp);
+int					exec_echo(char **cmd);
+int 				exec_pwd();
 
 // execute_aux
 void				free_split(char **split);
@@ -120,7 +133,7 @@ char				*find_executable(char *cmds, char **envp);
 
 // lexer
 int					check_token(int argc, char *argv[], char **envp);
-void				check_line(char *line, char **envp, int *last);
+void				check_line(char *line, t_shell *envp, int *last);
 
 // expander
 int					expand_tokens(t_lexer **lexer_list, int last_status);
@@ -153,6 +166,7 @@ t_lexer				*handle_inflie(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*handle_cmd(t_lexer *aux, char **cmd);
+t_lexer				*check_buildings(t_lexer *aux, t_parcer *new_parcer);
 
 // lexer quotes
 int					check_quotes(char *line, int i, t_lexer **lexer_list);

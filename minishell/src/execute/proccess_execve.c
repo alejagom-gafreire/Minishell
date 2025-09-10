@@ -38,7 +38,7 @@ void	exec_cmd(t_parcer *list, char **envp)
 		free_split(exec_cmd);
 		exit(EXIT_FAILURE);
 	}
-	if (execve(cmd_path, exec_cmd, envp) == -1)
+	if (execve(cmd_path, exec_cmd, envp) == -1 && list->cmd_args)
 	{
 		free(cmd_path);
 		free_split(exec_cmd);
@@ -46,13 +46,62 @@ void	exec_cmd(t_parcer *list, char **envp)
 	}
 }
 
-void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], char **envp)
+static char	**builtin_argv(const char *name, const char *args_str)
+{
+	char	**argv;
+	char	**args;
+	int		i;
+	int		z;
+
+	if (!name)
+		return (NULL);
+	if (!args_str || args_str[0] == '\0')
+	{
+		argv = malloc(sizeof(char *) * 2);
+		if (!argv)
+			return (NULL);
+		argv[0] = ft_strdup(name);
+		argv[1] = NULL;
+		return (argv);
+	}
+	args = ft_split(args_str, ' ');
+	if (!args)
+		return (NULL);
+	i = 0;
+	while (args[i])
+		i++;
+	argv = malloc(sizeof(char *) * (i + 2));
+	if (!argv)
+		return (free_split(args), NULL);
+	argv[0] = ft_strdup(name);
+	z = 0;
+	while (z < i)
+	{
+		argv[z + 1] = args[z];
+		z++;
+	}
+	argv[i + 1] = NULL;
+	return (free(args), argv);
+}
+
+void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 {
 	int			i;
 	t_parcer	*list;
+	char		**argv;
 
 	list = mini->parcer;
 	i = 0;
+	if (mini->num_cmd == 1 && list->building != NULL && list->infile == -1
+		&& list->outfile == -1)
+	{
+		argv = builtin_argv(list->building, list->cmd_args);
+		if (!argv)
+			return ;
+		envp->last_status = exec_buildings(list, argv, envp);
+		free_split(argv);
+		return ;
+	}
 	while (i < mini->num_cmd)
 	{
 		pids[i] = fork();
@@ -64,8 +113,20 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], char **envp)
 				close(list->infile);
 			if (list->outfile != -1)
 				close(list->outfile);
-			exec_cmd(list, envp);
-			perror("exec");
+			if (list->building != NULL)
+			{
+				argv = builtin_argv(list->building, list->cmd_args);
+				if (!argv)
+					exit(1);
+				envp->last_status = exec_buildings(list, argv, envp);
+				exit(envp->last_status);
+			}
+			else
+			{
+				exec_cmd(list, envp->envi);
+				perror("exec");
+				exit(EXIT_FAILURE);
+			}
 		}
 		list = list->next;
 		i++;

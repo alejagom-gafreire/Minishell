@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+int	exec_buildings(t_parcer *list,char **argv, t_shell *envp)
+{
+	if (ft_strcmp("env", list->building) == 0)
+		return (exec_env(envp));
+	else if (ft_strcmp("cd", list->building) == 0)
+		return (exec_cd(argv,envp));
+	else if (ft_strcmp("echo", list->building) == 0)
+		return (exec_echo(argv));
+	else if (ft_strcmp("pwd", list->building) == 0)
+		return (exec_pwd());
+	// else if (ft_strcmp("export", list->building) == 0)
+	// 	return (ft_export());
+	// else if (ft_strcmp("unset", list->building) == 0)
+	// 	return (ft_unset());
+	else if (ft_strcmp("exit", list->building) == 0)
+		return (exec_exit(argv));
+	return (0);
+}
+
 t_tokens	compare_buildings(char *word)
 {
 	t_tokens	type;
@@ -21,13 +40,13 @@ t_tokens	compare_buildings(char *word)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("echo", word) == 0)
 		type = T_BUILDINGS;
+	else if (ft_strcmp("env", word) == 0)
+		type = T_BUILDINGS;
 	else if (ft_strcmp("pwd", word) == 0)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("export", word) == 0)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("unset", word) == 0)
-		type = T_BUILDINGS;
-	else if (ft_strcmp("env", word) == 0)
 		type = T_BUILDINGS;
 	else if (ft_strcmp("exit", word) == 0)
 		type = T_BUILDINGS;

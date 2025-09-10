@@ -21,6 +21,7 @@ static t_parcer	*mem_parcer(void)
 		return (NULL);
 	parcer->next = NULL;
 	parcer->cmd_args = NULL;
+	parcer->building = NULL;
 	parcer->infile = -1;
 	parcer->outfile = -1;
 	parcer->name_infile = NULL;
@@ -45,7 +46,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, char **cmd)
 		else if ((*aux)->token == T_HEREDOC)
 			*aux = check_heredoc((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_BUILDINGS)
-			*aux = (*aux)->next;
+			*aux = check_buildings((*aux), new_parcer);
 		else if ((*aux)->token == T_NAME_CMD || (*aux)->token == T_GENERAL)
 			*aux = handle_cmd((*aux), cmd);
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
