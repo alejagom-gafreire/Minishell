@@ -12,29 +12,6 @@
 
 #include "minishell.h"
 
-// int ft_export(char **args, t_shell *envp)
-// {
-//     int i = 1; // args[0] = "export"
-    
-//     if (!args[i])
-//         return print_sorted_env(envp);
-
-//     while (args[i])
-//     {
-//         if (!valid_identifier(args[i]))
-//         {
-//             fprintf(stderr, "export: `%s': not a valid identifier\n", args[i]);
-//             envp->last_status = 1;
-//         }
-//         else
-//         {
-//             add_or_update_env(args[i], envp);
-//         }
-//         i++;
-//     }
-//     return 0;
-// }
-
 int	cmp_env(const void *a, const void *b)
 {
 	char * const *str_a;
@@ -91,12 +68,23 @@ int	valid_args(t_parcer *list)
 	return (1);
 }
 
-void	add_update_env(t_parcer *list, char **envi)
+void	add_update_env(char *arg, char **envi)
 {
-	// hay que hacer una copia del env, para no depender del original
-	// buscar en el env si ya existe para reemplazar el que existe
-	// hacer realloc para no gatar memoria inceseariamente
-	// agregar los nuevos en caso de que no exitan
+	int	i;
+	char	*equal;
+	size_t	key_len;
+
+	equal = ft_strchr((const char *)arg, '=');
+	if (!equal)
+		key_len = equal - arg;
+	else
+		key_len = ft_strlen(arg);
+	i = 0;
+	while (*envi[i])
+	{
+		if (!ft_strncmp(((*env)[i], arg, key_len));
+	}
+
 }
 
 int	ft_export(t_shell *envp, t_parcer *list)
@@ -116,7 +104,7 @@ int	ft_export(t_shell *envp, t_parcer *list)
 					return(1);
 				}	
 				else
-					add_update_env(list->arg_export, envp->envi);
+					add_update_env(list, envp->envi);
 			}
 			list = list->next;
 		}
