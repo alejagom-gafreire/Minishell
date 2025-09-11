@@ -118,13 +118,20 @@ void				init_proccess(t_mini *mini, pid_t *pids,
 						int pipes[][2], t_shell *envp);
 //built-ints
 t_tokens			compare_buildings(char *word);
-int 				exec_env(t_shell *envp);
-int					ft_export(t_shell *envp, t_parcer *list);
+int 				exec_env(t_shell *envp, t_parcer *list);
 int 				exec_exit(char **argv);
 int					exec_buildings(t_parcer *list,char **argv, t_shell *envp);
 int 				exec_cd(char **cmd,t_shell *envp);
 int					exec_echo(char **cmd);
 int 				exec_pwd();
+
+//ft_export
+int					ft_export(t_shell *envp, t_parcer *list);
+int					print_sorted(t_shell *envp);
+int					cmp_env(const void *a, const void *b);
+int					valid_args(char *arg);
+int					cmp_env_key(const char *env, const char *arg, size_t key_len);
+void				add_update_env(char *arg, char ***envi);
 
 // execute_aux
 void				free_split(char **split);
@@ -202,5 +209,6 @@ void				init_signals(void);
 // free
 void				free_minishell(t_mini *mini);
 void				free_lexer(t_lexer *lexer);
+void				free_shell(t_shell *envi);
 
 #endif

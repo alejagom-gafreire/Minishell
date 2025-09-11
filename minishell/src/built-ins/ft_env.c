@@ -12,10 +12,24 @@
 
 #include "minishell.h"
 
-int	exec_env(t_shell *envp)
+int	exec_env(t_shell *envp, t_parcer *list)
 {
 	int	i;
 
+	if (list->cmd_args || ft_strcmp(list->building, "cd") == 0)
+	{
+		if (list->cmd_args)
+		{
+			printf("env: «%s»: No existe el archivo o el directorio\n", list->cmd_args);
+			return (1);
+		}
+		else
+		{
+			printf("esto tiene la mierda: %s\n", list->building);
+			return (1);
+		}
+
+	}
 	i = 0;
 	while (envp->envi[i] != NULL)
 	{

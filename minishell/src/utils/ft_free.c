@@ -56,3 +56,11 @@ void	free_minishell(t_mini *mini)
 		free(mini);
 	}
 }
+
+void	free_shell(t_shell *envi)
+{
+	if (envi->envi)
+	{
+		free_split(envi->envi);
+	}
+}
