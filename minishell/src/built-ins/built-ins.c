@@ -23,9 +23,9 @@ int	exec_buildings(t_parcer *list,char **argv, t_shell *envp)
 	else if (ft_strcmp("pwd", list->building) == 0)
 		return (exec_pwd());
 	else if (ft_strcmp("export", list->building) == 0)
-		return (ft_export(envp, list));
-	// else if (ft_strcmp("unset", list->building) == 0)
-	// 	return (ft_unset());
+		return (ft_export(envp, list), envp->last_status);
+	else if (ft_strcmp("unset", list->building) == 0)
+		return (ft_unset(envp, list));
 	else if (ft_strcmp("exit", list->building) == 0)
 		return (exec_exit(argv));
 	return (0);

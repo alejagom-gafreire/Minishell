@@ -124,6 +124,7 @@ int					exec_buildings(t_parcer *list,char **argv, t_shell *envp);
 int 				exec_cd(char **cmd,t_shell *envp);
 int					exec_echo(char **cmd);
 int 				exec_pwd();
+int     			ft_unset(t_shell *envi, t_parcer *list);
 
 //ft_export
 int					ft_export(t_shell *envp, t_parcer *list);
@@ -132,6 +133,10 @@ int					cmp_env(const void *a, const void *b);
 int					valid_args(char *arg);
 int					cmp_env_key(const char *env, const char *arg, size_t key_len);
 void				add_update_env(char *arg, char ***envi);
+char				**all_args(char *args);
+size_t				len_equal(char **equal, char *arg);
+
+//ft_unset
 
 // execute_aux
 void				free_split(char **split);
