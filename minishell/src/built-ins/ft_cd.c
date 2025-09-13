@@ -22,6 +22,20 @@ int	get_size(char **cmd)
 	return (i);
 }
 
+static char	*get_path(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "HOME", 4) == 0)
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+
 int	exec_cd(char **cmd, t_shell *envp) // char **argv, t_env *env
 {
 	// argv[0] = "cd"
@@ -35,7 +49,7 @@ int	exec_cd(char **cmd, t_shell *envp) // char **argv, t_env *env
 	(void)envp;
 	if (!cmd[1])
 	{
-		target = getenv("HOME"); // cambiar por el nuestro
+		target =  get_path(envp->envi); //getenv("HOME"); // cambiar por el nuestro
 		resultado = chdir(target);
 		return (0);
 	}

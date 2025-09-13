@@ -55,7 +55,7 @@ static void free_enviroment(int i, char **envi)
 	return ;
 }
 
-static char **check_enviroment(char **envp)
+char **check_enviroment(char **envp)
 {
 	char	**envi_cpy;
 	int	count;

@@ -48,7 +48,10 @@ SRC = \
 	src/built-ins/ft_cd.c \
 	src/built-ins/ft_echo.c \
 	src/built-ins/ft_pwd.c \
-	src/built-ins/ft_env.c
+	src/built-ins/ft_env.c \
+	src/built-ins/ft_export.c \
+	src/built-ins/aux_export.c \
+	src/built-ins/ft_unset.c \
 
 OBJ = $(SRC:.c=.o)
 

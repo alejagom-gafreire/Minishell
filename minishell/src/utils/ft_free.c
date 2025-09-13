@@ -34,6 +34,8 @@ void	free_parcer(t_parcer *parcer)
 		temp = parcer;
 		if (parcer->cmd_args)
 			free(parcer->cmd_args);
+		if (parcer->arg_export)
+			free(parcer->arg_export);
 		if (parcer->name_infile)
 			free(parcer->name_infile);
 		if (parcer->name_outfile)
@@ -52,5 +54,13 @@ void	free_minishell(t_mini *mini)
 		free_lexer(mini->lexer);
 		free_parcer(mini->parcer);
 		free(mini);
+	}
+}
+
+void	free_shell(t_shell *envi)
+{
+	if (envi->envi)
+	{
+		free_split(envi->envi);
 	}
 }
