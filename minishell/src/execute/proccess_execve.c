@@ -12,76 +12,46 @@
 
 #include "minishell.h"
 
-static void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
+static int	get_node_index(t_mini *mini, t_parcer *node)
 {
-	if ((*list)->infile != -1)
-		dup2((*list)->infile, STDIN_FILENO);
-	else if (*i > 0)
-		dup2(pipes[*i - 1][0], STDIN_FILENO);
-	if ((*list)->outfile != -1)
-		dup2((*list)->outfile, STDOUT_FILENO);
-	else if (*i < mini->num_cmd - 1)
-		dup2(pipes[*i][1], STDOUT_FILENO);
+	int			id;
+	t_parcer	*tmp;
+
+	id = 0;
+	tmp = mini->parcer;
+	while (tmp && tmp != node)
+	{
+		id++;
+		tmp = tmp->next;
+	}
+	return (id);
 }
 
-static void	exec_cmd(t_parcer *list, char **envp)
+static void	child_exec(t_parcer *list, t_mini *mini, int pipes[][2],
+		t_shell *envp)
 {
-	char	*cmd_path;
-	char	**exec_cmd;
-
-	exec_cmd = ft_split(list->cmd_args, ' ');
-	if (!exec_cmd)
-		return ;
-	cmd_path = find_executable(exec_cmd[0], envp);
-	if (!cmd_path)
-	{
-		free_split(exec_cmd);
-		exit(EXIT_FAILURE);
-	}
-	if (execve(cmd_path, exec_cmd, envp) == -1 && list->cmd_args)
-	{
-		free(cmd_path);
-		free_split(exec_cmd);
-		return ;
-	}
-}
-
-static char	**builtin_argv(const char *name, const char *args_str)
-{
-	char	**argv;
-	char	**args;
 	int		i;
-	int		z;
+	char	**argv;
 
-	if (!name)
-		return (NULL);
-	if (!args_str || args_str[0] == '\0')
+	i = get_node_index(mini, list);
+	fd_redirect(&list, &i, mini, pipes);
+	close_pipes(pipes, mini->num_cmd - 1);
+	if (list->infile != -1)
+		close(list->infile);
+	if (list->outfile != -1)
+		close(list->outfile);
+	if (list->builtin)
 	{
-		argv = malloc(sizeof(char *) * 2);
+		argv = builtin_argv(list->builtin, list->cmd_args);
 		if (!argv)
-			return (NULL);
-		argv[0] = ft_strdup(name);
-		argv[1] = NULL;
-		return (argv);
+			exit(1);
+		envp->last_status = exec_builtins(list, argv, envp);
+		free_split(argv);
+		exit(envp->last_status);
 	}
-	args = ft_split(args_str, ' ');
-	if (!args)
-		return (NULL);
-	i = 0;
-	while (args[i])
-		i++;
-	argv = malloc(sizeof(char *) * (i + 2));
-	if (!argv)
-		return (free_split(args), NULL);
-	argv[0] = ft_strdup(name);
-	z = 0;
-	while (z < i)
-	{
-		argv[z + 1] = args[z];
-		z++;
-	}
-	argv[i + 1] = NULL;
-	return (free(args), argv);
+	exec_cmd(list, envp->envi);
+	perror("exec");
+	exit(EXIT_FAILURE);
 }
 
 void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
@@ -91,7 +61,6 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 	char		**argv;
 
 	list = mini->parcer;
-	i = 0;
 	if (mini->num_cmd == 1 && list->builtin != NULL && list->infile == -1
 		&& list->outfile == -1)
 	{
@@ -99,40 +68,18 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 		if (!argv)
 			return ;
 		envp->last_status = exec_builtins(list, argv, envp);
-		printf("Antes del siguiente: %d\n",envp->last_status);
 		free_split(argv);
 		return ;
 	}
+	i = 0;
 	while (i < mini->num_cmd)
 	{
 		pids[i] = fork();
 		if (pids[i] == 0)
-		{
-			fd_redirect(&list, &i, mini, pipes);
-			close_pipes(pipes, mini->num_cmd - 1);
-			if (list->infile != -1)
-				close(list->infile);
-			if (list->outfile != -1)
-				close(list->outfile);
-			if (list->builtin != NULL)
-			{
-				argv = builtin_argv(list->builtin, list->cmd_args);
-				if (!argv)
-					exit(1);
-				envp->last_status = exec_builtins(list, argv, envp);
-				exit(envp->last_status);
-			}
-			else
-			{
-				exec_cmd(list, envp->envi);
-				perror("exec");
-				exit(EXIT_FAILURE);
-			}
-		}
+			child_exec(list, mini, pipes, envp);
 		list = list->next;
 		i++;
 	}
-		printf("Antes del siguiente: %d\n",envp->last_status);
 }
 
 int	wait_childrens(pid_t *pids, int num_cmd)

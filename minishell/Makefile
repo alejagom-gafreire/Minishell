@@ -43,6 +43,7 @@ SRC = \
 	src/execute/execute.c \
 	src/execute/execute_aux.c \
 	src/execute/proccess_execve.c \
+	src/execute/procces_execve_aux.c \
 	src/utils/ft_free.c\
 	src/built-ins/built-ins.c\
 	src/built-ins/ft_exit.c \

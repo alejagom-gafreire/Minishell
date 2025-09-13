@@ -81,24 +81,14 @@ void	check_line(char *line, t_shell *envp)
 	mini = malloc(sizeof(t_mini));
 	if (!mini)
 		return ;
-	printf("EYYYYYYYYY1: %d\n", envp->last_status);
 	mini->lexer = aux_line(line);
 	if (!mini->lexer)
 		return ;
 	if (expand_tokens(&mini->lexer, envp->last_status) != 0)
 		return ;
-	printf("EYYYYYYYYY: %d\n", envp->last_status);
 	mini->parcer = add_parcer(mini->lexer);
-	printf("last status %d\n", envp->last_status);
 	num_comands(mini);
-	t_lexer	*pru = mini->lexer;
-	while (pru != NULL)
-	{
-		printf("lista lexer: %s\n", pru->inf);
-		pru = pru->next;
-	}
 	execute_cmd(mini, envp);
-	printf("EYYYYYYYYY4: %d\n", envp->last_status);
 	free_minishell(mini);
 }
 
@@ -108,4 +98,11 @@ void	check_line(char *line, t_shell *envp)
 	print_tokens(mini->lexer);
 	printf("\n");
 	print_parcer(mini->parcer);
+
+	t_lexer	*pru = mini->lexer;
+	while (pru != NULL)
+	{
+		printf("lista lexer: %s\n", pru->inf);
+		pru = pru->next;
+	}
 */

@@ -16,7 +16,7 @@ int	exec_env(t_shell *envp, t_parcer *list)
 {
 	int	i;
 
-	if (list->cmd_args || ft_strcmp(list->building, "cd") == 0)
+	if (list->cmd_args || ft_strcmp(list->builtin, "cd") == 0)
 	{
 		if (list->cmd_args)
 		{
@@ -26,7 +26,7 @@ int	exec_env(t_shell *envp, t_parcer *list)
 		}
 		else
 		{
-			printf("esto tiene la mierda: %s\n", list->building);
+			printf("esto tiene la mierda: %s\n", list->builtin);
 			return (1);
 		}
 	}

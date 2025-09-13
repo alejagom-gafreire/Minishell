@@ -117,7 +117,6 @@ typedef struct s_shell
 
 /*
 	num_cmd -> numero de comandos
-	last_status -> valor del status '$?' BORRAR!!!!!!!
 */
 typedef struct s_mini
 {
@@ -136,6 +135,11 @@ void				execute_cmd(t_mini *mini, t_shell *envp);
 int					wait_childrens(pid_t *pids, int num_cmd);
 void				init_proccess(t_mini *mini, pid_t *pids, int pipes[][2],
 						t_shell *envp);
+char				**builtin_argv(const char *name, const char *args_str);
+void				exec_cmd(t_parcer *list, char **envp);
+void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
+						int pipes[][2]);
+
 // built-ints
 t_tokens			compare_builtins(char *word);
 int					exec_env(t_shell *envp, t_parcer *list);
@@ -144,19 +148,20 @@ int					exec_builtins(t_parcer *list, char **argv, t_shell *envp);
 int					exec_cd(char **cmd, t_shell *envp);
 int					exec_echo(char **cmd);
 int					exec_pwd(void);
-int     			ft_unset(t_shell *envi, t_parcer *list);
+int					ft_unset(t_shell *envi, t_parcer *list);
 
-//ft_export
+// ft_export
 int					ft_export(t_shell *envp, t_parcer *list);
 int					print_sorted(t_shell *envp);
 int					cmp_env(const void *a, const void *b);
 int					valid_args(char *arg);
-int					cmp_env_key(const char *env, const char *arg, size_t key_len);
+int					cmp_env_key(const char *env, const char *arg,
+						size_t key_len);
 void				add_update_env(char *arg, char ***envi);
 char				**all_args(char *args);
 size_t				len_equal(char **equal, char *arg);
 
-//ft_unset
+// ft_unset
 
 // execute_aux
 void				free_split(char **split);
@@ -226,8 +231,8 @@ int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
 
-//promnt
-char 				**check_enviroment(char **envp);
+// promnt
+char				**check_enviroment(char **envp);
 
 // signals
 void				init_signals(void);

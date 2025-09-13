@@ -74,6 +74,10 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 // 	}
 // }
 
+/*
+	finalize_parcer(new_parcer, cmd);
+*/
+
 t_parcer	*add_parcer(t_lexer *lexer)
 {
 	t_lexer		*aux;
@@ -88,7 +92,6 @@ t_parcer	*add_parcer(t_lexer *lexer)
 		if (!new_parcer)
 			return (NULL);
 		process_tokens(&aux, new_parcer);
-		//finalize_parcer(new_parcer, cmd);
 		if (aux && aux->token == T_PIPE)
 			aux = aux->next;
 		inside_parcer(&parcer, new_parcer);
