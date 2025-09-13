@@ -56,6 +56,6 @@ char	*expand_vars_two_pass(const char *str, int last_status)
 	out = (char *)malloc(size + 1);
 	if (!out)
 		return (NULL);
-	write_expanded(out, str, 0);
+	write_expanded(out, str, last_status);
 	return (out);
 }

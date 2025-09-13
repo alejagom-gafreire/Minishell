@@ -26,17 +26,17 @@
 	write_status:
 	escribir last_status en dst 
 */
-// static void	write_status(char *dst, size_t *p, int last_status)
-// {
-// 	char		buf[32];
-// 	const char	*txt;
-// 	size_t		len;
+static void	write_status(char *dst, size_t *p, int last_status)
+{
+	char		buf[32];
+	const char	*txt;
+	size_t		len;
 
-// 	txt = itoa_status(last_status, buf);
-// 	len = ft_strlen(txt);
-// 	ft_memcpy(dst + *p, txt, len);
-// 	*p += len;
-// }
+	txt = itoa_status(last_status, buf);
+	len = ft_strlen(txt);
+	ft_memcpy(dst + *p, txt, len);
+	*p += len;
+}
 
 /* 
 	handle_simple_write:
@@ -111,17 +111,16 @@ void	write_expanded(char *dst, const char *s, int last_status)
 
 	i = 0;
 	p = 0;
-	(void)last_status; // quitar
 	while (s && s[i])
 	{
+		if (s[i + 1] == '?')
+		{
+			write_status(dst, &p, last_status);
+			i += 2;
+			continue ;
+		}
 		if (handle_simple_write(s, &i, dst, &p))
 			continue ;
-		// if (s[i + 1] == '?')
-		// {
-		// 	write_status(dst, &p, last_status);
-		// 	i += 2;
-		// 	continue ;
-		// }
 		if (write_var_span(s, &i, dst, &p))
 			break ;
 	}

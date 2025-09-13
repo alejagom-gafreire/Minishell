@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
+static void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
 {
 	if ((*list)->infile != -1)
 		dup2((*list)->infile, STDIN_FILENO);
@@ -24,7 +24,7 @@ void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
 		dup2(pipes[*i][1], STDOUT_FILENO);
 }
 
-void	exec_cmd(t_parcer *list, char **envp)
+static void	exec_cmd(t_parcer *list, char **envp)
 {
 	char	*cmd_path;
 	char	**exec_cmd;
@@ -92,13 +92,14 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 
 	list = mini->parcer;
 	i = 0;
-	if (mini->num_cmd == 1 && list->building != NULL && list->infile == -1
+	if (mini->num_cmd == 1 && list->builtin != NULL && list->infile == -1
 		&& list->outfile == -1)
 	{
-		argv = builtin_argv(list->building, list->cmd_args);
+		argv = builtin_argv(list->builtin, list->cmd_args);
 		if (!argv)
 			return ;
-		envp->last_status = exec_buildings(list, argv, envp);
+		envp->last_status = exec_builtins(list, argv, envp);
+		printf("Antes del siguiente: %d\n",envp->last_status);
 		free_split(argv);
 		return ;
 	}
@@ -113,12 +114,12 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 				close(list->infile);
 			if (list->outfile != -1)
 				close(list->outfile);
-			if (list->building != NULL)
+			if (list->builtin != NULL)
 			{
-				argv = builtin_argv(list->building, list->cmd_args);
+				argv = builtin_argv(list->builtin, list->cmd_args);
 				if (!argv)
 					exit(1);
-				envp->last_status = exec_buildings(list, argv, envp);
+				envp->last_status = exec_builtins(list, argv, envp);
 				exit(envp->last_status);
 			}
 			else
@@ -131,6 +132,7 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 		list = list->next;
 		i++;
 	}
+		printf("Antes del siguiente: %d\n",envp->last_status);
 }
 
 int	wait_childrens(pid_t *pids, int num_cmd)

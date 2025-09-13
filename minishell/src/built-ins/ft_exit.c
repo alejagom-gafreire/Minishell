@@ -28,6 +28,9 @@ static int	check_argv(char *argv)
 	return (1);
 }
 
+/*
+	usamos printf o write
+*/
 int	exec_exit(char **argv)
 {
 	int	error_code;
@@ -37,12 +40,12 @@ int	exec_exit(char **argv)
 	{
 		if (!check_argv(argv[1]))
 		{
-			printf("error: argument\n"); // write??
+			printf("error: argument\n");
 			exit(2);
 		}
-        if (argv[2])
-		    return (printf("error: too many arguments\n"), 1); // write
-	    error_code = ft_atoi(argv[1]);
+		if (argv[2])
+			return (printf("error: too many arguments\n"), 1);
+		error_code = ft_atoi(argv[1]);
 	}
 	printf("exit mini\n");
 	exit(error_code);

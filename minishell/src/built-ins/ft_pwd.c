@@ -12,7 +12,10 @@
 
 #include "minishell.h"
 
-// env
+/*
+	perror o printf
+	añadir nuestro env
+*/
 int	exec_pwd(void)
 {
 	char	*pwd;
@@ -20,8 +23,8 @@ int	exec_pwd(void)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		perror("pwd"); // printf ?? o no
-		return (1);// status
+		perror("pwd");
+		return (1);
 	}
 	printf("%s\n", pwd);
 	free(pwd);

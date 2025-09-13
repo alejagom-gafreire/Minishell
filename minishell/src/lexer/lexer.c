@@ -74,22 +74,22 @@ t_lexer	*aux_line(char *line)
 	return (list);
 }
 
-void	check_line(char *line, t_shell *envp, int *last)
+void	check_line(char *line, t_shell *envp)
 {
 	t_mini	*mini;
 
 	mini = malloc(sizeof(t_mini));
 	if (!mini)
 		return ;
-	if (last == 0)
-	{
-		mini->last_status = 0;
-		last++;
-	}
+	printf("EYYYYYYYYY1: %d\n", envp->last_status);
 	mini->lexer = aux_line(line);
-	if (expand_tokens(&mini->lexer, 0) != 0)
+	if (!mini->lexer)
 		return ;
+	if (expand_tokens(&mini->lexer, envp->last_status) != 0)
+		return ;
+	printf("EYYYYYYYYY: %d\n", envp->last_status);
 	mini->parcer = add_parcer(mini->lexer);
+	printf("last status %d\n", envp->last_status);
 	num_comands(mini);
 	t_lexer	*pru = mini->lexer;
 	while (pru != NULL)
@@ -98,10 +98,14 @@ void	check_line(char *line, t_shell *envp, int *last)
 		pru = pru->next;
 	}
 	execute_cmd(mini, envp);
-	// printf("last status %d\n", envp->last_status);
-	// printf("\n");
-	// print_tokens(mini->lexer);
-	// printf("\n");
-	// print_parcer(mini->parcer);
+	printf("EYYYYYYYYY4: %d\n", envp->last_status);
 	free_minishell(mini);
 }
+
+/*
+	printf("last status %d\n", envp->last_status);
+	printf("\n");
+	print_tokens(mini->lexer);
+	printf("\n");
+	print_parcer(mini->parcer);
+*/

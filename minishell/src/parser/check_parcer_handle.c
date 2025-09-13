@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parcer_aux.c                                       :+:      :+:    :+:   */
+/*   check_parcer_handle.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejogogi <alejogogi@student.42.fr>        +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 20:00:23 by alejogogi         #+#    #+#             */
-/*   Updated: 2025/07/30 17:26:35 by alejogogi        ###   ########.fr       */
+/*   Created: 2025-09-12 11:57:48 by gafreire          #+#    #+#             */
+/*   Updated: 2025-09-12 11:57:48 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@ static char	*aux_parcer(char *cmd, char *sec)
 	res = ft_strjoin(temp, sec);
 	free(temp);
 	return (res);
-}
-
-t_lexer	*handle_inflie(t_lexer *aux, t_parcer *new_parcer)
-{
-	if (!aux)
-		return (NULL);
-	new_parcer->name_infile = ft_strdup(aux->inf);
-	new_parcer->infile = open(aux->inf, O_RDONLY);
-	return (aux->next);
 }
 
 t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer)
@@ -88,8 +79,8 @@ t_lexer	*check_buildings(t_lexer *aux, t_parcer *new_parcer)
 {
 	if (!aux)
 		return (NULL);
-	new_parcer->building = ft_strdup(aux->inf);
-	if (!new_parcer->building)
+	new_parcer->builtin = ft_strdup(aux->inf);
+	if (!new_parcer->builtin)
 		return (NULL);
 	return (aux->next);
 }

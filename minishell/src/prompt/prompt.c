@@ -24,12 +24,12 @@
 	if *line=> // guarda en historial si no está vacío
 */
 
-static	void free_env(char **envi)
+static void	free_env(char **envi)
 {
 	int	i;
 	int	ln;
 
-	i = 0;;
+	i = 0;
 	ln = 0;
 	while (envi[i] != NULL)
 		i++;
@@ -41,7 +41,7 @@ static	void free_env(char **envi)
 	free(envi);
 }
 
-static void free_enviroment(int i, char **envi)
+static void	free_enviroment(int i, char **envi)
 {
 	int	ln;
 
@@ -55,18 +55,19 @@ static void free_enviroment(int i, char **envi)
 	return ;
 }
 
-char **check_enviroment(char **envp)
+static char	**check_enviroment(char **envp)
 {
 	char	**envi_cpy;
-	int	count;
-	int	i;
+	int		count;
+	int		i;
 
 	i = 0;
 	count = 0;
-	while(envp[count] != NULL)
+	while (envp[count] != NULL)
 		count++;
 	envi_cpy = malloc((count + 1) * sizeof(char *));
-	if (!envi_cpy) return (NULL);
+	if (!envi_cpy)
+		return (NULL);
 	while (i < count)
 	{
 		envi_cpy[i] = ft_strdup(envp[i]);
@@ -78,17 +79,13 @@ char **check_enviroment(char **envp)
 	return (envi_cpy);
 }
 
-int	check_token(int argc, char *argv[], char **envp)
+int	check_token(char **envp)
 {
 	char	*line;
 	t_shell	envi;
-	int	i;
 
-	i = 0;
 	envi.envi = check_enviroment(envp);
 	envi.last_status = 0;
-	(void)argc;
-	(void)argv;
 	while (1)
 	{
 		line = readline("parshell$ ");
@@ -104,11 +101,10 @@ int	check_token(int argc, char *argv[], char **envp)
 		}
 		if (*line)
 			add_history(line);
-		check_line(line, &envi, &i);
+		check_line(line, &envi);
 		free(line);
 	}
-	free_env(envi.envi);
-	return (0);
+	return (free_env(envi.envi), 0);
 }
 
 // --------------------------------------------------------------------
