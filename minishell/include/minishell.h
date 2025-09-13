@@ -38,7 +38,6 @@
 	T_OUTFILE => "salida del txt ultimo."
 	T_GENERAL => "otras cosas."
 */
-
 typedef enum tokens
 {
 	T_NAME_CMD,
@@ -50,7 +49,7 @@ typedef enum tokens
 	T_INFILE,
 	T_OUTFILE,
 	T_GENERAL,
-	T_BUILDINGS,
+	T_BUILTINS,
 }					t_tokens;
 
 /*
@@ -65,6 +64,14 @@ typedef enum kind
 	T_SQ
 }					t_kind;
 
+/*
+	id -> id del argv
+	inf -> valor del argv
+	token -> t_token
+	last_token -> anterior t_token
+	kind -> t_kind para manejar comillas
+	la lista esta doblemente enlazada
+*/
 typedef struct s_lexer
 {
 	int				id;
@@ -76,29 +83,44 @@ typedef struct s_lexer
 	struct s_lexer	*last;
 }					t_lexer;
 
+/*
+	infile -> id infile
+	outfile -> id outile
+	cmd_args -> argumentos del comando
+	builtin -> builtin detectado
+	name_infile -> nombre infile
+	name_outfile -> nombre outile
+	syntax_error -> error que devuelve
+*/
 typedef struct s_parcer
 {
 	int				infile;
 	int				outfile;
 	char			*cmd_args;
 	char			*arg_export;
-	char			*building;
+	char			*builtin;
 	char			*name_infile;
 	char			*name_outfile;
 	int				syntax_error;
 	struct s_parcer	*next;
 }					t_parcer;
 
+/*
+	envi -> nuestro env
+	last_status -> valor del status '$?'
+*/
 typedef struct s_shell
 {
-	char **envi;
-	int	last_status;
+	char			**envi;
+	int				last_status;
 }					t_shell;
 
+/*
+	num_cmd -> numero de comandos
+*/
 typedef struct s_mini
 {
 	int				num_cmd;
-	int				last_status; //variable para el $
 	t_parcer		*parcer;
 	t_lexer			*lexer;
 }					t_mini;
@@ -111,32 +133,35 @@ void				execute_cmd(t_mini *mini, t_shell *envp);
 
 // proccess_execve
 int					wait_childrens(pid_t *pids, int num_cmd);
+void				init_proccess(t_mini *mini, pid_t *pids, int pipes[][2],
+						t_shell *envp);
+char				**builtin_argv(const char *name, const char *args_str);
+void				exec_cmd(t_parcer *list, char **envp);
 void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
 						int pipes[][2]);
-void				exec_cmd(t_parcer *list, char **envp);
-void				init_proccess(t_mini *mini, pid_t *pids,
-						int pipes[][2], t_shell *envp);
-//built-ints
-t_tokens			compare_buildings(char *word);
-int 				exec_env(t_shell *envp, t_parcer *list);
-int 				exec_exit(char **argv);
-int					exec_buildings(t_parcer *list,char **argv, t_shell *envp);
-int 				exec_cd(char **cmd,t_shell *envp);
-int					exec_echo(char **cmd);
-int 				exec_pwd();
-int     			ft_unset(t_shell *envi, t_parcer *list);
 
-//ft_export
+// built-ints
+t_tokens			compare_builtins(char *word);
+int					exec_env(t_shell *envp, t_parcer *list);
+int					exec_exit(char **argv);
+int					exec_builtins(t_parcer *list, char **argv, t_shell *envp);
+int					exec_cd(char **cmd, t_shell *envp);
+int					exec_echo(char **cmd);
+int					exec_pwd(void);
+int					ft_unset(t_shell *envi, t_parcer *list);
+
+// ft_export
 int					ft_export(t_shell *envp, t_parcer *list);
 int					print_sorted(t_shell *envp);
 int					cmp_env(const void *a, const void *b);
 int					valid_args(char *arg);
-int					cmp_env_key(const char *env, const char *arg, size_t key_len);
+int					cmp_env_key(const char *env, const char *arg,
+						size_t key_len);
 void				add_update_env(char *arg, char ***envi);
 char				**all_args(char *args);
 size_t				len_equal(char **equal, char *arg);
 
-//ft_unset
+// ft_unset
 
 // execute_aux
 void				free_split(char **split);
@@ -146,8 +171,8 @@ char				*build_path(char *dir, char *cmd);
 char				*find_executable(char *cmds, char **envp);
 
 // lexer
-int					check_token(int argc, char *argv[], char **envp);
-void				check_line(char *line, t_shell *envp, int *last);
+int					check_token(char **envp);
+void				check_line(char *line, t_shell *envp);
 
 // expander
 int					expand_tokens(t_lexer **lexer_list, int last_status);
@@ -171,12 +196,12 @@ void				print_tokens(t_lexer *lexer);
 t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
 
-//parser_aux
+// parser_aux
 int					open_outfile(char *file, int appened);
 int					read_heredoc(char *delim);
 
-//parser handles
-t_lexer				*handle_inflie(t_lexer *aux, t_parcer *new_parcer);
+// parser handles
+t_lexer				*handle_infile(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*handle_cmd(t_lexer *aux, t_parcer *new_node);
@@ -206,8 +231,8 @@ int					handle_input_redirect(char *line, int i,
 						t_lexer **lexer_list);
 void				handle_pipe(t_lexer **lexer_list, int *first_word);
 
-//promnt
-char 				**check_enviroment(char **envp);
+// promnt
+char				**check_enviroment(char **envp);
 
 // signals
 void				init_signals(void);

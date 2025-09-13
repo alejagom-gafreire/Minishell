@@ -49,6 +49,30 @@ int	handle_double_quotes(char *line, int i, t_lexer **lexer_list)
 	return (end + 1);
 }
 
+void	check_tkn(t_lexer **lexer_list, char *word, t_tokens *type,
+		t_kind *kind)
+{
+	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
+	{
+		*type = T_INFILE;
+		*kind = T_PLAIN;
+	}
+	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
+	{
+		*type = T_OUTFILE;
+	}
+	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
+	{
+		*type = T_DELIM;
+		*kind = T_PLAIN;
+	}
+	else
+	{
+		*type = compare_builtins(word);
+		*kind = T_PLAIN;
+	}
+}
+
 int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
 	int			start;
@@ -63,25 +87,7 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 	word = ft_substr(line, start, i - start);
 	if (!word)
 		return (-1);
-	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
-	{
-		type = T_INFILE;
-		kind = T_PLAIN;
-	}
-	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
-	{
-		type = T_OUTFILE;
-	}
-	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
-	{
-		type = T_DELIM;
-		kind = T_PLAIN;
-	}
-	else
-	{
-		type = compare_buildings(word);
-		kind = T_PLAIN;
-	}
+	check_tkn(lexer_list, word, &type, &kind);
 	add_token(lexer_list, word, type, kind);
 	(*lexer_list)->last_token = type;
 	if (type == T_NAME_CMD)

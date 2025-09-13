@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	get_size(char **cmd)
+static int	get_size(char **cmd)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ int	get_size(char **cmd)
 	return (i);
 }
 
-static char	*get_path(char **envp)
+static char	*get_home_env(char **envp)
 {
 	int	i;
 
@@ -35,52 +35,54 @@ static char	*get_path(char **envp)
 	}
 	return (NULL);
 }
+/*
+	argv[0] = "cd"
+	argv[1] = ruta (debe existir)
+	env = nuestro env/ tiene que estar el pwd
+*/
 
-int	exec_cd(char **cmd, t_shell *envp) // char **argv, t_env *env
+/*
+	IMPLEMENTAR PWD Y OLDPWD
+
+	char *ruta = argv[1];
+	char *oldpwd = &ruta;
+	cambiar directorio
+
+	char *nueva = getcwd(NULL,0);
+	if (nueva == NULL)
+	{
+		printf("cd");
+		return(1);
+	}
+
+	actualizar variables de entorno
+	if (oldpwd != NULL)
+		set_env(entorno,"OLDPWD",oldpwd)
+		set_env(entorno,"PWD",nueva)
+
+	free(nueva);
+*/
+int	exec_cd(char **cmd, t_shell *envp)
 {
-	// argv[0] = "cd"
-	// argv[1] = ruta (debe existir)
-	// env = nuestro env/ tiene que estar el pwd
-
-	int resultado;
-    char *target;
-    int nbr;
+	int		resultado;
+	char	*target;
+	int		nbr;
 
 	(void)envp;
 	if (!cmd[1])
 	{
-		target =  get_path(envp->envi); //getenv("HOME"); // cambiar por el nuestro
+		target = get_home_env(envp->envi);
 		resultado = chdir(target);
 		return (0);
 	}
 	else
 	{
-		// validar el numero de argumentos
 		nbr = get_size(cmd);
-		if (nbr == 0)
-			return (printf("cd:missing argument\n"),1);
-		else if (nbr > 2)
-			return (printf("cd:too many arguments\n"),1);
-		// char *ruta = argv[1];
-		// char *oldpwd = &ruta;
-		// cambiar directorio
-
+		if (nbr > 2)
+			return (printf("cd:too many arguments\n"), 1);
 		resultado = chdir(cmd[1]);
 		if (resultado == -1)
-			return (printf("cd"),1);
+			return (printf("cd: %s: No such file or directory\n", cmd[1]), 1);
 	}
-	// char *nueva = getcwd(NULL,0);
-	// if (nueva == NULL)
-	// {
-	//     printf("cd");
-	//     return(1);
-	// }
-
-	//  actualizar variables de entorno
-	// if (oldpwd != NULL)
-	//     set_env(entorno,"OLDPWD",oldpwd)
-	//    set_env(entorno,"PWD",nueva)
-
-	// free(nueva);
 	return (0);
 }

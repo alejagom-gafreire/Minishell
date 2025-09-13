@@ -27,7 +27,8 @@ void	print_tokens(t_lexer *lexer)
 {
 	while (lexer)
 	{
-		printf("Token: %s (tipo %d)  (kind %d)\n", lexer->inf, lexer->token, lexer->kind);
+		printf("Token: %s (tipo %d)  (kind %d)\n", lexer->inf, lexer->token,
+			lexer->kind);
 		lexer = lexer->next;
 	}
 }

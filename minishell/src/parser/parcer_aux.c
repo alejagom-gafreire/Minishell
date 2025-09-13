@@ -12,33 +12,40 @@
 
 #include "minishell.h"
 
-// Ctrl+C (SIGINT): si el usuario interrumpe en medio del heredoc, debes cancelar el heredoc y limpiar.
-// → Aquí se suele hacer un fork especial para el heredoc y el padre espera.
+/*
+	Ctrl+C (SIGINT): si el usuario interrumpe en medio del heredoc,
+		debes cancelar el heredoc y limpiar.
+	→ Aquí se suele hacer un fork especial para el heredoc y el padre espera.
 
-// Expandir variables $VAR dentro del heredoc (a menos que el delimitador esté entre comillas).
-// → Eso lo puedes añadir después con una función de expansión.
+	Expandir variables $VAR dentro del heredoc 
+	(a menos que el delimitador esté entre comillas).
+	→ Eso lo puedes añadir después con una función de expansión.
 
-// Liberar memoria: ojo con leaks de line.
+	Liberar memoria: ojo con leaks de line.
+*/
 
+/*
+	manejar Ctrl + c cerrar el heredoc sin cerrar la mini.
+*/
 int	read_heredoc(char *delim)
 {
-	int	pipefd[2];
+	int		pipefd[2];
 	char	*line;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
 	while (1)
 	{
-		line = readline("HEREDOC>"); //el prompt
-		if (!line) //manejar Ctrl + c cerrar el heredoc sin cerrar la mini.
+		line = readline("HEREDOC>");
+		if (!line)
 		{
 			printf("Error heredoc\n");
-			break;
+			break ;
 		}
 		if (ft_strcmp(line, delim) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		write(pipefd[1], line, ft_strlen(line));
 		write(pipefd[1], "\n", 1);

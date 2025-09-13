@@ -86,7 +86,7 @@ int	ft_export(t_shell *envp, t_parcer *list)
 	int		status;
 
 	status = 0;
-	if (list->arg_export == NULL && list->building && list->cmd_args == NULL)
+	if (list->arg_export == NULL && list->builtin && list->cmd_args == NULL)
 		return (print_sorted(envp));
 	aux = all_args(list->cmd_args);
 	temp = aux;

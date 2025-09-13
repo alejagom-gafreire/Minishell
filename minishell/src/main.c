@@ -14,10 +14,11 @@
 
 int	main(int argc, char *argv[], char **envp)
 {
+	(void)argv;
 	if (argc == 1)
 	{
 		init_signals();
-		check_token(argc, argv, envp);
+		check_token(envp);
 	}
 	else
 		printf("Error\n");

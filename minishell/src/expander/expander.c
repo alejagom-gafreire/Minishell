@@ -101,8 +101,6 @@ int	expand_tokens(t_lexer **lexer_list, int last_status)
 	t_lexer	*node;
 	t_lexer	*prev;
 
-	if (!lexer_list)
-		return (0);
 	node = *lexer_list;
 	prev = NULL;
 	while (node)

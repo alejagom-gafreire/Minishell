@@ -40,8 +40,8 @@ void	free_parcer(t_parcer *parcer)
 			free(parcer->name_infile);
 		if (parcer->name_outfile)
 			free(parcer->name_outfile);
-		if (parcer->building)
-			free(parcer->building);
+		if (parcer->builtin)
+			free(parcer->builtin);
 		parcer = parcer->next;
 		free(temp);
 	}
