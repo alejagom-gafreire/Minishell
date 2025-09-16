@@ -74,6 +74,20 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 	i = 0;
 	while (i < mini->num_cmd)
 	{
+		if (list->syntax_error || list->redir_error)
+    	{
+        	envp->last_status = 1;
+        	if (i > 0)
+            	close(pipes[i - 1][0]);
+
+        	if (i < mini->num_cmd - 1)
+            	close(pipes[i][1]);
+
+        	pids[i] = -1;
+        	list = list->next;
+        	i++;
+        	continue;
+    	}
 		pids[i] = fork();
 		if (pids[i] == 0)
 			child_exec(list, mini, pipes, envp);
@@ -92,6 +106,11 @@ int	wait_childrens(pid_t *pids, int num_cmd)
 	last_status = 0;
 	while (i < num_cmd)
 	{
+		if (pids[i] == -1)
+		{
+			i++;
+			continue;
+		}
 		waitpid(pids[i], &status, 0);
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);

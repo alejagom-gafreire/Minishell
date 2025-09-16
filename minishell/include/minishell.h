@@ -91,6 +91,7 @@ typedef struct s_lexer
 	name_infile -> nombre infile
 	name_outfile -> nombre outile
 	syntax_error -> error que devuelve
+	syntax_error -> error que devuelve si falla las redirreciones
 */
 typedef struct s_parcer
 {
@@ -102,6 +103,7 @@ typedef struct s_parcer
 	char			*name_infile;
 	char			*name_outfile;
 	int				syntax_error;
+	int				redir_error;
 	struct s_parcer	*next;
 }					t_parcer;
 
