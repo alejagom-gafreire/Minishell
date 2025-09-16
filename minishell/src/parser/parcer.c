@@ -28,6 +28,7 @@ static t_parcer	*mem_parcer(void)
 	parcer->name_infile = NULL;
 	parcer->name_outfile = NULL;
 	parcer->syntax_error = 0;
+	parcer->redir_error = 0;
 	return (parcer);
 }
 
@@ -40,6 +41,13 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 {
 	while (*aux && (*aux)->token != T_PIPE)
 	{
+		 if (new_parcer->redir_error || new_parcer->syntax_error)
+        {
+            while (*aux && (*aux)->token != T_PIPE)
+                *aux = (*aux)->next;
+            return;
+        }
+
 		if (*aux && (*aux)->token == T_REDIR_IN)
 			if ((*aux)->next && (*aux)->next->token == T_INFILE)
 			*aux = (*aux)->next;

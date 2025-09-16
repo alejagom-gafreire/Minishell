@@ -14,6 +14,15 @@
 
 void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
 {
+    if ((*list)->redir_error || (*list)->syntax_error)
+    {
+        if (*i > 0)
+            close(pipes[*i - 1][0]);
+        if (*i < mini->num_cmd - 1)
+            close(pipes[*i][1]);
+
+        exit(1);
+    }
 	if ((*list)->infile != -1)
 		dup2((*list)->infile, STDIN_FILENO);
 	else if (*i > 0)
@@ -36,7 +45,8 @@ void	exec_cmd(t_parcer *list, char **envp)
 	if (!cmd_path)
 	{
 		free_split(exec_cmd);
-		exit(EXIT_FAILURE);
+		printf("%s: command not found\n",list->cmd_args);
+		exit(127);
 	}
 	if (execve(cmd_path, exec_cmd, envp) == -1 && list->cmd_args)
 	{
