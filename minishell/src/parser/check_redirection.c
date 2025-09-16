@@ -18,6 +18,12 @@ t_lexer	*handle_infile(t_lexer *aux, t_parcer *new_parcer)
 		return (NULL);
 	new_parcer->name_infile = ft_strdup(aux->inf);
 	new_parcer->infile = open(aux->inf, O_RDONLY);
+	if (new_parcer->infile == -1)
+	{
+		printf("No such file or directory\n");
+		new_parcer->syntax_error = 1;
+		// hay que poner el last_status en -1
+	}
 	return (aux->next);
 }
 

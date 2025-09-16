@@ -33,7 +33,7 @@ static t_parcer	*mem_parcer(void)
 
 static void	print_error_syntax(void)
 {
-	printf("error sintáctico cerca del elemento inesperado `newline'\n");
+	printf("syntax error near unexpected token `newline'\n");
 }
 
 static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
@@ -41,7 +41,15 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 	while (*aux && (*aux)->token != T_PIPE)
 	{
 		if (*aux && (*aux)->token == T_REDIR_IN)
+			if ((*aux)->next && (*aux)->next->token == T_INFILE)
 			*aux = (*aux)->next;
+			 else
+    		{
+        		print_error_syntax();
+        		*aux = NULL;
+        		new_parcer->syntax_error = 1;
+        		return ;
+    		}
 		else if (*aux && (*aux)->token == T_INFILE)
 			*aux = handle_infile((*aux), new_parcer);
 		else if ((*aux)->token == T_HEREDOC)
