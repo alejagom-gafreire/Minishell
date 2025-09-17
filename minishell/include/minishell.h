@@ -24,6 +24,20 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+#define RESET   "\001\033[0m\002"
+#define CYAN    "\001\033[36m\002"
+#define GREEN   "\001\033[32m\002"
+#define BLUE    "\001\033[34m\002"
+#define BOLD    "\001\033[1m\002"
+
+#define BRIGHT_RED     "\x1b[91m"
+#define BRIGHT_GREEN   "\x1b[92m"
+#define BRIGHT_YELLOW  "\x1b[93m"
+#define BRIGHT_BLUE    "\x1b[94m"
+#define BRIGHT_MAGENTA "\x1b[95m"
+#define BRIGHT_CYAN    "\x1b[96m"
+#define BRIGHT_WHITE   "\x1b[97m"
+
 # define READ_END 0
 # define WRITE_END 1
 /*
@@ -38,6 +52,8 @@
 	T_OUTFILE => "salida del txt ultimo."
 	T_GENERAL => "otras cosas."
 */
+typedef unsigned int useconds_t;
+
 typedef enum tokens
 {
 	T_NAME_CMD,
@@ -163,8 +179,6 @@ void				add_update_env(char *arg, char ***envi);
 char				**all_args(char *args);
 size_t				len_equal(char **equal, char *arg);
 
-// ft_unset
-
 // execute_aux
 void				free_split(char **split);
 char				*get_path_env(char **envp);
@@ -235,6 +249,12 @@ void				handle_pipe(t_lexer **lexer_list, int *first_word);
 
 // promnt
 char				**check_enviroment(char **envp);
+void				print_banner(void);
+void				spinner_loading(void);
+int					show_menu(void);
+void				print_names(int	options);
+char				*create_prompt(void);
+void				print_slow(const char *str, useconds_t delay);
 
 // signals
 void				init_signals(void);
