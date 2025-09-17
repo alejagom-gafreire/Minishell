@@ -12,18 +12,6 @@
 
 #include "minishell.h"
 
-// borrar ??
-#define GREEN "\033[1;32m"
-#define BLUE "\033[1;34m"
-#define RESET "\033[0m"
-
-// crear prompt
-// comprobar token
-/*
-	if !line => // Ctrl+D
-	if *line=> // guarda en historial si no está vacío
-*/
-
 static void	free_env(char **envi)
 {
 	int	i;
@@ -82,13 +70,24 @@ char	**check_enviroment(char **envp)
 int	check_token(char **envp)
 {
 	char	*line;
+	char	*prompt;
+	int		option;
 	t_shell	envi;
 
+	print_banner();
+	spinner_loading();
+	option = show_menu();
+	if (option == 2 || option == 3)
+	{
+		print_names(option);
+		exit(1);
+	}
 	envi.envi = check_enviroment(envp);
 	envi.last_status = 0;
 	while (1)
 	{
-		line = readline("parshell$ ");
+		prompt = create_prompt();
+		line = readline(prompt);
 		if (line && *line == '\0')
 		{
 			free(line);
@@ -103,41 +102,7 @@ int	check_token(char **envp)
 			add_history(line);
 		check_line(line, &envi);
 		free(line);
+		free(prompt);
 	}
-	return (free_env(envi.envi), 0);
+	return (free_env(envi.envi), free(prompt), 0);
 }
-
-// --------------------------------------------------------------------
-// demo custom_promt
-// char	*create_prompt(void)
-// {
-//     // variables prompt
-// 	char		*user;
-// 	const char	*emoji = "🧠 ";
-// 	const char	*middle = " in ";
-// 	const char	*end = " ➤ ";
-// 	size_t		size;
-// 	char		*prompt;
-
-// 	user = getenv("USER");
-// 	if (!user)
-// 		user = "user"; // valor por defecto
-// 	char *cwd = getcwd(NULL, 0); // getcwd devuelve malloc
-// 	if (!cwd)
-// 		cwd = strdup("unknown"); // por si falla getcwd
-// 	// calcular tamaño total
-// 	size = strlen(emoji) + strlen(GREEN) + strlen(user) + strlen(RESET)
-// 		+ strlen(middle) + strlen(BLUE) + strlen(cwd) + strlen(RESET)
-// 		+ strlen(end) + 1;
-// 	prompt = malloc(size);
-// 	if (!prompt)
-// 	{
-// 		free(cwd);
-// 		return (NULL);
-// 	}
-// 	// construir el prompt con sprintf
-// 	sprintf(prompt, "%s%s%s%s%s%s%s%s%s", emoji, GREEN, user, RESET, middle,
-// 		BLUE, cwd, RESET, end);
-// 	free(cwd); // liberar getcwd
-// 	return (prompt);
-// }
