@@ -84,7 +84,7 @@ void	check_line(char *line, t_shell *envp)
 	mini->lexer = aux_line(line);
 	if (!mini->lexer)
 		return ;
-	if (expand_tokens(&mini->lexer, envp->last_status) != 0)
+	if (expand_tokens(&mini->lexer, envp) != 0)
 		return ;
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);

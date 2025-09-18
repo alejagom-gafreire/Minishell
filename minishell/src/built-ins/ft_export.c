@@ -12,21 +12,11 @@
 
 #include "minishell.h"
 
-int	cmp_env_key(const char *env, const char *arg, size_t key_len)
-{
-	if (ft_strncmp(env, arg, key_len) == 0
-		&& (env[key_len] == '=' || env[key_len] == '\0'))
-	{
-		return (1);
-	}
-	return (0);
-}
-
 static char	**safe_malloc(int i, char ***envi, char *arg)
 {
 	char	**cpy_envi;
 
-	cpy_envi = malloc(sizeof (char *) * (i + 2));
+	cpy_envi = malloc(sizeof(char *) * (i + 2));
 	if (!cpy_envi)
 		return (NULL);
 	i = 0;
@@ -52,31 +42,47 @@ size_t	len_equal(char **equal, char *arg)
 	return (key_len);
 }
 
+static int	same_key(const char *a, const char *b)
+{
+	size_t	i;
+
+	i = 0;
+	while (a[i] && a[i] != '=' && b[i] && b[i] != '=')
+	{
+		if (a[i] != b[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	add_update_env(char *arg, char ***envi)
 {
+	char	**env;
 	int		i;
-	char	*equal;
-	char	**cpy_envi;
-	size_t	key_len;
+	char	*dup;
+	char	**newv;
 
-	key_len = len_equal(&equal, arg);
+	env = *envi;
+	if (!arg || !ft_strchr(arg, '='))
+		return ;
 	i = 0;
-	while ((*envi)[i])
+	while (env && env[i])
 	{
-		if (cmp_env_key((*envi)[i], arg, key_len))
+		if (same_key(arg, env[i]))
 		{
-			if ((equal))
-			{
-				free((*envi)[i]);
-				(*envi)[i] = ft_strdup(arg);
-			}
+			dup = ft_strdup(arg);
+			if (!dup)
+				return ;
+			free(env[i]);
+			env[i] = dup;
 			return ;
 		}
 		i++;
 	}
-	cpy_envi = safe_malloc(i, &(*envi), arg);
-	free(*envi);
-	*envi = cpy_envi;
+	newv = safe_malloc(i, &env, arg);
+	free(env);
+	*envi = newv;
 }
 
 int	ft_export(t_shell *envp, t_parcer *list)

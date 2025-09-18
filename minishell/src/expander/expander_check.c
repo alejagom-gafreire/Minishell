@@ -12,10 +12,35 @@
 
 #include "minishell.h"
 
-/* 
+/*
 	len_of_status:
-	1ª pasada: medir longitud final 
+	1ª pasada: medir longitud final
 */
+
+char	*get_env(char *name, char **envp)
+{
+	size_t	name_len;
+	int		i;
+	char	*cpy;
+	size_t	key_len;
+
+	if (!name || !envp)
+		return (NULL);
+	name_len = ft_strlen(name);
+	i = 0;
+	while (envp[i])
+	{
+		cpy = ft_strchr(envp[i], '=');
+		if (cpy)
+		{
+			key_len = (size_t)(cpy - envp[i]);
+			if (key_len == name_len && ft_strncmp(envp[i], name, name_len) == 0)
+				return (cpy + 1);
+		}
+		i++;
+	}
+	return (NULL);
+}
 
 static size_t	len_of_status(int st)
 {
@@ -27,26 +52,12 @@ static size_t	len_of_status(int st)
 	len = ft_strlen(s);
 	return (len);
 }
-/*
-	scan_var_end:
-	fin de nombre de variable
-*/
-
-size_t	scan_var_end(const char *s, size_t start)
-{
-	size_t	en;
-
-	en = start;
-	while (s[en] && is_var_char(s[en]))
-		en++;
-	return (en);
-}
 
 /*
 	env_len_span:
 	obtener longitud del valor de la variable sin alocar
 */
-static size_t	env_len_span(const char *s, size_t st, size_t en)
+static size_t	env_len_span(const char *s, size_t st, size_t en, t_shell *envp)
 {
 	size_t		n;
 	size_t		i;
@@ -65,7 +76,7 @@ static size_t	env_len_span(const char *s, size_t st, size_t en)
 		i++;
 	}
 	name[n] = '\0';
-	val = getenv(name);
+	val = get_env(name, envp->envi);
 	if (val != NULL)
 		l = ft_strlen(val);
 	else
@@ -77,11 +88,11 @@ static size_t	env_len_span(const char *s, size_t st, size_t en)
 /*
 	handle_simple_cases:
 	Consume casos simples: no '$', '$' final, o '$?'.
-   	Devuelve 1 si consumió algo y avanzó; 0 si no. 
+	Devuelve 1 si consumió algo y avanzó; 0 si no.
 */
 
 static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
-		int last_status)
+		t_shell *envp)
 {
 	if (s[*i] != '$')
 	{
@@ -97,7 +108,7 @@ static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
 	}
 	if (s[*i + 1] == '?')
 	{
-		(*out) += len_of_status(last_status);
+		(*out) += len_of_status(envp->last_status);
 		(*i) += 2;
 		return (1);
 	}
@@ -110,13 +121,13 @@ static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
 	return (0);
 }
 
-/* 
+/*
 	measure_expanded_len:
 	Obtiene la longitud final exacta despues de chequear las reglas
 	de comillas y expansion.
 */
 
-size_t	measure_expanded_len(const char *s, int last_status)
+size_t	measure_expanded_len(const char *s, t_shell *envp)
 {
 	size_t	i;
 	size_t	out;
@@ -128,10 +139,10 @@ size_t	measure_expanded_len(const char *s, int last_status)
 	out = 0;
 	while (s[i] != '\0')
 	{
-		if (handle_simple_cases(s, &i, &out, last_status))
+		if (handle_simple_cases(s, &i, &out, envp))
 			continue ;
 		en = scan_var_end(s, i + 1);
-		out += env_len_span(s, i + 1, en);
+		out += env_len_span(s, i + 1, en, envp);
 		i = en;
 	}
 	return (out);

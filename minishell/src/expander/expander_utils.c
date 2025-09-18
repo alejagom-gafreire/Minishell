@@ -45,17 +45,17 @@ void	free_lexer_node(t_lexer *node)
 	- Expande la cadena en dos pasadas
 */
 
-char	*expand_vars_two_pass(const char *str, int last_status)
+char	*expand_vars_two_pass(const char *str, t_shell *envp)
 {
 	size_t	size;
 	char	*out;
 
 	if (!str)
 		return (ft_strdup(""));
-	size = measure_expanded_len(str, last_status);
+	size = measure_expanded_len(str, envp);
 	out = (char *)malloc(size + 1);
 	if (!out)
 		return (NULL);
-	write_expanded(out, str, last_status);
+	write_expanded(out, str, envp);
 	return (out);
 }

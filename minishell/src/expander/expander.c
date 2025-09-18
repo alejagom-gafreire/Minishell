@@ -47,13 +47,13 @@ static void	delete_current(t_lexer **head, t_lexer **prev, t_lexer **node)
 	check_variable:
 	- Chequea si el contenido requiere expansión
 */
-static int	check_variable(t_lexer *node, int last_status)
+static int	check_variable(t_lexer *node, t_shell *envp)
 {
 	char	*expand;
 
 	if (node->kind != T_DQ && node->kind != T_PLAIN)
 		return (0);
-	expand = expand_vars_two_pass(node->inf, last_status);
+	expand = expand_vars_two_pass(node->inf, envp);
 	if (!expand)
 		return (1);
 	free(node->inf);
@@ -96,7 +96,7 @@ static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 	- Se encarga de aplicar cualquier funcion anterior
 	- Chequea si esta vacio o espacios
 */
-int	expand_tokens(t_lexer **lexer_list, int last_status)
+int	expand_tokens(t_lexer **lexer_list, t_shell *envp)
 {
 	t_lexer	*node;
 	t_lexer	*prev;
@@ -107,7 +107,7 @@ int	expand_tokens(t_lexer **lexer_list, int last_status)
 	{
 		if (is_word_token(node->token))
 		{
-			if (check_variable(node, last_status))
+			if (check_variable(node, envp))
 				return (1);
 			if (node->token == T_INFILE || node->token == T_OUTFILE)
 			{
