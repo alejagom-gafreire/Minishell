@@ -28,16 +28,18 @@ t_lexer	*handle_infile(t_lexer *aux, t_parcer *new_parcer)
 	return (aux->next);
 }
 
-t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
+t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 {
 	int	appened;
 
 	if (!aux)
 		return (NULL);
-	if (new_parcer->redir_error)
+	if (new_parcer->redir_error || (*env)->error_heredoc != 0)
 	{
 		if (aux->next == NULL)
 			return (NULL);
+		printf("esto tiene la flag: %d\n", (*env)->error_heredoc);
+		(*env)->error_heredoc = 0;
 		return (aux->next->next);
 	}
 	if (!aux || !aux->next || aux->next->token != T_OUTFILE)

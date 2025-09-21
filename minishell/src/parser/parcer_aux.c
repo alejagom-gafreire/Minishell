@@ -31,31 +31,108 @@
 /*
 	manejar Ctrl + c cerrar el heredoc sin cerrar la mini.
 */
-int	read_heredoc(char *delim)
+
+/* handler solo para heredoc */
+
+/* heredoc.c */
+static void	heredoc_sigint(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	_exit(130);
+}
+
+void	init_signals_heredoc(void)
+{
+	struct	sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = heredoc_sigint;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+static void	handler_sigint_shell(int sig)
+{
+	(void)sig;
+
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	restart_signals_shell(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handler_sigint_shell;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+int	read_heredoc(char *delim, t_shell **env)
 {
 	int		pipefd[2];
+	pid_t	pid;
+	int	status;
 	char	*line;
 
 	if (pipe(pipefd) == -1)
 		return (-1);
-	while (1)
+	pid = fork();
+	if (pid == -1)
+		return (-1);
+	if (pid == 0)
 	{
-		line = readline("HEREDOC>");
-		if (!line)
+		init_signals_heredoc();
+		close(pipefd[0]);
+		while (1)
 		{
-			printf("Error heredoc\n");
-			break ;
-		}
-		if (ft_strcmp(line, delim) == 0)
-		{
+			rl_catch_signals = 0;
+			line = readline("HEREDOC>");
+			if (!line)
+				exit(0);
+			if (ft_strcmp(line, delim) == 0)
+			{
+				free(line);
+				break ;
+			}
+			write(pipefd[1], line, ft_strlen(line));
+			write(pipefd[1], "\n", 1);
 			free(line);
-			break ;
 		}
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
-		free(line);
+		close(pipefd[1]);
+		exit(0);
 	}
+	else
+	{
 	close(pipefd[1]);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		(*env)->error_heredoc = 1;   // usa 1 para marcar error
+		close(pipefd[0]);
+		restart_signals_shell();
+		printf("DEBUG heredoc cancelado con Ctrl+C\n");
+		return (-1);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		(*env)->error_heredoc = 1;
+		close(pipefd[0]);
+		restart_signals_shell();
+		printf("DEBUG heredoc _exit(130)\n");
+		return (-1);
+	}
+
+	restart_signals_shell();
+	}
 	return (pipefd[0]);
 }
 

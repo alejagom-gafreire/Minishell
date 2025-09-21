@@ -132,6 +132,7 @@ typedef struct s_shell
 {
 	char			**envi;
 	int				last_status;
+	int				error_heredoc;
 }					t_shell;
 
 /*
@@ -211,18 +212,20 @@ void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
 
 // parser
-t_parcer			*add_parcer(t_lexer *lexer);
+t_parcer			*add_parcer(t_lexer *lexer, t_shell **env);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
 int					is_word_tok(t_lexer *n);
 
 // parser_aux
 int					open_outfile(char *file, int appened);
-int					read_heredoc(char *delim);
+int					read_heredoc(char *delim, t_shell **env);
+void				restart_signals_shell(void);
+void				init_signals_herecod(void);
 
 // parser handles
 t_lexer				*handle_infile(t_lexer *aux, t_parcer *new_parcer);
-t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer);
-t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer);
+t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer, t_shell **env);
+t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env);
 t_lexer				*handle_cmd(t_lexer *aux, t_parcer *new_node);
 t_lexer				*check_buildings(t_lexer *aux, t_parcer *new_parcer);
 

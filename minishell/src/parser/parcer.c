@@ -37,7 +37,7 @@ static void	print_error_syntax(void)
 	printf("syntax error near unexpected token `newline'\n");
 }
 
-static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
+static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env)
 {
 	while (*aux && (*aux)->token != T_PIPE)
 	{
@@ -62,7 +62,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 		else if (*aux && (*aux)->token == T_INFILE)
 			*aux = handle_infile((*aux), new_parcer);
 		else if ((*aux)->token == T_HEREDOC)
-			*aux = check_heredoc((*aux), new_parcer);
+			*aux = check_heredoc((*aux), new_parcer, env);
 		else if (*aux && (*aux)->token == T_BUILTINS)
 			*aux = check_buildings((*aux), new_parcer);
 		else if (is_word_tok((*aux)))
@@ -70,7 +70,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
 		{
 			if ((*aux)->next)
-				*aux = handle_outfile((*aux), new_parcer);
+				*aux = handle_outfile((*aux), new_parcer, env);
 			else
 			{
 				print_error_syntax();
@@ -95,7 +95,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 	finalize_parcer(new_parcer, cmd);
 */
 
-t_parcer	*add_parcer(t_lexer *lexer)
+t_parcer	*add_parcer(t_lexer *lexer, t_shell **env)
 {
 	t_lexer		*aux;
 	t_parcer	*parcer;
@@ -108,7 +108,7 @@ t_parcer	*add_parcer(t_lexer *lexer)
 		new_parcer = mem_parcer();
 		if (!new_parcer)
 			return (NULL);
-		process_tokens(&aux, new_parcer);
+		process_tokens(&aux, new_parcer, env);
 		if (aux && aux->token == T_PIPE)
 			aux = aux->next;
 		inside_parcer(&parcer, new_parcer);

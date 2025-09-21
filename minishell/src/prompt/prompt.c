@@ -74,8 +74,8 @@ int	check_token(char **envp)
 	int		option;
 	t_shell	envi;
 
-	print_banner();
-	spinner_loading();
+	//print_banner();
+	//spinner_loading();
 	option = show_menu();
 	if (option == 2 || option == 3)
 	{
@@ -84,6 +84,7 @@ int	check_token(char **envp)
 	}
 	envi.envi = check_enviroment(envp);
 	envi.last_status = 0;
+	envi.error_heredoc = 0;
 	while (1)
 	{
 		prompt = create_prompt();

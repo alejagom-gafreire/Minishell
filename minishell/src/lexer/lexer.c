@@ -87,7 +87,7 @@ void	check_line(char *line, t_shell *envp)
 		return ;
 	if (expand_tokens(&mini->lexer, envp) != 0)
 		return ;
-	mini->parcer = add_parcer(mini->lexer);
+	mini->parcer = add_parcer(mini->lexer, &envp);
 	num_comands(mini);
 	execute_cmd(mini, envp);
 	free_minishell(mini);
