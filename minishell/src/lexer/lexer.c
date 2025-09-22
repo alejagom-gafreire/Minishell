@@ -64,7 +64,7 @@ t_lexer	*aux_line(char *line)
 			i = check_redirect(line, i, &list, &first_word);
 		else if (line[i] == '\'' || line[i] == '"')
 		{
-			i = check_quotes(line, i, &list);
+			i = check_quotes(line, i, &list,&first_word);
 			if (i < 0)
 				return (free_lexer(list), NULL);
 		}
@@ -84,9 +84,11 @@ void	check_line(char *line, t_shell *envp)
 	mini->lexer = aux_line(line);
 	if (!mini->lexer)
 		return ;
+	print_tokens(mini->lexer);
 	if (expand_tokens(&mini->lexer, envp) != 0)
 		return ;
 	mini->parcer = add_parcer(mini->lexer);
+	print_parcer(mini->parcer);
 	num_comands(mini);
 	execute_cmd(mini, envp);
 	free_minishell(mini);

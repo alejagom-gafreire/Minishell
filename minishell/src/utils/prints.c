@@ -16,7 +16,6 @@ void	print_parcer(t_parcer *parcer)
 {
 	while (parcer)
 	{
-		printf("voy aqui\n");
 		printf("cmd: %s (infile; %s) (outfile; %s)\n", parcer->cmd_args,
 			parcer->name_infile, parcer->name_outfile);
 		parcer = parcer->next;

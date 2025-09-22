@@ -98,6 +98,7 @@ typedef struct s_parcer
 	int				infile;
 	int				outfile;
 	char			*cmd_args;
+	char    		**argv;
 	char			*arg_export;
 	char			*builtin;
 	char			*name_infile;
@@ -198,6 +199,7 @@ void				print_tokens(t_lexer *lexer);
 // parser
 t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
+int					 is_word_tok(t_lexer *n);
 
 // parser_aux
 int					open_outfile(char *file, int appened);
@@ -211,7 +213,7 @@ t_lexer				*handle_cmd(t_lexer *aux, t_parcer *new_node);
 t_lexer				*check_buildings(t_lexer *aux, t_parcer *new_parcer);
 
 // lexer quotes
-int					check_quotes(char *line, int i, t_lexer **lexer_list);
+int					check_quotes(char *line, int i, t_lexer **lexer_list,int *first_word);
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);
 void				num_comands(t_mini *mini);
@@ -223,9 +225,9 @@ void				add_token(t_lexer **lexer, char *info, t_tokens type,
 int					handle_word(char *line, int i, t_lexer **lexer_list,
 						int *first_word);
 int					handle_double_quotes(char *line, int i,
-						t_lexer **lexer_list);
+						t_lexer **lexer_list,int *first_word);
 int					handle_simple_quotes(char *line, int i,
-						t_lexer **lexer_list);
+						t_lexer **lexer_list,int *first_word);
 int					check_redirect(char *line, int i, t_lexer **lexer_list,
 						int *first_word);
 int					handle_output_redirect(char *line, int i,

@@ -64,7 +64,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 			*aux = check_heredoc((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_BUILTINS)
 			*aux = check_buildings((*aux), new_parcer);
-		else if ((*aux)->token == T_NAME_CMD || (*aux)->token == T_GENERAL)
+		else if (is_word_tok((*aux)))
 			*aux = handle_cmd((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
 		{

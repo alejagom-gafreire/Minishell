@@ -44,7 +44,7 @@ int	check_simple_quotes(char *line, int pos)
 	}
 	if (line[i] == '\0')
 	{
-		printf("Error: command not valid");
+		printf("Error: command not valid\n");
 		return (-1);
 	}
 	return (i);
@@ -61,7 +61,7 @@ int	check_double_quotes(char *line, int pos)
 	}
 	if (line[i] == '\0')
 	{
-		printf("Error: command not valid");
+		printf("Error: command not valid\n");
 		return (-1);
 	}
 	return (i);
