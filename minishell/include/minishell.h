@@ -133,6 +133,8 @@ typedef struct s_shell
 	char			**envi;
 	int				last_status;
 	int				error_heredoc;
+	int				error_redirect;
+	int				denied_open;
 }					t_shell;
 
 /*
@@ -212,27 +214,29 @@ void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
 
 // parser
-t_parcer			*add_parcer(t_lexer *lexer, t_shell **env);
+t_parcer			*add_parcer(t_lexer *lexer, t_shell **env, t_mini *mini);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
 int					is_word_tok(t_lexer *n);
 
 // parser_aux
-int					open_outfile(char *file, int appened);
-int					read_heredoc(char *delim, t_shell **env);
-void				restart_signals_shell(void);
-void				init_signals_herecod(void);
+int					open_outfile(char *file, int appened, t_shell **env);
+int					read_heredoc(char *delim, t_shell *env);
+void	init_signals_heredoc(void);
+void	restart_signals_shell(void);
+// void				restart_signals_shell(void);
+// void				init_signals_herecod(void);
 
 // parser handles
 t_lexer				*handle_infile(t_lexer *aux, t_parcer *new_parcer);
 t_lexer				*check_heredoc(t_lexer *aux, t_parcer *new_parcer, t_shell **env);
-t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env);
+t_lexer				*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env, t_mini *mini);
 t_lexer				*handle_cmd(t_lexer *aux, t_parcer *new_node);
 t_lexer				*check_buildings(t_lexer *aux, t_parcer *new_parcer);
 
 // lexer quotes
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);
-void				num_comands(t_mini *mini);
+void				num_comands(t_mini *mini, t_shell *envp);
 
 // lexer token
 void				add_token(t_lexer **lexer, char *info, t_tokens type,

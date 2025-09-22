@@ -28,7 +28,7 @@ t_lexer	*handle_infile(t_lexer *aux, t_parcer *new_parcer)
 	return (aux->next);
 }
 
-t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
+t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env, t_mini *mini)
 {
 	int	appened;
 
@@ -38,15 +38,24 @@ t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 	{
 		if (aux->next == NULL)
 			return (NULL);
-		printf("esto tiene la flag: %d\n", (*env)->error_heredoc);
-		(*env)->error_heredoc = 0;
 		return (aux->next->next);
 	}
 	if (!aux || !aux->next || aux->next->token != T_OUTFILE)
 		return (aux->next);
 	appened = (ft_strncmp(aux->inf, ">>", 3) == 0);
-	new_parcer->outfile = open_outfile(aux->next->inf, appened);
+	new_parcer->outfile = open_outfile(aux->next->inf, appened, env);
 	if (new_parcer->outfile == -1)
-		printf("No such file or directory\n");
+	{
+		if ((*env)->denied_open != 0)
+		{
+			printf("Permission denied\n");
+			(*env)->denied_open = 0;
+		}
+		else
+			printf("No such file or directory\n");
+		(*env)->error_redirect = 1;
+		(void)mini;
+		// mini->num_cmd = 0;
+	}
 	return (aux->next->next);
 }

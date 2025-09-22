@@ -37,13 +37,13 @@ static void	print_error_syntax(void)
 	printf("syntax error near unexpected token `newline'\n");
 }
 
-static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env)
+static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env, t_mini *mini)
 {
 	while (*aux && (*aux)->token != T_PIPE)
 	{
 		if (new_parcer->redir_error || new_parcer->syntax_error)
 		{
-			while (*aux && (*aux)->token != T_PIPE)
+			while ((*aux && (*aux)->token != T_PIPE) || (*aux)->token == T_DELIM)
 				*aux = (*aux)->next;
 			return ;
 		}
@@ -70,7 +70,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env)
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
 		{
 			if ((*aux)->next)
-				*aux = handle_outfile((*aux), new_parcer, env);
+				*aux = handle_outfile((*aux), new_parcer, env, mini);
 			else
 			{
 				print_error_syntax();
@@ -95,7 +95,7 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env)
 	finalize_parcer(new_parcer, cmd);
 */
 
-t_parcer	*add_parcer(t_lexer *lexer, t_shell **env)
+t_parcer	*add_parcer(t_lexer *lexer, t_shell **env, t_mini *mini)
 {
 	t_lexer		*aux;
 	t_parcer	*parcer;
@@ -108,7 +108,7 @@ t_parcer	*add_parcer(t_lexer *lexer, t_shell **env)
 		new_parcer = mem_parcer();
 		if (!new_parcer)
 			return (NULL);
-		process_tokens(&aux, new_parcer, env);
+		process_tokens(&aux, new_parcer, env, mini);
 		if (aux && aux->token == T_PIPE)
 			aux = aux->next;
 		inside_parcer(&parcer, new_parcer);

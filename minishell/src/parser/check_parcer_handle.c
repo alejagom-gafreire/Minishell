@@ -43,10 +43,12 @@ t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 {
 	if (aux->next && aux->next->token == T_DELIM)
 	{
-		new_parcer->infile = read_heredoc(aux->next->inf, env);
-		printf("error de herdoc: %d\n", (*env)->error_heredoc);
+		new_parcer->infile = read_heredoc(aux->next->inf, (*env));
 		if (new_parcer->infile == -1)
+		{
 			(*env)->error_heredoc = 1;
+			return(aux->next);
+		}
 		return (aux->next->next);
 	}
 	else
