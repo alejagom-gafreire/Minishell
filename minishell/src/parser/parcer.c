@@ -59,6 +59,8 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env, t
 				return ;
 			}
 		}
+		else if (*aux && (*aux)->token == T_DELIM)
+			*aux = (*aux)->next;
 		else if (*aux && (*aux)->token == T_INFILE)
 			*aux = handle_infile((*aux), new_parcer);
 		else if ((*aux)->token == T_HEREDOC)
