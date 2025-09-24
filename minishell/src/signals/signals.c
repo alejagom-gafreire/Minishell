@@ -20,10 +20,10 @@
 static void	handler_sigint(int sign)
 {
 	(void)sign;
-	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	// rl_redisplay();
+	write(STDOUT_FILENO, "\n", 1);
+	// rl_redisplay(); //el error esta aqui de la fuga de memoria y el ctrl + c
 }
 /*
 	Modifica las acciones de Ctrl+C y Ctrl+\

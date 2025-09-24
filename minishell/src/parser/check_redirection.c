@@ -21,6 +21,7 @@ t_lexer	*handle_infile(t_lexer *aux, t_parcer *new_parcer)
 	if (new_parcer->infile == -1)
 	{
 		printf("No such file or directory here\n");
+		// new_parcer->syntax_error = 1;
 		new_parcer->redir_error = 1;
 		return (aux->next);
 	}
