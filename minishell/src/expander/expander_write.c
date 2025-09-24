@@ -22,9 +22,24 @@
 	etc. (quedan literales salvo $? y $NAME)
 */
 
-/* 
+/*
+	scan_var_end:
+	fin de nombre de variable
+*/
+
+size_t	scan_var_end(const char *s, size_t start)
+{
+	size_t	en;
+
+	en = start;
+	while (s[en] && is_var_char(s[en]))
+		en++;
+	return (en);
+}
+
+/*
 	write_status:
-	escribir last_status en dst 
+	escribir last_status en dst
 */
 static void	write_status(char *dst, size_t *p, int last_status)
 {
@@ -38,9 +53,9 @@ static void	write_status(char *dst, size_t *p, int last_status)
 	*p += len;
 }
 
-/* 
+/*
 	handle_simple_write:
-	casos simples: normal, '$' final, '$' sin nombre válido 
+	casos simples: normal, '$' final, '$' sin nombre válido
 */
 static int	handle_simple_write(const char *s, size_t *i, char *dst, size_t *p)
 {
@@ -70,9 +85,10 @@ static int	handle_simple_write(const char *s, size_t *i, char *dst, size_t *p)
 
 /*
 	write_var_span:
-	escribe $NAME (usa getenv); devuelve 1 si OOM, 0 si OK 
+	escribe $NAME (usa getenv); devuelve 1 si OOM, 0 si OK
 */
-static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p)
+static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p,
+		t_shell *envp)
 {
 	size_t	st;
 	size_t	en;
@@ -86,13 +102,13 @@ static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p)
 		return (1);
 	ft_memcpy(name, s + st, en - st);
 	name[en - st] = '\0';
-	if (getenv(name) != NULL)
-		len = ft_strlen(getenv(name));
+	if (get_env(name, envp->envi) != NULL)
+		len = ft_strlen(get_env(name, envp->envi));
 	else
 		len = 0;
 	if (len > 0)
 	{
-		ft_memcpy(dst + *p, getenv(name), len);
+		ft_memcpy(dst + *p, get_env(name, envp->envi), len);
 		*p += len;
 	}
 	free(name);
@@ -100,11 +116,11 @@ static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p)
 	return (0);
 }
 
-/* 
+/*
 	write_expanded:
-	principal: escribe s expandida en dst 
+	principal: escribe s expandida en dst
 */
-void	write_expanded(char *dst, const char *s, int last_status)
+void	write_expanded(char *dst, const char *s, t_shell *envp)
 {
 	size_t	i;
 	size_t	p;
@@ -115,13 +131,13 @@ void	write_expanded(char *dst, const char *s, int last_status)
 	{
 		if (s[i + 1] == '?')
 		{
-			write_status(dst, &p, last_status);
+			write_status(dst, &p, envp->last_status);
 			i += 2;
 			continue ;
 		}
 		if (handle_simple_write(s, &i, dst, &p))
 			continue ;
-		if (write_var_span(s, &i, dst, &p))
+		if (write_var_span(s, &i, dst, &p, envp))
 			break ;
 	}
 	dst[p] = '\0';

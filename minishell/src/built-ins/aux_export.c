@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+int	cmp_env_key(const char *env, const char *arg, size_t key_len)
+{
+	if (ft_strncmp(env, arg, key_len) == 0 && (env[key_len] == '='
+			|| env[key_len] == '\0'))
+	{
+		return (1);
+	}
+	return (0);
+}
+
 int	cmp_env(const void *a, const void *b)
 {
 	char *const	*str_a;

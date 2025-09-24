@@ -98,6 +98,7 @@ typedef struct s_parcer
 	int				infile;
 	int				outfile;
 	char			*cmd_args;
+	char			**argv;
 	char			*arg_export;
 	char			*builtin;
 	char			*name_infile;
@@ -177,19 +178,20 @@ int					check_token(char **envp);
 void				check_line(char *line, t_shell *envp);
 
 // expander
-int					expand_tokens(t_lexer **lexer_list, int last_status);
+int					expand_tokens(t_lexer **lexer_list, t_shell *envp);
 char				*itoa_status(int st, char buf[32]);
 char				*dup_cstr(const char *s);
 void				free_lexer_node(t_lexer *node);
-size_t				measure_expanded_len(const char *str, int last_status);
-void				write_expanded(char *dst, const char *s, int last_status);
-char				*expand_vars_two_pass(const char *str, int last_status);
+size_t				measure_expanded_len(const char *str, t_shell *envp);
+void				write_expanded(char *dst, const char *s, t_shell *envp);
+char				*expand_vars_two_pass(const char *str, t_shell *envp);
 int					is_var_char(char c);
 int					is_var_start(char c);
 int					is_word_token(int t);
 void				advance_nodes(t_lexer **prev, t_lexer **node);
 int					is_empty_tkn(t_lexer *n);
 size_t				scan_var_end(const char *s, size_t start);
+char				*get_env(char *name, char **envp);
 // functios print
 void				print_parcer(t_parcer *parcer);
 void				print_tokens(t_lexer *lexer);
@@ -197,6 +199,7 @@ void				print_tokens(t_lexer *lexer);
 // parser
 t_parcer			*add_parcer(t_lexer *lexer);
 void				inside_parcer(t_parcer **head, t_parcer *new_node);
+int					is_word_tok(t_lexer *n);
 
 // parser_aux
 int					open_outfile(char *file, int appened);
@@ -210,7 +213,6 @@ t_lexer				*handle_cmd(t_lexer *aux, t_parcer *new_node);
 t_lexer				*check_buildings(t_lexer *aux, t_parcer *new_parcer);
 
 // lexer quotes
-int					check_quotes(char *line, int i, t_lexer **lexer_list);
 int					check_simple_quotes(char *line, int pos);
 int					check_double_quotes(char *line, int pos);
 void				num_comands(t_mini *mini);
@@ -221,10 +223,6 @@ void				add_token(t_lexer **lexer, char *info, t_tokens type,
 // lexer_aux
 int					handle_word(char *line, int i, t_lexer **lexer_list,
 						int *first_word);
-int					handle_double_quotes(char *line, int i,
-						t_lexer **lexer_list);
-int					handle_simple_quotes(char *line, int i,
-						t_lexer **lexer_list);
 int					check_redirect(char *line, int i, t_lexer **lexer_list,
 						int *first_word);
 int					handle_output_redirect(char *line, int i,

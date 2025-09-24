@@ -33,7 +33,7 @@ t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer)
 	int	appened;
 
 	if (!aux)
-			return (NULL);
+		return (NULL);
 	if (new_parcer->redir_error)
 	{
 		if (aux->next == NULL)

@@ -24,6 +24,10 @@
 	Liberar memoria: ojo con leaks de line.
 */
 
+// static int is_cmd_word(t_tokens t)
+// {
+// 	 return (t == T_NAME_CMD || t == T_GENERAL || t == T_BUILTINS);
+// }
 /*
 	manejar Ctrl + c cerrar el heredoc sin cerrar la mini.
 */

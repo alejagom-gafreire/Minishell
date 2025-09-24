@@ -43,33 +43,34 @@ void	add_token(t_lexer **lexer, char *info, t_tokens type, t_kind kind)
 	}
 }
 
-/*
-Comprobar linea por linea para detectar todos los tokens
-*/
-
 t_lexer	*aux_line(char *line)
 {
 	t_lexer	*list;
 	int		i;
+	int		z;
 	int		first_word;
 
 	list = NULL;
 	first_word = 1;
 	i = 0;
+	z = 0;
 	while (line[i])
 	{
 		if (line[i] == ' ')
 			i++;
 		else if (line[i] == '|' || line[i] == '<' || line[i] == '>')
-			i = check_redirect(line, i, &list, &first_word);
-		else if (line[i] == '\'' || line[i] == '"')
 		{
-			i = check_quotes(line, i, &list);
+			i = check_redirect(line, i, &list, &first_word);
 			if (i < 0)
 				return (free_lexer(list), NULL);
 		}
 		else
-			i = handle_word(line, i, &list, &first_word);
+		{
+			z = handle_word(line, i, &list, &first_word);
+			if (z < 0)
+				return (free_lexer(list), NULL);
+			i = z;
+		}
 	}
 	return (list);
 }
@@ -84,7 +85,7 @@ void	check_line(char *line, t_shell *envp)
 	mini->lexer = aux_line(line);
 	if (!mini->lexer)
 		return ;
-	if (expand_tokens(&mini->lexer, envp->last_status) != 0)
+	if (expand_tokens(&mini->lexer, envp) != 0)
 		return ;
 	mini->parcer = add_parcer(mini->lexer);
 	num_comands(mini);
