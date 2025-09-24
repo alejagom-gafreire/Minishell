@@ -25,6 +25,7 @@ SRC = \
 	src/main.c \
 	src/signals/signals.c \
 	src/prompt/prompt.c \
+	src/prompt/aux_prompt.c \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \

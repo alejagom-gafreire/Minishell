@@ -16,7 +16,7 @@
 	cambiar el exit por un error
 */
 
-void	num_comands(t_mini *mini)
+void	num_comands(t_mini *mini, t_shell *envp)
 {
 	int			i;
 	t_parcer	*list;
@@ -29,6 +29,12 @@ void	num_comands(t_mini *mini)
 		if (list->cmd_args || list->builtin)
 			i++;
 		list = list->next;
+	}
+	if (envp->error_heredoc != 0 || envp->error_redirect)
+	{
+		envp->error_heredoc = 0;
+		mini->num_cmd = 0;
+		return ;
 	}
 	mini->num_cmd = i;
 }

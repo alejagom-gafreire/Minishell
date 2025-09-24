@@ -60,6 +60,7 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 	t_parcer	*list;
 	char		**argv;
 
+	envp->error_redirect = 0;
 	list = mini->parcer;
 	if (mini->num_cmd == 1 && list->builtin != NULL && list->infile == -1
 		&& list->outfile == -1)
