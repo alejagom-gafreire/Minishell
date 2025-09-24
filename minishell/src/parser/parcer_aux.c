@@ -36,76 +36,71 @@
 
 /* heredoc.c */
 
-static char *gnl_simple(int fd)
+static char	*gnl_simple(int fd)
 {
-    char buf[1024];
-    int i = 0, r;
-    char c;
+	char		buf[1024];
+	char		c;
+	int			i;
+	int			r;
 
-    while ((r = read(fd, &c, 1)) > 0)
-    {
-        if (c == '\n')
-            break;
-        buf[i++] = c;
-    }
-    if (r <= 0 && i == 0)
-        return NULL;
-    buf[i] = '\0';
-    return strdup(buf);
+	i = 0;
+	r = read(fd, &c, 1);
+	while (r > 0)
+	{
+		if (c == '\n')
+			break ;
+		if (i < 1023)
+			buf[i++] = c;
+		r = read(fd, &c, 1);
+	}
+	if (r <= 0 && i == 0)
+		return (NULL);
+	buf[i] = '\0';
+	return (strdup(buf));
 }
 
 static void	heredoc_sigint(int sig)
 {
 	(void)sig;
-	// write(STDOUT_FILENO, "\n", 1);
 	_exit(130);
 }
 
-// static void	handler_sigint(void)
-// {
-// 	write(STDOUT_FILENO, "\n", 1);
-// 	rl_replace_line("", 0);
-// 	rl_on_new_line();
-// 	// rl_redisplay();
-// }
-
 void	init_signals_heredoc(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = heredoc_sigint;
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
-
 	sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;
 	sigaction(SIGQUIT, &sa, NULL);
 }
-// void	init_signals(void)
-// {
-// 	struct sigaction	sa;
 
-// 	sigemptyset(&sa.sa_mask);
-// 	sa.sa_handler = handler_sigint;
-// 	sa.sa_flags = 0;
-// 	sigaction(SIGINT, &sa, NULL);
-// 	sa.sa_handler = SIG_IGN;
-// 	sigemptyset(&sa.sa_mask);
-// 	sa.sa_flags = 0;
-// 	sigaction(SIGQUIT, &sa, NULL);
-// }
-// void	restart_signals_shell(void)
-// {
-// 	struct sigaction sa;
+void	line(int fd_write, char *delim)
+{
+	char	*line;
 
-// 	printf("entra a las señales de shell");
-// 	sigemptyset(&sa.sa_mask);
-// 	sa.sa_handler = handler_sigint();
-// 	sa.sa_flags = 0;
-// 	sigaction(SIGINT, &sa, NULL);
-// 	sigaction(SIGQUIT, &sa, NULL);
-// }
+	if (pipe(fd_write) == -1)
+		return (-1);
+	while (1)
+	{
+		write(1, "HEREDOC>", 9);
+		line = gnl_simple(STDIN_FILENO);
+		if (!line)
+			return (NULL);
+		line[strcspn(line, "\n")] = '\0';
+		if (ft_strcmp(line, delim) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(fd_write, line, strlen(line));
+		write(fd_write, "\n", 1);
+		free(line);
+	}
+}
 
 int	read_heredoc(char *delim, t_shell *sh)
 {
@@ -130,7 +125,7 @@ int	read_heredoc(char *delim, t_shell *sh)
 			if (!line)
 				exit(0);
 			line[strcspn(line, "\n")] = '\0';
-			if (strcmp(line, delim) == 0)
+			if (ft_strcmp(line, delim) == 0)
 			{
 				free(line);
 				break ;
@@ -147,14 +142,14 @@ int	read_heredoc(char *delim, t_shell *sh)
 		close(pipefd[1]);
 		waitpid(pid, &status, 0);
 		waitpid(pid, &status, 0);
-	if ((WIFEXITED(status) && WEXITSTATUS(status) == 130) ||
-	(WIFSIGNALED(status) && WTERMSIG(status) == SIGINT))
-	{
-		sh->error_heredoc = 1;
-		close(pipefd[0]);
-		init_signals();
-		return (-1);
-	}
+		if ((WIFEXITED(status) && WEXITSTATUS(status) == 130)
+			|| (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT))
+		{
+			sh->error_heredoc = 1;
+			close(pipefd[0]);
+			init_signals();
+			return (-1);
+		}
 		init_signals();
 	}
 	return (pipefd[0]);
