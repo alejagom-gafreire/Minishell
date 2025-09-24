@@ -12,120 +12,116 @@
 
 #include "minishell.h"
 
-int	check_quotes(char *line, int i, t_lexer **lexer_list,int *first_word)
+static int	is_sep(char c)
 {
-	if (line[i] == '\'')
-		i = handle_simple_quotes(line, i, lexer_list,first_word);
-	else if (line[i] == '"')
-		i = handle_double_quotes(line, i, lexer_list,first_word);
-	return (i);
+	return (c == ' ' || c == '|' || c == '<' || c == '>');
 }
 
-int	handle_simple_quotes(char *line, int i, t_lexer **lexer_list,int *first_word)
+static char	*buf_append(char *s, char c)
 {
-	int		end;
-	char	*word;
-	t_tokens	type;
+	size_t	len;
+	char	*wrd;
 
-	end = check_simple_quotes(line, i);
-	if (end < 0)
-		return (-1);
-	word = ft_substr(line, i + 1, end - (i + 1));
-	// Decide el type según contexto/redirecciones/primer word
-	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
-		type = T_INFILE;
-	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
-		type = T_OUTFILE;
-	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
-		type = T_DELIM;
-	else if (*first_word)
-		type = compare_builtins(word);     // ← CLAVE
-	else
-		type = T_GENERAL;
-
-	add_token(lexer_list, word, type, T_SQ);
-	(*lexer_list)->last_token = type;
-	if (type == T_NAME_CMD)
-		*first_word = 0;
-	free(word);
-	return (end + 1);
+	len = 0;
+	if (s)
+		len = ft_strlen(s);
+	wrd = (char *)malloc(len + 2);
+	if (!wrd)
+		return (free(s), NULL);
+	if (s)
+	{
+		ft_memcpy(wrd, s, len);
+		free(s);
+	}
+	wrd[len] = c;
+	wrd[len + 1] = '\0';
+	return (wrd);
 }
 
-int	handle_double_quotes(char *line, int i, t_lexer **lexer_list,int *first_word)
+static t_lexer	*lexer_last(t_lexer *lst)
 {
-	int		end;
-	char	*word;
-	t_tokens	type;
-
-	end = check_double_quotes(line, i);
-	if (end < 0)
-		return (-1);
-	word = ft_substr(line, i + 1, end - (i + 1));
-	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
-		type = T_INFILE;
-	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
-		type = T_OUTFILE;
-	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
-		type = T_DELIM;
-	else if (*first_word)
-		type = compare_builtins(word);     // ← CLAVE
-	else
-		type = T_GENERAL;
-	
-	add_token(lexer_list, word, type, T_DQ);
-	(*lexer_list)->last_token = type;
-	if (type == T_NAME_CMD)
-		*first_word = 0;
-	free(word);
-	return (end + 1);
-}
-
-void	check_tkn(t_lexer **lexer_list, char *word, t_tokens *type,
-		t_kind *kind, int *first_word)
-{
-	*kind = T_PLAIN;
-	if (*lexer_list && (*lexer_list)->last_token == T_REDIR_IN)
-	{
-		*type = T_INFILE;
-	}
-	else if (*lexer_list && (*lexer_list)->last_token == T_REDIR_OUT)
-	{
-		*type = T_OUTFILE;
-	}
-	else if (*lexer_list && (*lexer_list)->last_token == T_HEREDOC)
-	{
-		*type = T_DELIM;
-	}
-	else if (*first_word)
-	{
-		*type = compare_builtins(word);
-		*first_word = 0;
-	}
-	// else
-	// {
-	// 	*type = compare_builtins(word);
-	// 	*kind = T_PLAIN;
-	// }
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
 int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 {
-	int			start;
-	char		*word;
+	int			in_sq;
+	int			in_dq;
+	int			had_plain;
+	int			had_sq;
+	int			had_dq;
+	char		*buf;
+	char		c;
 	t_tokens	type;
 	t_kind		kind;
+	t_lexer		*last;
 
-	start = i;
-	while (line[i] && line[i] != ' ' && line[i] != '<' && line[i] != '>'
-		&& line[i] != '|')
+	in_sq = 0;
+	in_dq = 0;
+	had_plain = 0;
+	had_sq = 0;
+	had_dq = 0;
+	buf = NULL;
+	while (line[i])
+	{
+		c = line[i];
+		if (c == '\'' && !in_dq)
+		{
+			in_sq = !in_sq;
+			i++;
+			continue ;
+		}
+		if (c == '"' && !in_sq)
+		{
+			in_dq = !in_dq;
+			i++;
+			continue ;
+		}
+		if (!in_sq && !in_dq && is_sep(c))
+			break ;
+		buf = buf_append(buf, c);
+		if (!buf)
+			return (-2);
+		if (in_sq)
+			had_sq = 1;
+		else if (in_dq)
+			had_dq = 1;
+		else
+			had_plain = 1;
 		i++;
-	word = ft_substr(line, start, i - start);
-	if (!word)
-		return (-1);
-	check_tkn(lexer_list, word, &type, &kind,first_word);
-	add_token(lexer_list, word, type, kind);
-	(*lexer_list)->last_token = type;
+	}
+	if (in_sq || in_dq)
+		return (free(buf), -1);
+	if (!buf)
+	{
+		buf = ft_strdup("");
+		if (!buf)
+			return (-2);
+	}
+	last = lexer_last(*lexer_list);
+	if (last && last->token == T_REDIR_IN)
+		type = T_INFILE;
+	else if (last && last->token == T_REDIR_OUT)
+		type = T_OUTFILE;
+	else if (last && last->token == T_HEREDOC)
+		type = T_DELIM;
+	else if (*first_word)
+		type = compare_builtins(buf);
+	else
+		type = T_GENERAL;
+	if (had_sq && !had_dq && !had_plain)
+		kind = T_SQ;
+	else if (had_dq && !had_sq && !had_plain)
+		kind = T_DQ;
+	else
+		kind = T_PLAIN;
+	add_token(lexer_list, buf, type, kind);
+	free(buf);
 	if (type == T_NAME_CMD)
 		*first_word = 0;
-	return (free(word), i);
+	return (i);
 }

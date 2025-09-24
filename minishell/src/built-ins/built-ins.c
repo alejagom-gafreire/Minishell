@@ -14,8 +14,6 @@
 
 int	exec_builtins(t_parcer *list, char **argv, t_shell *envp)
 {
-	for (int k = 0; argv && argv[k]; k++)
-        dprintf(2, "[DBG argv[%d]] «%s»\n", k, argv[k]);
 	if (ft_strcmp("env", list->builtin) == 0)
 		return (exec_env(envp, list));
 	else if (ft_strcmp("cd", list->builtin) == 0)

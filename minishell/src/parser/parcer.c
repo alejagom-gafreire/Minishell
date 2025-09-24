@@ -41,23 +41,24 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer)
 {
 	while (*aux && (*aux)->token != T_PIPE)
 	{
-		 if (new_parcer->redir_error || new_parcer->syntax_error)
-        {
-            while (*aux && (*aux)->token != T_PIPE)
-                *aux = (*aux)->next;
-            return;
-        }
-
+		if (new_parcer->redir_error || new_parcer->syntax_error)
+		{
+			while (*aux && (*aux)->token != T_PIPE)
+				*aux = (*aux)->next;
+			return ;
+		}
 		if (*aux && (*aux)->token == T_REDIR_IN)
+		{
 			if ((*aux)->next && (*aux)->next->token == T_INFILE)
-			*aux = (*aux)->next;
-			 else
-    		{
-        		print_error_syntax();
-        		*aux = NULL;
-        		new_parcer->syntax_error = 1;
-        		return ;
-    		}
+				*aux = (*aux)->next;
+			else
+			{
+				print_error_syntax();
+				*aux = NULL;
+				new_parcer->syntax_error = 1;
+				return ;
+			}
+		}
 		else if (*aux && (*aux)->token == T_INFILE)
 			*aux = handle_infile((*aux), new_parcer);
 		else if ((*aux)->token == T_HEREDOC)
