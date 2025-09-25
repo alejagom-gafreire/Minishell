@@ -47,7 +47,6 @@ int	exec_exit(char **argv)
 			return (printf("error: too many arguments\n"), 1);
 		error_code = ft_atoi(argv[1]);
 	}
-	printf("exit mini\n");
 	exit(error_code);
 	return (0);
 }
