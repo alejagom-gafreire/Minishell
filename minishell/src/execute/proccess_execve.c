@@ -62,7 +62,6 @@ static void	child_exec(t_parcer *list, t_mini *mini, int pipes[][2],
 		t_shell *envp)
 {
 	int		i;
-	char	**argv;
 
 	i = get_node_index(mini, list);
 	fd_redirect(&list, &i, mini, pipes);
@@ -71,13 +70,11 @@ static void	child_exec(t_parcer *list, t_mini *mini, int pipes[][2],
 		close(list->infile);
 	if (list->outfile != -1)
 		close(list->outfile);
-	if (list->builtin)
+	if (list->argv && list->argv[0] && compare_builtins(list->argv[0]))
 	{
-		argv = builtin_argv(list->builtin, list->cmd_args);
-		if (!argv)
-			exit(1);
-		envp->last_status = exec_builtins(list, argv, envp);
-		free_split(argv);
+		if (!list->argv || !list->argv[0])
+		exit(0);
+		envp->last_status = exec_builtins(list, list->argv, envp);
 		exit(envp->last_status);
 	}
 	exec_cmd(list, envp->envi);

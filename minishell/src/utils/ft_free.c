@@ -12,6 +12,57 @@
 
 #include "minishell.h"
 
+// void free_argv(t_parcer *cmd) {
+//     int i = 0;
+//     if (!cmd || !cmd->argv) return;
+//     while (cmd->argv[i]) free(cmd->argv[i++]);  // libera los ft_strdup()
+//     free(cmd->argv);                             // libera la matriz (24 bytes)
+//     cmd->argv = NULL;
+//     cmd->argc = 0;
+// }
+
+// void free_parcer_node(t_parcer *n) {
+//     if (!n) return;
+//     if (n->infile >= 0) { close(n->infile); n->infile = -1; }
+//     if (n->outfile >= 0){ close(n->outfile); n->outfile = -1; }
+//     free_argv(n);
+//     // libera duplicados sueltos si los haces:
+//     if (n->builtin && (!n->argv || n->builtin != n->argv[0])) free(n->builtin);
+//     free(n->cmd_args);
+//     free(n->arg_export);
+//     free(n->name_infile);
+//     free(n->name_outfile);
+//     free(n);
+// }
+
+// void free_parcer_list(t_parcer *head) {
+//     t_parcer *next;
+//     while (head) { next = head->next; free_parcer_node(head); head = next; }
+// }
+
+// void free_lexer_list(t_lexer *lx) {
+//     while (lx) { t_lexer *nx = lx->next; free(lx->inf); free(lx); lx = nx; }
+// }
+
+// void free_after_line(t_mini *mini) {
+//     if (!mini) return;
+//     if (mini->parcer) { free_parcer_list(mini->parcer); mini->parcer = NULL; }
+//     if (mini->lexer)  { free_lexer_list(mini->lexer);   mini->lexer  = NULL; }
+//     mini->num_cmd = 0;
+// }
+
+// void free_env(char **envi) 
+// {
+//     if (!envi) 
+// 		return; 
+// 	for (int i=0; envi[i]; ++i)
+// 	{
+// 		free(envi[i]); 
+// 		free(envi);
+// 	}
+// }
+
+
 void	free_lexer(t_lexer *lexer)
 {
 	t_lexer	*temp;
@@ -25,6 +76,19 @@ void	free_lexer(t_lexer *lexer)
 	}
 }
 
+void    free_argv(t_parcer *cmd)
+{
+    int i;
+
+    if (!cmd || !cmd->argv)
+        return;
+    i = 0;
+    while (cmd->argv[i])
+        free(cmd->argv[i++]);   // libera los strdup hechos en append_arg
+    free(cmd->argv);            // libera la matriz (malloc de append_arg)
+    cmd->argv = NULL;
+    cmd->argc = 0;
+}
 void	free_parcer(t_parcer *parcer)
 {
 	t_parcer	*temp;
@@ -47,6 +111,7 @@ void	free_parcer(t_parcer *parcer)
 		parcer = parcer->next;
 		free(temp);
 	}
+	free_argv(parcer);
 }
 
 void	free_minishell(t_mini *mini)
