@@ -94,35 +94,67 @@ int	exec_cd(char **cmd, t_shell *envp)
 	char	*old_pwd;
 	char	*pwd;
 	int		print_after;
+	int		free_target;
 
 	print_after = 0;
+	free_target = 0;
 	nbr = get_size(cmd);
 	if (nbr > 2)
-		return (printf("cd:too many arguments\n"), 1);
-	if (!cmd[1])
+		return (printf("cd: too many arguments\n"), 1);
+
+	if (!cmd[1] || (cmd[1][0] == '~' && cmd[1][1] == '\0'))
 	{
-		target = get_home_env(envp->envi);
-		if (!target)
+		char *home = get_home_env(envp->envi);
+		if (!home || !*home)
 			return (printf("cd: HOME not set\n"), 1);
+		target = ft_strdup(home);
+		if (!target)
+			return (printf("cd: allocation error\n"), 1);
+		free_target = 1;
+	}
+	else if (cmd[1][0] == '~' && cmd[1][1] == '/')
+	{
+		char *home = get_home_env(envp->envi);
+		if (!home || !*home)
+			return (printf("cd: HOME not set\n"), 1);
+		target = ft_strjoin(home, cmd[1] + 1);
+		if (!target)
+			return (printf("cd: allocation error\n"), 1);
+		free_target = 1;
 	}
 	else if (cmd[1][0] == '-' && cmd[1][1] == '\0')
 	{
-		target = get_env("OLDPWD",envp->envi);
-		if (!target)
+		char *old = get_env("OLDPWD", envp->envi);
+		if (!old || !*old)
 			return (printf("cd: OLDPWD not set\n"), 1);
+		target = ft_strdup(old);
+		if (!target)
+			return (printf("cd: allocation error\n"), 1);
+		free_target = 1;
 		print_after = 1;
 	}
 	else
 		target = cmd[1];
 	old_pwd = getcwd(NULL, 0);
 	if (chdir(target) == -1)
-		return (free(old_pwd), printf("cd: %s: No such file or directory\n",
-				target), 1);
+	{
+		printf("cd: %s: No such file or directory\n", target);
+		if (old_pwd) free(old_pwd);
+		if (free_target) free(target);
+		return (1);
+	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		pwd = ft_strdup(target);
+
 	updt_pwd(old_pwd, pwd, envp);
 	if (print_after)
-		printf("%s\n",pwd);
-	return (free(old_pwd), free(pwd), 0);
+		printf("%s\n", pwd);
+	if (old_pwd) 
+		free(old_pwd);
+	if (pwd) 
+		free(pwd);
+	if (free_target) 
+		free(target);
+	return (0);
 }
