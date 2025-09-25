@@ -93,7 +93,9 @@ int	exec_cd(char **cmd, t_shell *envp)
 	char	*target;
 	char	*old_pwd;
 	char	*pwd;
+	int		print_after;
 
+	print_after = 0;
 	nbr = get_size(cmd);
 	if (nbr > 2)
 		return (printf("cd:too many arguments\n"), 1);
@@ -102,6 +104,13 @@ int	exec_cd(char **cmd, t_shell *envp)
 		target = get_home_env(envp->envi);
 		if (!target)
 			return (printf("cd: HOME not set\n"), 1);
+	}
+	else if (cmd[1][0] == '-' && cmd[1][1] == '\0')
+	{
+		target = get_env("OLDPWD",envp->envi);
+		if (!target)
+			return (printf("cd: OLDPWD not set\n"), 1);
+		print_after = 1;
 	}
 	else
 		target = cmd[1];
@@ -113,5 +122,7 @@ int	exec_cd(char **cmd, t_shell *envp)
 	if (!pwd)
 		pwd = ft_strdup(target);
 	updt_pwd(old_pwd, pwd, envp);
+	if (print_after)
+		printf("%s\n",pwd);
 	return (free(old_pwd), free(pwd), 0);
 }
