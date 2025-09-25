@@ -28,10 +28,10 @@ SRC = \
 	src/prompt/aux_prompt.c \
 	src/prompt/utils_prompt.c \
 	src/lexer/lexer.c \
-	src/parser/parcer.c \
-	src/parser/parcer_aux.c \
-	src/parser/check_parcer_handle.c\
-	src/parser/check_redirection.c\
+	src/parcer/parcer.c \
+	src/parcer/parcer_aux.c \
+	src/parcer/check_parcer_handle.c\
+	src/parcer/check_redirection.c\
 	src/lexer/lexer_quotes.c \
 	src/lexer/check_handles.c \
 	src/lexer/aux_handler.c \
