@@ -63,7 +63,7 @@ static void	heredoc_sigint(int sig)
 {
 	(void)sig;
 	// write(STDOUT_FILENO, "\n", 1);
-	_exit(130);
+	exit(130);
 }
 
 void	init_signals_heredoc(void)

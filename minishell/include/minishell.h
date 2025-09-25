@@ -115,6 +115,7 @@ typedef struct s_parcer
 	int				outfile;
 	char			*cmd_args;
 	char			**argv;
+	int				argc;
 	char			*arg_export;
 	char			*builtin;
 	char			*name_infile;
@@ -267,5 +268,7 @@ void				init_signals(void);
 void				free_minishell(t_mini *mini);
 void				free_lexer(t_lexer *lexer);
 void				free_shell(t_shell *envi);
+void 				free_after_line(t_mini *mini);
+void				free_parcer(t_parcer *parcer);
 
 #endif

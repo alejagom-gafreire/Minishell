@@ -29,6 +29,9 @@ static t_parcer	*mem_parcer(void)
 	parcer->name_outfile = NULL;
 	parcer->syntax_error = 0;
 	parcer->redir_error = 0;
+
+	parcer->argv = NULL;
+	parcer->argc = 0;
 	return (parcer);
 }
 
@@ -83,19 +86,6 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env, t
 		}
 	}
 }
-
-// static void	finalize_parcer(t_parcer *new_parcer, char *cmd)
-// {
-// 	if (cmd)
-// 	{
-// 		new_parcer->cmd_args = ft_strdup(cmd);
-// 		free(cmd);
-// 	}
-// }
-
-/*
-	finalize_parcer(new_parcer, cmd);
-*/
 
 t_parcer	*add_parcer(t_lexer *lexer, t_shell **env, t_mini *mini)
 {

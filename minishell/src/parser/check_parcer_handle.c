@@ -12,6 +12,32 @@
 
 #include "minishell.h"
 
+int	append_arg(t_parcer *cmd, const char *s)
+{
+	char	**newv;
+	int		i;
+
+	if (!s)
+		return (0);
+	newv = (char **)malloc(sizeof(char *) * (cmd->argc + 2));
+	if (!newv)
+		return (1);
+	i = 0;
+	while (i < cmd->argc)
+	{
+		newv[i] = cmd->argv[i];
+		i++;
+	}
+	newv[i] = ft_strdup(s);
+	if (!newv[i])
+		return (free(newv), 1);
+	newv[i + 1] = NULL;
+	free(cmd->argv);
+	cmd->argv = newv;
+	cmd->argc++;
+	return (0);
+}
+
 int	is_word_tok(t_lexer *n)
 {
 	if (!n)
@@ -23,20 +49,6 @@ int	is_word_tok(t_lexer *n)
 	if (n->token == T_GENERAL)
 		return (1);
 	return (0);
-}
-
-static char	*aux_parcer(char *cmd, char *sec)
-{
-	char	*res;
-	char	*temp;
-
-	res = NULL;
-	temp = NULL;
-	temp = ft_strjoin(cmd, " ");
-	free(cmd);
-	res = ft_strjoin(temp, sec);
-	free(temp);
-	return (res);
 }
 
 t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
@@ -63,14 +75,10 @@ t_lexer	*handle_cmd(t_lexer *aux, t_parcer *new)
 {
 	if (!aux)
 		return (NULL);
-	if (!new->cmd_args && is_word_tok(aux))
+	if (is_word_tok(aux))
 	{
-		new->cmd_args = ft_strdup(aux->inf);
-		return (aux->next);
-	}
-	if (new->cmd_args && is_word_tok(aux->last))
-	{
-		new->cmd_args = aux_parcer(new->cmd_args, aux->inf);
+		if (append_arg(new, aux->inf))
+			new->syntax_error = 1;
 		return (aux->next);
 	}
 	if (aux->token == T_GENERAL)
@@ -81,25 +89,6 @@ t_lexer	*handle_cmd(t_lexer *aux, t_parcer *new)
 	return (aux->next);
 }
 
-// t_lexer	*handle_cmd(t_lexer *aux, t_parcer *new)
-// {
-//	if (!aux)
-// 	return (NULL);
-// if (!new->cmd_args && aux->token == T_NAME_CMD)
-// {
-// 	new->cmd_args = ft_strdup(aux->inf);
-// 	return (aux->next);
-// }
-// else if (new->cmd_args && aux->last->token == T_NAME_CMD)
-// {
-// 	new->cmd_args = aux_parcer(new->cmd_args, aux->inf);
-// 	return (aux->next);
-// }
-// if (aux->token == T_GENERAL)
-// 	new->arg_export = ft_strdup(aux->inf);
-// return (aux->next);
-// }
-
 t_lexer	*check_buildings(t_lexer *aux, t_parcer *new_parcer)
 {
 	if (!aux)
@@ -107,5 +96,7 @@ t_lexer	*check_buildings(t_lexer *aux, t_parcer *new_parcer)
 	new_parcer->builtin = ft_strdup(aux->inf);
 	if (!new_parcer->builtin)
 		return (NULL);
+	if (append_arg(new_parcer, aux->inf))
+		new_parcer->syntax_error = 1;
 	return (aux->next);
 }

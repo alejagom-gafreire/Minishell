@@ -94,6 +94,7 @@ int	check_token(char **envp)
 		if (line && *line == '\0')
 		{
 			free(line);
+			free(prompt);
 			continue ;
 		}
 		if (!line)
