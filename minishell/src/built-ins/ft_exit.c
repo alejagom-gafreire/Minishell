@@ -41,7 +41,7 @@ int	exec_exit(char **argv)
 		if (!check_argv(argv[1]))
 		{
 			printf("error: argument\n");
-			exit(2);
+				return (1);
 		}
 		if (argv[2])
 			return (printf("error: too many arguments\n"), 1);
