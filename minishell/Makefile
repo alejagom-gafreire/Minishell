@@ -50,7 +50,8 @@ SRC = \
 	src/utils/ft_free.c\
 	src/built-ins/built-ins.c\
 	src/built-ins/ft_exit.c \
-	src/built-ins/ft_cd.c \
+	src/built-ins/ft_cd/ft_cd.c \
+	src/built-ins/ft_cd/cd_aux.c \
 	src/built-ins/ft_echo.c \
 	src/built-ins/ft_pwd.c \
 	src/built-ins/ft_env.c \

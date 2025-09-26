@@ -189,6 +189,13 @@ int						exec_echo(char **cmd);
 int						exec_pwd(void);
 int						ft_unset(t_shell *envi, t_parcer *list);
 
+// ft_cd
+void				free_cd(char *pwd, char *old_pwd, char *target, int mode);
+void				updt_pwd(const char *old_pwd, const char *new_pwd, t_shell *envp);
+int					cd_case_home_root(char **target, t_shell *envp, int *mode);
+int					cd_case_home_path(char **target, t_shell *envp, const char *arg, int *mode);
+int					get_size(char **cmd);
+
 // ft_export
 int						ft_export(t_shell *envp, t_parcer *list);
 int						print_sorted(t_shell *envp);
