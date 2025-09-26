@@ -72,12 +72,16 @@ int	handle_word(char *line, int i, t_lexer **lexer_list, int *first_word)
 		if (c == '\'' && !in_dq)
 		{
 			in_sq = !in_sq;
+			if (!in_sq) 
+				had_sq = 1;
 			i++;
 			continue ;
 		}
 		if (c == '"' && !in_sq)
 		{
 			in_dq = !in_dq;
+			if (!in_dq) 
+				had_dq = 1;
 			i++;
 			continue ;
 		}
