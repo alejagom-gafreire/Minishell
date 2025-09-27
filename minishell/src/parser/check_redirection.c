@@ -21,14 +21,25 @@ t_lexer	*handle_infile(t_lexer *aux, t_parcer *new_parcer)
 	if (new_parcer->infile == -1)
 	{
 		printf("No such file or directory here\n");
-		// new_parcer->syntax_error = 1;
 		new_parcer->redir_error = 1;
 		return (aux->next);
 	}
 	return (aux->next);
 }
 
-t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env, t_mini *mini)
+void	error_outfile(t_shell **env)
+{
+	if ((*env)->denied_open != 0)
+	{
+		printf("Permission denied\n");
+		(*env)->denied_open = 0;
+	}
+	else
+		printf("No such file or directory\n");
+	(*env)->error_redirect = 1;
+}
+
+t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 {
 	int	appened;
 
@@ -41,21 +52,15 @@ t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env, t_min
 		return (aux->next->next);
 	}
 	if (!aux || !aux->next || aux->next->token != T_OUTFILE)
-		return (aux->next);
-	appened = (ft_strncmp(aux->inf, ">>", 3) == 0);
-	new_parcer->outfile = open_outfile(aux->next->inf, appened, env);
-	if (new_parcer->outfile == -1)
 	{
-		if ((*env)->denied_open != 0)
-		{
-			printf("Permission denied\n");
-			(*env)->denied_open = 0;
-		}
-		else
-			printf("No such file or directory\n");
-		(*env)->error_redirect = 1;
-		(void)mini;
-		// mini->num_cmd = 0;
+		printf("error sintáctico cerca del elemento inesperado '%s'\n",
+			aux->next->inf);
+		(*env)->error_redirect = -1;
+		return (aux->next);
 	}
+	appened = (ft_strncmp(aux->inf, ">>", 3) == 0);
+	new_parcer->outfile = open_outfile(aux->next, appened, env);
+	if (new_parcer->outfile == -1)
+		error_outfile(env);
 	return (aux->next->next);
 }

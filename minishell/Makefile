@@ -26,6 +26,7 @@ SRC = \
 	src/signals/signals.c \
 	src/prompt/prompt.c \
 	src/prompt/aux_prompt.c \
+	src/prompt/utils_prompt.c \
 	src/lexer/lexer.c \
 	src/parser/parcer.c \
 	src/parser/parcer_aux.c \
@@ -33,6 +34,7 @@ SRC = \
 	src/parser/check_redirection.c\
 	src/lexer/lexer_quotes.c \
 	src/lexer/check_handles.c \
+	src/lexer/aux_handler.c \
 	src/lexer/check_operators.c \
 	src/expander/expander_write.c \
 	src/expander/expander.c \
@@ -55,6 +57,8 @@ SRC = \
 	src/built-ins/ft_export.c \
 	src/built-ins/aux_export.c \
 	src/built-ins/ft_unset.c \
+	src/here_doc/heredoc.c \
+	src/here_doc/heredoc_aux.c \
 
 OBJ = $(SRC:.c=.o)
 
