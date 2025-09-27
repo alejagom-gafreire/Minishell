@@ -87,8 +87,7 @@ static int	handle_simple_write(const char *s, size_t *i, char *dst, size_t *p)
 	write_var_span:
 	escribe $NAME (usa getenv); devuelve 1 si OOM, 0 si OK
 */
-static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p,
-		t_shell *envp)
+static int	write_var_span(const char *s, size_t *i, t_write *wr, t_shell *envp)
 {
 	size_t	st;
 	size_t	en;
@@ -108,8 +107,8 @@ static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p,
 		len = 0;
 	if (len > 0)
 	{
-		ft_memcpy(dst + *p, get_env(name, envp->envi), len);
-		*p += len;
+		ft_memcpy(wr->dts + wr->pos, get_env(name, envp->envi), len);
+		wr->pos += len;
 	}
 	free(name);
 	*i = en;
@@ -123,22 +122,23 @@ static int	write_var_span(const char *s, size_t *i, char *dst, size_t *p,
 void	write_expanded(char *dst, const char *s, t_shell *envp)
 {
 	size_t	i;
-	size_t	p;
+	t_write	wr;
 
 	i = 0;
-	p = 0;
+	wr.dts = dst;
+	wr.pos = 0;
 	while (s && s[i])
 	{
 		if (s[i + 1] == '?')
 		{
-			write_status(dst, &p, envp->last_status);
+			write_status(wr.dts, &wr.pos, envp->last_status);
 			i += 2;
 			continue ;
 		}
-		if (handle_simple_write(s, &i, dst, &p))
+		if (handle_simple_write(s, &i, wr.dts, &wr.pos))
 			continue ;
-		if (write_var_span(s, &i, dst, &p, envp))
+		if (write_var_span(s, &i, &wr, envp))
 			break ;
 	}
-	dst[p] = '\0';
+	wr.dts[wr.pos] = '\0';
 }

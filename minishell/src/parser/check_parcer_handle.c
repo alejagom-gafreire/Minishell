@@ -47,7 +47,7 @@ t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 		if (new_parcer->infile == -1)
 		{
 			(*env)->error_heredoc = 1;
-			return(aux->next);
+			return (aux->next);
 		}
 		return (aux->next->next);
 	}
