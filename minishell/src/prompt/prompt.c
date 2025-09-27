@@ -71,36 +71,20 @@ int	check_token(char **envp)
 {
 	char	*line;
 	char	*prompt;
-	int		option;
 	t_shell	envi;
 
-	// print_banner();
-	// spinner_loading();
-	option = show_menu();
-	if (option == 2 || option == 3)
-	{
-		print_names(option);
-		exit(1);
-	}
+	print_banner();
+	spinner_loading();
+	init_envi(&envi);
 	envi.envi = check_enviroment(envp);
-	envi.last_status = 0;
-	envi.error_heredoc = 0;
-	envi.error_redirect = 0;
-	envi.denied_open = 0;
 	while (1)
 	{
 		prompt = create_prompt();
 		line = readline(prompt);
-		if (line && *line == '\0')
-		{
-			free(line);
+		if (handle_eof(line, prompt, envi.envi))
+			return (0);
+		if (handle_empty_line(line, prompt))
 			continue ;
-		}
-		if (!line)
-		{
-			printf("exit\n");
-			break ;
-		}
 		if (*line)
 			add_history(line);
 		check_line(line, &envi);

@@ -12,6 +12,31 @@
 
 #include "minishell.h"
 
+int	wait_childrens(pid_t *pids, int num_cmd)
+{
+	int	i;
+	int	status;
+	int	last_status;
+
+	i = 0;
+	last_status = 0;
+	while (i < num_cmd)
+	{
+		if (pids[i] == -1)
+		{
+			i++;
+			continue ;
+		}
+		waitpid(pids[i], &status, 0);
+		if (WIFEXITED(status))
+			last_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			last_status = 128 + WTERMSIG(status);
+		i++;
+	}
+	return (last_status);
+}
+
 void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
 {
 	if ((*list)->redir_error || (*list)->syntax_error)

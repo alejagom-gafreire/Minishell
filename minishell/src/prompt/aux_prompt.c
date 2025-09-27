@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	print_slow(const char *str, useconds_t delay)
+void	print_slow(const char *str, unsigned int delay)
 {
 	int	i;
 
@@ -39,22 +39,27 @@ void	print_banner(void)
 		"   ▒██▒   ░██▒░██░▒██░   ███░▒██▒ ███████▒██░  ██ ██████▒░██████▒\n"
 		"   ░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒   ▒ ░░  ▒░▓  ░ ░ ▒░▓  ▓░ ▒░▓  ░\n";
 	print_slow(banner, 700);
-	write(1, "\n🚀 Bienvenido a MiniShell v1.0 🚀\n\n", 36);
+	write(1, "\n          Bienvenido a MiniShell  \n", 36);
+	printf("\n");
+	printf("            🚀 🧠 🧠 🧠 🧠 🚀\n");
+	printf(BOLD "           Gabriel Simón Freire\n" RESET);
+	printf(BOLD "             Alejandro Gómez\n" RESET);
+	printf("\n");
 }
 
 void	spinner_loading(void)
 {
-	const char	*frames[] = {"                🚀          ",
-		"                 🎇🚀         ", "                 🌫️🎇🚀         ",
-		"                 🌫️🌫️🎇🚀        ",
-		"                 🌫️🌫️🌫️🎇🚀       ",
-		"                 🌫️🌫️🌫️🌫️🎇🚀      ",
-		"                 🌫️🌫️🌫️🌫️🌫️🎇🚀     ",
-		"                 🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀    ",
-		"                 🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀   ",
-		"                 🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀  ",
-		"                 🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀 ",
-		"                 🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀"};
+	const char	*frames[] = {"         🚀          ",
+		"          🎇🚀         ", "          🌫️🎇🚀         ",
+		"          🌫️🌫️🎇🚀        ",
+		"          🌫️🌫️🌫️🎇🚀       ",
+		"          🌫️🌫️🌫️🌫️🎇🚀      ",
+		"          🌫️🌫️🌫️🌫️🌫️🎇🚀     ",
+		"          🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀    ",
+		"          🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀   ",
+		"          🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀  ",
+		"          🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀 ",
+		"          🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🌫️🎇🚀"};
 	int			n;
 	int			i;
 
@@ -64,46 +69,10 @@ void	spinner_loading(void)
 	{
 		printf("\r%sStarting...", frames[i % n]);
 		fflush(stdout);
-		usleep(120000);
+		usleep(50000);
 		i++;
 	}
-	printf(BRIGHT_BLUE BOLD "\r                  🎇✔ MiniShell lista!🎇  \n\n");
-}
-
-int	show_menu(void)
-{
-	int	option;
-
-	option = 0;
-	printf(CYAN BOLD "    🧠 MiniShell Launcher\n" RESET);
-	printf("--------------------------------\n");
-	printf(CYAN BOLD "  📚  1. Iniciar Shell      🔥🚀\n");
-	printf(CYAN BOLD "  📚  2. Créditos           🧑‍💻\n");
-	printf(CYAN BOLD "  📚  3. Salir              👋⚙️\n" RESET);
-	printf("--------------------------------\n");
-	printf(BRIGHT_BLUE BOLD "     Seleccione opción ➤ ");
-	scanf("%d", &option);
-	getchar();
-	return (option);
-}
-
-void	print_names(int options)
-{
-	if (options == 2)
-	{
-		printf("\n");
-		printf("            🚀 🧠 🧠 🧠 🧠 🚀\n");
-		printf(BRIGHT_RED "                create by\n\n" RESET);
-		printf(BOLD "           Gabriel Simón Freire\n" RESET);
-		printf(BOLD "             Alejandro Gómez\n" RESET);
-		printf("\n");
-		exit(1);
-	}
-	else
-	{
-		printf("👋 Saliendo...\n");
-		exit(1);
-	}
+	printf(BRIGHT_BLUE BOLD "\r          🎇✔ MiniShell lista!🎇  \n");
 }
 
 char	*create_prompt(void)

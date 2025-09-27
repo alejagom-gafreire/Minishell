@@ -64,7 +64,7 @@ void	add_update_env(char *arg, char ***envi)
 	char	**newv;
 
 	env = *envi;
-	if (!arg || !ft_strchr(arg, '='))
+	if (!arg)
 		return ;
 	i = 0;
 	while (env && env[i])

@@ -1,43 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   heredoc_aux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alejandro <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/12 15:37:58 by gafreire          #+#    #+#             */
-/*   Updated: 2025/08/12 15:46:05 by gafreire         ###   ########.fr       */
+/*   Created: 2025/09/25 17:43:12 by alejandro         #+#    #+#             */
+/*   Updated: 2025/09/25 17:43:14 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-	Limpia la linea
-	Crea un nuevo prompt
-*/
-
-static void	handler_sigint(int sign)
+static void	heredoc_sigint(int sig)
 {
-	(void)sign;
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	write(STDOUT_FILENO, "\n", 1);
+	(void)sig;
+	_exit(130);
 }
-/*
-	Modifica las acciones de Ctrl+C y Ctrl+\
-*/
 
-void	init_signals(void)
+void	init_signals_heredoc(void)
 {
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = handler_sigint;
+	sa.sa_handler = heredoc_sigint;
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
-	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction(SIGQUIT, &sa, NULL);
+}
+
+char	*gnl_simple(int fd)
+{
+	char		buf[1024];
+	char		c;
+	int			i;
+	int			r;
+
+	i = 0;
+	r = read(fd, &c, 1);
+	while (r > 0)
+	{
+		if (c == '\n')
+			break ;
+		if (i < 1023)
+			buf[i++] = c;
+		r = read(fd, &c, 1);
+	}
+	if (r <= 0 && i == 0)
+		return (NULL);
+	buf[i] = '\0';
+	return (strdup(buf));
 }

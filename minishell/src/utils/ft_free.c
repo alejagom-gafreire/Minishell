@@ -42,6 +42,8 @@ void	free_parcer(t_parcer *parcer)
 			free(parcer->name_outfile);
 		if (parcer->builtin)
 			free(parcer->builtin);
+		if (parcer->argv)
+			free_split(parcer->argv);
 		parcer = parcer->next;
 		free(temp);
 	}
@@ -49,18 +51,19 @@ void	free_parcer(t_parcer *parcer)
 
 void	free_minishell(t_mini *mini)
 {
-	if (mini != NULL)
-	{
+	if (!mini)
+		return ;
+	if (mini->lexer)
 		free_lexer(mini->lexer);
+	if (mini->parcer)
 		free_parcer(mini->parcer);
-		free(mini);
-	}
+	free(mini);
 }
 
 void	free_shell(t_shell *envi)
 {
+	if (!envi)
+		return ;
 	if (envi->envi)
-	{
 		free_split(envi->envi);
-	}
 }
