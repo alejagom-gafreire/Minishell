@@ -93,7 +93,8 @@ t_lexer	*check_buildings(t_lexer *aux, t_parcer *new_parcer)
 {
 	if (!aux)
 		return (NULL);
-	new_parcer->builtin = ft_strdup(aux->inf);
+	if (new_parcer->builtin == NULL)
+		new_parcer->builtin = ft_strdup(aux->inf);
 	if (!new_parcer->builtin)
 		return (NULL);
 	if (append_arg(new_parcer, aux->inf))
