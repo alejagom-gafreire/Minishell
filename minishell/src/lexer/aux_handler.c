@@ -51,11 +51,15 @@ int	check_marks(t_handle *hd, char c)
 	if (c == '\'' && !hd->in_dq)
 	{
 		hd->in_sq = !hd->in_sq;
+		if (!hd->in_sq)
+			hd->had_sq = 1;
 		return (1);
 	}
 	if (c == '"' && !hd->in_sq)
 	{
 		hd->in_dq = !hd->in_dq;
+		if (!hd->in_dq)
+			hd->had_dq = 1;
 		return (1);
 	}
 	return (0);

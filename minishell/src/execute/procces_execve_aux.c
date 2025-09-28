@@ -73,7 +73,6 @@ void	exec_cmd(t_parcer *list, char **envp)
 	{
 		perror("execve");
 		free(cmd_path);
-		free_parcer(list);
 		exit(1);
 	}
 }

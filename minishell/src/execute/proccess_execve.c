@@ -73,7 +73,7 @@ static void	child_exec(t_parcer *list, t_mini *mini, int pipes[][2],
 	if (list->argv && list->argv[0] && compare_builtins(list->argv[0]))
 	{
 		if (!list->argv || !list->argv[0])
-		exit(0);
+			exit(0);
 		envp->last_status = exec_builtins(list, list->argv, envp);
 		exit(envp->last_status);
 	}
@@ -84,16 +84,10 @@ static void	child_exec(t_parcer *list, t_mini *mini, int pipes[][2],
 
 static int	handle_single_builtin(t_mini *mini, t_parcer *list, t_shell *envp)
 {
-	char	**argv;
-
 	if (mini->num_cmd == 1 && list->builtin != NULL && list->infile == -1
 		&& list->outfile == -1)
 	{
-		argv = builtin_argv(list->builtin, list->cmd_args);
-		if (!argv)
-			return (1);
-		envp->last_status = exec_builtins(list, argv, envp);
-		free_split(argv);
+		envp->last_status = exec_builtins(list, list->argv, envp);
 		return (1);
 	}
 	return (0);

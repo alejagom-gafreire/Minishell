@@ -42,6 +42,10 @@ SRC = \
 	src/expander/expander_status.c \
 	src/expander/expander_tokens.c \
 	src/expander/expander_check.c \
+	src/expander/expander_vars.c \
+	src/expander/expander_split/expander_split.c \
+	src/expander/expander_split/expander_split_tokens.c \
+	src/expander/expander_split/expander_split_utils.c \
 	src/utils/prints.c \
 	src/execute/execute.c \
 	src/execute/execute_aux.c \

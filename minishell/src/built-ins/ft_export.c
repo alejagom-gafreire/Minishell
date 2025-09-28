@@ -87,21 +87,23 @@ void	add_update_env(char *arg, char ***envi)
 
 int	ft_export(t_shell *envp, t_parcer *list)
 {
-	int i = 1;
-    int status;
+	int	i;
+	int	status;
 
+	i = 1;
 	status = 0;
 	if (!list->argv || !list->argv[1])
-    	return (print_sorted(envp));
-    while (list->argv[i])
-    {
-        if (!valid_args(list->argv[i])) {
-            printf("export: `%s': not a valid identifier\n", list->argv[i]);
-            status = 1;
-        } else {
-            add_update_env(list->argv[i], &envp->envi);
-        }
-        i++;
-    }
-    return status;
+		return (print_sorted(envp));
+	while (list->argv[i])
+	{
+		if (!valid_args(list->argv[i]))
+		{
+			printf("export: `%s': not a valid identifier\n", list->argv[i]);
+			status = 1;
+		}
+		else
+			add_update_env(list->argv[i], &envp->envi);
+		i++;
+	}
+	return (status);
 }

@@ -30,7 +30,6 @@ static t_parcer	*mem_parcer(void)
 	parcer->name_outfile = NULL;
 	parcer->syntax_error = 0;
 	parcer->redir_error = 0;
-
 	parcer->argv = NULL;
 	parcer->argc = 0;
 	return (parcer);
