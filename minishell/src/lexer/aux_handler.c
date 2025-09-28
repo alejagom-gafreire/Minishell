@@ -72,7 +72,7 @@ int	appened_char_buf(t_handle *hd, char c)
 		return (-2);
 	if (hd->in_sq)
 		hd->had_sq = 1;
-	if (hd->in_dq)
+	else if (hd->in_dq)
 		hd->had_dq = 1;
 	else
 		hd->had_plain = 1;
