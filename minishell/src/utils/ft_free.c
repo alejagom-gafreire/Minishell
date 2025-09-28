@@ -25,6 +25,20 @@ void	free_lexer(t_lexer *lexer)
 	}
 }
 
+void	free_argv(t_parcer *cmd)
+{
+	int	i;
+
+	if (!cmd || !cmd->argv)
+		return ;
+	i = 0;
+	while (cmd->argv[i])
+		free(cmd->argv[i++]);
+	free(cmd->argv);
+	cmd->argv = NULL;
+	cmd->argc = 0;
+}
+
 void	free_parcer(t_parcer *parcer)
 {
 	t_parcer	*temp;
@@ -47,6 +61,7 @@ void	free_parcer(t_parcer *parcer)
 		parcer = parcer->next;
 		free(temp);
 	}
+	free_argv(parcer);
 }
 
 void	free_minishell(t_mini *mini)

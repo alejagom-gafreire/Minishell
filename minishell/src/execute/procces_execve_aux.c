@@ -60,23 +60,20 @@ void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
 void	exec_cmd(t_parcer *list, char **envp)
 {
 	char	*cmd_path;
-	char	**exec_cmd;
 
-	exec_cmd = ft_split(list->cmd_args, ' ');
-	if (!exec_cmd)
-		return ;
-	cmd_path = find_executable(exec_cmd[0], envp);
+	if (!list->argv || !list->argv[0])
+		exit(0);
+	cmd_path = find_executable(list->argv[0], envp);
 	if (!cmd_path)
 	{
-		free_split(exec_cmd);
-		printf("%s: command not found\n", list->cmd_args);
+		printf("%s: command not found\n", list->argv[0]);
 		exit(127);
 	}
-	if (execve(cmd_path, exec_cmd, envp) == -1 && list->cmd_args)
+	if (execve(cmd_path, list->argv, envp) == -1)
 	{
+		perror("execve");
 		free(cmd_path);
-		free_split(exec_cmd);
-		return ;
+		exit(1);
 	}
 }
 

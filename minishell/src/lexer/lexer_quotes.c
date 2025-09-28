@@ -26,7 +26,8 @@ void	num_comands(t_mini *mini, t_shell *envp)
 	list = mini->parcer;
 	while (list)
 	{
-		if (list->cmd_args || list->builtin)
+		if ((list->argv && list->argv[0]) || list->infile != -1
+			|| list->outfile != -1)
 			i++;
 		list = list->next;
 	}

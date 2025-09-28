@@ -44,25 +44,6 @@ static void	delete_current(t_lexer **head, t_lexer **prev, t_lexer **node)
 }
 
 /*
-	check_variable:
-	- Chequea si el contenido requiere expansión
-*/
-static int	check_variable(t_lexer *node, t_shell *envp)
-{
-	char	*expand;
-
-	if (node->kind != T_DQ && node->kind != T_PLAIN)
-		return (0);
-	expand = expand_vars_two_pass(node->inf, envp);
-	if (!expand)
-		return (1);
-	free(node->inf);
-	node->inf = expand;
-	return (0);
-}
-
-/*
-	(Revisar creo que no es necesario)
 	handle_redir:
 	- Se encarga de manejar las redirecciones
 	- Chequea si esta vacio o espacios
@@ -76,7 +57,6 @@ static int	handle_redir(t_lexer **prev, t_lexer **node)
 }
 
 /*
-	(Revisar creo que no es necesario)
 	handle_plain_word:
 	- Se encarga de chequear palabras planas
 	- Chequea si esta vacio o espacios
@@ -96,30 +76,32 @@ static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 	- Se encarga de aplicar cualquier funcion anterior
 	- Chequea si esta vacio o espacios
 */
-int	expand_tokens(t_lexer **lexer_list, t_shell *envp)
+
+int	expand_tokens(t_lexer **lst, t_shell *envp)
 {
 	t_lexer	*node;
 	t_lexer	*prev;
 
-	node = *lexer_list;
+	node = *lst;
 	prev = NULL;
 	while (node)
 	{
-		if (is_word_token(node->token))
+		if (!is_word_token(node->token))
+			advance_nodes(&prev, &node);
+		else if (check_variable(node, envp))
+			return (1);
+		else if (node->token == T_INFILE || node->token == T_OUTFILE)
 		{
-			if (check_variable(node, envp))
+			if (handle_redir(&prev, &node))
 				return (1);
-			if (node->token == T_INFILE || node->token == T_OUTFILE)
-			{
-				if (handle_redir(&prev, &node))
-					return (1);
-				continue ;
-			}
-			if ((node->token == T_NAME_CMD || node->token == T_GENERAL)
-				&& handle_plain_word(lexer_list, &prev, &node))
-				continue ;
 		}
-		advance_nodes(&prev, &node);
+		else
+		{
+			if (node->kind == T_PLAIN && split_plain_node(&node))
+				return (1);
+			if (!handle_plain_word(lst, &prev, &node))
+				advance_nodes(&prev, &node);
+		}
 	}
 	return (0);
 }
