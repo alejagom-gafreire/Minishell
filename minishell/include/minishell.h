@@ -171,11 +171,22 @@ typedef struct s_split_state
 	char			*p;
 }					t_split_state;
 
+typedef struct s_child_prcs
+{
+	t_mini			*mini;
+	t_shell			*sh;
+	int				(*fds)[2];
+	pid_t			*pids;
+}					t_child_prcs;
+
 // execute
 int					init_pipes(t_mini *mini, int pipes[][2]);
 int					safe_pipes(t_mini *mini, int (**pipes)[2]);
 void				close_pipes(int pipes[][2], int num_pipes);
 void				execute_cmd(t_mini *mini, t_shell *envp);
+void				handle_child_process(t_mini *mini, pid_t *pids,
+						int fds[][2], t_shell *sh);
+int					get_node_index(t_mini *mini, t_parcer *node);
 
 // proccess_execve
 int					wait_childrens(pid_t *pids, int num_cmd);

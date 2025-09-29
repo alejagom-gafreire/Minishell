@@ -45,18 +45,21 @@ static void	process_tokens(t_lexer **aux, t_parcer *new_parcer, t_shell **env)
 	while (*aux && (*aux)->token != T_PIPE)
 	{
 		if (new_parcer->redir_error || new_parcer->syntax_error)
+		{
 			*aux = next_node((*aux));
+			continue ;
+		}
 		if (*aux && (*aux)->token == T_REDIR_IN)
 			*aux = aux_redir_in((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_DELIM)
 			*aux = (*aux)->next;
 		else if (*aux && (*aux)->token == T_INFILE)
 			*aux = handle_infile((*aux), new_parcer);
-		else if ((*aux)->token == T_HEREDOC)
+		else if (*aux && (*aux)->token == T_HEREDOC)
 			*aux = check_heredoc((*aux), new_parcer, env);
 		else if (*aux && (*aux)->token == T_BUILTINS)
 			*aux = check_buildings((*aux), new_parcer);
-		else if (is_word_tok((*aux)))
+		else if (*aux && is_word_tok((*aux)))
 			*aux = handle_cmd((*aux), new_parcer);
 		else if (*aux && (*aux)->token == T_REDIR_OUT)
 		{
