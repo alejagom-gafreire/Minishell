@@ -71,9 +71,11 @@ char	*find_executable(char *cmds, char **envp)
 	char	*full_path;
 	char	*path_envp;
 	int		i;
+	char	*cpy;
 
-	if (check_absolute_path(cmds))
-		return (ft_strdup(cmds));
+	cpy = check_absolute_path(cmds);
+	if (cpy)
+		return (cpy);
 	path_envp = get_path_env(envp);
 	if (!path_envp)
 		return (NULL);

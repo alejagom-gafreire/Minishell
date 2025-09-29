@@ -71,7 +71,7 @@ void	exec_cmd(t_parcer *list, char **envp)
 	}
 	if (execve(cmd_path, list->argv, envp) == -1)
 	{
-		perror("execve");
+		perror(list->argv[0]);
 		free(cmd_path);
 		exit(1);
 	}
