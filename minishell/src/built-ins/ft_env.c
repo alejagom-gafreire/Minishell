@@ -16,17 +16,18 @@ int	exec_env(t_shell *envp, t_parcer *list)
 {
 	int	i;
 
+	if (list->argv[1])
+	{
+		printf("env: «%s»: No existe el archivo o el directorio\n",
+			list->argv[1]);
+		return (1);
+	}
 	if (list->cmd_args || ft_strcmp(list->builtin, "cd") == 0)
 	{
 		if (list->cmd_args)
 		{
 			printf("env: «%s»: No existe el archivo o el directorio\n",
 				list->cmd_args);
-			return (1);
-		}
-		else
-		{
-			printf("esto tiene la mierda: %s\n", list->builtin);
 			return (1);
 		}
 	}
