@@ -27,18 +27,20 @@ int	get_node_index(t_mini *mini, t_parcer *node)
 	return (id);
 }
 
-static int	handle_single_builtin(t_mini *mini, t_parcer *list, t_shell *envp)
+static int	runner_builtin(t_mini *mini, t_parcer *cmd, t_shell *envp)
 {
-	if (mini->num_cmd == 1 && list->builtin != NULL && list->infile == -1
-		&& list->outfile == -1)
+	if (!cmd || !cmd->builtin)
+		return (0);
+	if (mini->num_cmd == 1 && cmd->builtin != NULL && cmd->infile == -1
+		&& cmd->outfile == -1)
 	{
-		envp->last_status = exec_builtins(list, list->argv, envp);
+		envp->last_status = exec_builtins(cmd, cmd->argv, envp);
 		return (1);
 	}
 	return (0);
 }
 
-void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
+int	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 {
 	t_parcer	*list;
 
@@ -47,9 +49,21 @@ void	init_proccess(t_mini *mini, pid_t *pids, int pipes[][2], t_shell *envp)
 	if (!list || list->syntax_error || envp->error_redirect)
 	{
 		envp->last_status = 2;
-		return ;
+		return (1);
 	}
-	if (handle_single_builtin(mini, list, envp))
-		return ;
+	if (runner_builtin(mini, list, envp))
+		return (1);
 	handle_child_process(mini, pids, pipes, envp);
+	return (0);
+}
+
+void	wait_and_cleanup(t_mini *mini, int (*pipes)[2], pid_t *pids,
+		t_shell *envp)
+{
+	if (mini->num_cmd > 1)
+	{
+		close_pipes(pipes, mini->num_cmd -1);
+		free(pipes);
+	}
+	envp->last_status = wait_childrens(pids, mini->num_cmd);
 }

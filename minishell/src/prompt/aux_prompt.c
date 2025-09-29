@@ -20,7 +20,6 @@ void	print_slow(const char *str, unsigned int delay)
 	while (str[i])
 	{
 		write(1, &str[i], 1);
-		fflush(stdout);
 		usleep(delay);
 		i++;
 	}
@@ -84,9 +83,10 @@ char	*create_prompt(void)
 	user = getenv("USER");
 	if (!user)
 		user = "user";
-	size = strlen("🧠 ") + strlen(CYAN BOLD) + strlen(user) + strlen(RESET)
-		+ strlen(" in ") + strlen(BLUE) + strlen("Minishell") + strlen(RESET)
-		+ strlen(" ➤ ") + 1;
+	size = ft_strlen("🧠 ") + ft_strlen(CYAN BOLD) + ft_strlen(user)
+		+ ft_strlen(RESET) + ft_strlen(" in ") + ft_strlen(BLUE)
+		+ ft_strlen("Minishell") + ft_strlen(RESET)
+		+ ft_strlen(" ➤ ") + 1;
 	prompt = malloc(size);
 	if (!prompt)
 		return (NULL);

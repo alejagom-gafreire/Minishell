@@ -66,12 +66,15 @@ t_lexer	*check_heredoc(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 	else if (aux->next)
 	{
 		printf("syntax error near unexpected token '%s'\n", aux->next->inf);
-		new_parcer->syntax_error = 1;
+		new_parcer->syntax_error = 127;
+		(*env)->last_status = 127;
 		return (NULL);
 	}
 	else
 	{
 		printf("Syntax error near unexpected element `newline'\n");
+		new_parcer->syntax_error = 1;
+		(*env)->last_status = 127;
 		return (NULL);
 	}
 }

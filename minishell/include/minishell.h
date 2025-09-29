@@ -187,15 +187,18 @@ void				execute_cmd(t_mini *mini, t_shell *envp);
 void				handle_child_process(t_mini *mini, pid_t *pids,
 						int fds[][2], t_shell *sh);
 int					get_node_index(t_mini *mini, t_parcer *node);
+void				check_last_status(t_mini *mini, t_shell *envp);
 
 // proccess_execve
 int					wait_childrens(pid_t *pids, int num_cmd);
-void				init_proccess(t_mini *mini, pid_t *pids, int pipes[][2],
+int					init_proccess(t_mini *mini, pid_t *pids, int pipes[][2],
 						t_shell *envp);
 char				**builtin_argv(const char *name, const char *args_str);
 void				exec_cmd(t_parcer *list, char **envp);
 void				fd_redirect(t_parcer **list, int *i, t_mini *mini,
 						int pipes[][2]);
+void				wait_and_cleanup(t_mini *mini, int (*pipes)[2],
+						pid_t *pids, t_shell *envp);
 
 // built-ints
 t_tokens			compare_builtins(char *word);
@@ -338,5 +341,6 @@ void				init_signals(void);
 void				free_minishell(t_mini *mini);
 void				free_lexer(t_lexer *lexer);
 void				free_shell(t_shell *envi);
+void				free_parcer(t_parcer *parcer);
 
 #endif
