@@ -13,8 +13,8 @@
 #include "minishell.h"
 
 /*
-	Limpia la linea
-	Crea un nuevo prompt
+	Cleans the line
+	Creates a new prompt
 */
 
 static void	handler_sigint(int sign)
@@ -23,9 +23,10 @@ static void	handler_sigint(int sign)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	write(STDOUT_FILENO, "\n", 1);
+	rl_redisplay();
 }
 /*
-	Modifica las acciones de Ctrl+C y Ctrl+\
+	Modifies the actions of Ctrl+C and Ctrl+\
 */
 
 void	init_signals(void)

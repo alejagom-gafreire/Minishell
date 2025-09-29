@@ -67,7 +67,6 @@ void	spinner_loading(void)
 	while (i < 30)
 	{
 		printf("\r%sStarting...", frames[i % n]);
-		fflush(stdout);
 		usleep(50000);
 		i++;
 	}
@@ -76,12 +75,11 @@ void	spinner_loading(void)
 
 char	*create_prompt(void)
 {
-	char	*user;
-	size_t	size;
-	char	*prompt;
+	const char	*user;
+	char		*prompt;
 
 	user = getenv("USER");
-	if (!user)
+	if (!user || !*user)
 		user = "user";
 	size = ft_strlen("🧠 ") + ft_strlen(CYAN BOLD) + ft_strlen(user)
 		+ ft_strlen(RESET) + ft_strlen(" in ") + ft_strlen(BLUE)
@@ -90,7 +88,15 @@ char	*create_prompt(void)
 	prompt = malloc(size);
 	if (!prompt)
 		return (NULL);
-	sprintf(prompt, "🤖 %s%s%s ➤ %sMinishell%s: ", BRIGHT_GREEN BOLD, user,
-		RESET, BRIGHT_GREEN BOLD, RESET);
+	if (append_part(&prompt, BRIGHT_GREEN BOLD))
+		return (NULL);
+	if (append_part(&prompt, user))
+		return (NULL);
+	if (append_part(&prompt, RESET))
+		return (NULL);
+	if (append_part(&prompt, " ➤ "))
+		return (NULL);
+	if (append_minish(&prompt))
+		return (NULL);
 	return (prompt);
 }
