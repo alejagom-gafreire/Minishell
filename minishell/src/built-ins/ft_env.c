@@ -20,7 +20,7 @@ int	exec_env(t_shell *envp, t_parcer *list)
 	{
 		printf("env: «%s»: No existe el archivo o el directorio\n",
 			list->argv[1]);
-		return (1);
+		return (127);
 	}
 	if (list->cmd_args || ft_strcmp(list->builtin, "cd") == 0)
 	{

@@ -53,3 +53,46 @@ t_tokens	compare_builtins(char *word)
 		type = T_NAME_CMD;
 	return (type);
 }
+
+static int	count_args(char **args)
+{
+	int	i;
+	int	count;
+
+	i = 1;
+	count = 0;
+	while (args[i++])
+		count++;
+	return (count);
+}
+
+static char	**copy_args(char **args, int count)
+{
+	char	**cpy;
+	int		i;
+	int		j;
+
+	i = 1;
+	j = 0;
+	cpy = malloc(sizeof(char *) * (count + 1));
+	if (!cpy)
+		return (NULL);
+	while (args[i])
+	{
+		cpy[j] = ft_strdup(args[i]);
+		if (!cpy[j])
+			return (NULL);
+		i++;
+		j++;
+	}
+	cpy[j] = NULL;
+	return (cpy);
+}
+
+char	**all_args(char **args)
+{
+	int		count;
+
+	count = count_args(args);
+	return (copy_args(args, count));
+}

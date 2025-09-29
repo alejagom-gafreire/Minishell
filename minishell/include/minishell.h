@@ -227,7 +227,7 @@ int					valid_args(char *arg);
 int					cmp_env_key(const char *env, const char *arg,
 						size_t key_len);
 void				add_update_env(char *arg, char ***envi);
-char				**all_args(char *args);
+char				**all_args(char **args);
 size_t				len_equal(char **equal, char *arg);
 
 // execute_aux
