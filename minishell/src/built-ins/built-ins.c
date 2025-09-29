@@ -23,7 +23,7 @@ int	exec_builtins(t_parcer *list, char **argv, t_shell *envp)
 	else if (ft_strcmp("pwd", list->builtin) == 0)
 		return (exec_pwd());
 	else if (ft_strcmp("export", list->builtin) == 0)
-		return (ft_export(envp, list), envp->last_status);
+		return (ft_export(envp, list));
 	else if (ft_strcmp("unset", list->builtin) == 0)
 		return (ft_unset(envp, list));
 	else if (ft_strcmp("exit", list->builtin) == 0)
