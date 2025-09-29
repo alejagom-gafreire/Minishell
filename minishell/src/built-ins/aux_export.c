@@ -32,18 +32,6 @@ int	cmp_env(const void *a, const void *b)
 	return (ft_strcmp(*str_a, *str_b));
 }
 
-char	**all_args(char *args)
-{
-	char	**cpy;
-
-	if (!args)
-		return (NULL);
-	cpy = ft_split(args, ' ');
-	if (!cpy)
-		return (NULL);
-	return (cpy);
-}
-
 int	valid_args(char *arg)
 {
 	int	i;

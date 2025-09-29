@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+void	check_last_status(t_mini *mini, t_shell *envp)
+{
+	if (!mini->parcer)
+	{
+		envp->last_status = 2;
+		return ;
+	}
+	if (mini->parcer->syntax_error == 127 || envp->last_status == 127)
+	{
+		envp->last_status = 127;
+		return ;
+	}
+	else if (mini->parcer->syntax_error)
+		envp->last_status = 2;
+}
+
 static void	child_exec(t_parcer *list, t_mini *mini, int pipes[][2],
 		t_shell *envp)
 {

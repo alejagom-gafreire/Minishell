@@ -44,9 +44,9 @@ int	ft_unset(t_shell *envi, t_parcer *list)
 	int		status;
 
 	status = 0;
-	if (!list->cmd_args)
+	if (!list->argv)
 		return (1);
-	aux = all_args(list->cmd_args);
+	aux = all_args(list->argv);
 	temp = aux;
 	while (*temp)
 	{
