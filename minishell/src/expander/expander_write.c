@@ -13,20 +13,19 @@
 #include "minishell.h"
 
 /*
-===================== Expansión optimizada (dos pasadas) =====================
- Reglas:
-   - $?: sustituir por last_status
-   - $NAME: NAME = [A-Za-z_][A-Za-z0-9_]* -> getenv(NAME) o "" si no existe
-   - $ seguido de char no válido / fin: se trata como '$' literal
+Optimized expansion (two passes)
+ Rules:
+   - $?: replace with last_status
+   - $NAME: NAME = [A-Za-z_][A-Za-z0-9_]* -> getenv(NAME) or "" if it doesn't exist
+   - $ followed by an invalid char / end: treated as literal '$'
    - No field splitting. No ${}, $1, $$,
-	etc. (quedan literales salvo $? y $NAME)
+     etc. (remain literal except $? and $NAME)
 */
 
 /*
 	scan_var_end:
-	fin de nombre de variable
+	end of variable name
 */
-
 size_t	scan_var_end(const char *s, size_t start)
 {
 	size_t	en;
@@ -39,7 +38,7 @@ size_t	scan_var_end(const char *s, size_t start)
 
 /*
 	write_status:
-	escribir last_status en dst
+	write last_status into dst
 */
 static void	write_status(char *dst, size_t *p, int last_status)
 {
@@ -55,7 +54,7 @@ static void	write_status(char *dst, size_t *p, int last_status)
 
 /*
 	handle_simple_write:
-	casos simples: normal, '$' final, '$' sin nombre válido
+	simple cases: normal, trailing '$', or '$' without a valid name
 */
 static int	handle_simple_write(const char *s, size_t *i, char *dst, size_t *p)
 {
@@ -84,8 +83,8 @@ static int	handle_simple_write(const char *s, size_t *i, char *dst, size_t *p)
 }
 
 /*
-	write_var_span:
-	escribe $NAME (usa getenv); devuelve 1 si OOM, 0 si OK
+	handle_simple_write:
+	simple cases: normal, trailing '$', or '$' without a valid name
 */
 static int	write_var_span(const char *s, size_t *i, t_write *wr, t_shell *envp)
 {
@@ -117,7 +116,7 @@ static int	write_var_span(const char *s, size_t *i, t_write *wr, t_shell *envp)
 
 /*
 	write_expanded:
-	principal: escribe s expandida en dst
+	main: writes the expanded string into dst
 */
 void	write_expanded(char *dst, const char *s, t_shell *envp)
 {

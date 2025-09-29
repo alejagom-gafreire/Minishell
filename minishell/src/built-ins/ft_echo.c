@@ -13,10 +13,11 @@
 #include "minishell.h"
 
 /*
-	echo consiste en imprimir los parametros que se le envien
-	tenemos que tener en cuenta la flag que tiene echo mientras la
-	flag solo sea n sirve pero en el momento que encuentre un caracter diferente
-	se imprime tal cual con salto de línea
+	echo consists of printing the parameters passed to it.
+	We need to take into account the flag that echo accepts.
+	As long as the flag is only 'n' it is valid, but the moment
+	a different character is found it is printed as-is, followed
+	by a newline.
 */
 int	check_flag(char *argv)
 {

@@ -14,7 +14,7 @@
 
 /*
 	len_of_status:
-	1ª pasada: medir longitud final
+	1st pass: measure final length
 */
 
 char	*get_env(char *name, char **envp)
@@ -55,8 +55,9 @@ static size_t	len_of_status(int st)
 
 /*
 	env_len_span:
-	obtener longitud del valor de la variable sin alocar
+	get the length of the variable's value without allocating
 */
+
 static size_t	env_len_span(const char *s, size_t st, size_t en, t_shell *envp)
 {
 	size_t		n;
@@ -87,8 +88,8 @@ static size_t	env_len_span(const char *s, size_t st, size_t en, t_shell *envp)
 
 /*
 	handle_simple_cases:
-	Consume casos simples: no '$', '$' final, o '$?'.
-	Devuelve 1 si consumió algo y avanzó; 0 si no.
+	Consume simple cases: no '$', trailing '$', or '$?'.
+	Returns 1 if it consumed something and advanced; 0 if not.
 */
 
 static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
@@ -123,8 +124,8 @@ static int	handle_simple_cases(const char *s, size_t *i, size_t *out,
 
 /*
 	measure_expanded_len:
-	Obtiene la longitud final exacta despues de chequear las reglas
-	de comillas y expansion.
+	Gets the exact final length after checking quoting
+	and expansion rules.
 */
 
 size_t	measure_expanded_len(const char *s, t_shell *envp)

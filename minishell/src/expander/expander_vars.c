@@ -13,7 +13,7 @@
 #include "minishell.h"
 /*
 	check_variable:
-	- Chequea si el contenido requiere expansión
+	- Checks if the content requires expansion
 */
 int	check_variable(t_lexer *node, t_shell *envp)
 {

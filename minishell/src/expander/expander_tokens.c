@@ -13,8 +13,8 @@
 #include "minishell.h"
 
 /*
- ===================== Reconocimiento =====================
-	Chequeo que token es
+	Recognition:
+		Check what token it is
 */
 int	is_word_token(int t)
 {

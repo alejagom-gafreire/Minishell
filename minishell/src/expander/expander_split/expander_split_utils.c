@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/* Crea un nodo palabra simple (GENERAL, PLAIN) sin tocar nada más */
+/* Creates a simple word node (GENERAL, PLAIN) without modifying anything else */
 t_lexer	*ws_new_field(const char *s, size_t len)
 {
 	t_lexer	*n;
@@ -33,10 +33,8 @@ t_lexer	*ws_new_field(const char *s, size_t len)
 	return (n);
 }
 
-/*
- * Inserta 'n' inmediatamente DESPUÉS de 'pos' en la lista doblemente enlazada.
- * No libera nada; solo enlaza punteros con cuidado.
- */
+/* Inserts 'n' immediately AFTER 'pos' in the doubly linked list. */
+
 void	ws_insert_after(t_lexer *pos, t_lexer *n)
 {
 	if (!pos || !n)

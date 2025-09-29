@@ -41,16 +41,15 @@
 # define READ_END 0
 # define WRITE_END 1
 /*
-	T_NAME_CMD => "grep ls echo etc...."
-	T_PIPE => "|"
-	T_REDIR_IN => "< , << simbolos."
-	T_HEREDOC =>  "simbolo <<"
-	T_DELIM => "delimitador del heredoc"
-	T_REDIR_OUT => "> >> simbolos."
-	T_REDIR_OUT => "> >> simbolos."
-	T_INFILE => "primer txt."
-	T_OUTFILE => "salida del txt ultimo."
-	T_GENERAL => "otras cosas."
+	T_NAME_CMD   => "grep ls echo etc...."
+	T_PIPE       => "|"
+	T_REDIR_IN   => "< , << symbols"
+	T_HEREDOC    => "symbol <<"
+	T_DELIM      => "heredoc delimiter"
+	T_REDIR_OUT  => "> >> symbols"
+	T_INFILE     => "first text file"
+	T_OUTFILE    => "final output text file"
+	T_GENERAL    => "other things"
 */
 
 typedef enum tokens
@@ -68,9 +67,9 @@ typedef enum tokens
 }					t_tokens;
 
 /*
-	PLAIN -> fuera de comillas
-	DQ -> comillas dobles
-	SQ -> comillas simples
+	PLAIN -> outside quotes
+	DQ    -> double quotes
+	SQ    -> single quotes
 */
 typedef enum kind
 {
@@ -80,12 +79,12 @@ typedef enum kind
 }					t_kind;
 
 /*
-	id -> id del argv
-	inf -> valor del argv
-	token -> t_token
-	last_token -> anterior t_token
-	kind -> t_kind para manejar comillas
-	la lista esta doblemente enlazada
+	id          -> argv id
+	inf         -> argv value
+	token       -> t_token
+	last_token  -> previous t_token
+	kind        -> t_kind for handling quotes
+	the list is doubly linked
 */
 typedef struct s_lexer
 {
@@ -99,14 +98,14 @@ typedef struct s_lexer
 }					t_lexer;
 
 /*
-	infile -> id infile
-	outfile -> id outile
-	cmd_args -> argumentos del comando
-	builtin -> builtin detectado
-	name_infile -> nombre infile
-	name_outfile -> nombre outile
-	syntax_error -> error que devuelve
-	syntax_error -> error que devuelve si falla las redirreciones
+	infile        -> infile id
+	outfile       -> outfile id
+	cmd_args      -> command arguments
+	builtin       -> detected builtin
+	name_infile   -> infile name
+	name_outfile  -> outfile name
+	syntax_error  -> error returned
+	syntax_error  -> error returned if redirections fail
 */
 typedef struct s_parcer
 {
@@ -125,8 +124,8 @@ typedef struct s_parcer
 }					t_parcer;
 
 /*
-	envi -> nuestro env
-	last_status -> valor del status '$?'
+	envi        -> our env
+	last_status -> value of the '$?' status
 */
 typedef struct s_shell
 {
@@ -138,8 +137,10 @@ typedef struct s_shell
 }					t_shell;
 
 /*
-	num_cmd -> numero de comandos
-*/
+ * - num_cmd : total number of commands in the current minishell execution
+ * - parcer  : pointer to the parser structure
+ * - lexer   : pointer to the lexer structure
+ */
 typedef struct s_mini
 {
 	int				num_cmd;
@@ -147,12 +148,27 @@ typedef struct s_mini
 	t_lexer			*lexer;
 }					t_mini;
 
+/*
+ * t_write:
+ * - dts : destination buffer
+ * - pos : current write position in the buffer
+ */
 typedef struct s_write
 {
 	char			*dts;
 	size_t			pos;
 }					t_write;
 
+/*
+ * t_handle:
+ * - in_sq    : flag indicating if inside single quotes
+ * - in_dq    : flag indicating if inside double quotes
+ * - had_plain: flag indicating if a plain word has been found
+ * - had_sq   : flag indicating if a single-quoted word has been found
+ * - had_dq   : flag indicating if a double-quoted word has been found
+ * - buf      : buffer for building the current word
+ * - c        : current character being processed
+ */
 typedef struct s_handle
 {
 	int				in_sq;
@@ -164,6 +180,12 @@ typedef struct s_handle
 	char			c;
 }					t_handle;
 
+/*
+ * t_split_state:
+ * - last : pointer to the last lexer node processed
+ * - copy : copy of the original string being split
+ * - p    : current position pointer within the copy
+ */
 typedef struct s_split_state
 {
 	t_lexer			*last;
@@ -171,6 +193,13 @@ typedef struct s_split_state
 	char			*p;
 }					t_split_state;
 
+/*
+ * t_child_prcs:
+ * - mini : pointer to minishell main state (t_mini)
+ * - sh   : pointer to shell environment/state (t_shell)
+ * - fds  : array of pipe file descriptors [2] per command
+ * - pids : array of child process IDs
+ */
 typedef struct s_child_prcs
 {
 	t_mini			*mini;
@@ -178,6 +207,10 @@ typedef struct s_child_prcs
 	int				(*fds)[2];
 	pid_t			*pids;
 }					t_child_prcs;
+
+// prompt
+int					append_part(char **dst, const char *add);
+int					append_minish(char **p);
 
 // execute
 int					init_pipes(t_mini *mini, int pipes[][2]);

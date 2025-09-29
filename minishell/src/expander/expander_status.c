@@ -14,8 +14,7 @@
 
 /*
 	set_zero:
-	escribe 0 y '\0'
-
+	writes 0 and '\0'
 */
 static void	set_zero(char buf[32])
 {
@@ -25,7 +24,7 @@ static void	set_zero(char buf[32])
 
 /*
 	init_value:
-	inicializa el valor abslouto y signo para la conversion
+	initializes the absolute value and sign for the conversion
 */
 static void	init_value(long long *value, int *neg, int st)
 {
@@ -40,7 +39,7 @@ static void	init_value(long long *value, int *neg, int st)
 
 /*
 	fill_tmp:
-	llena el tmp en orden inverso
+	fills tmp in reverse order
 */
 static int	fill_tmp(long long value, int neg, char tmp[32])
 {
@@ -65,7 +64,7 @@ static int	fill_tmp(long long value, int neg, char tmp[32])
 
 /*
 	copy_reverse:
-	copia tmp invertido a buf y añade '\0'
+	copies tmp reversed into buf and adds '\0'
 */
 static void	copy_reverse(const char tmp[32], int pos, char buf[32])
 {
@@ -82,8 +81,12 @@ static void	copy_reverse(const char tmp[32], int pos, char buf[32])
 
 /*
 	itoa_status:
-
+	Converts an integer status code (st) into a string.
+	- Writes the result into buf (must have space for 32 chars).
+	- Handles sign and zero correctly.
+	- Returns buf as a null-terminated string.
 */
+
 char	*itoa_status(int st, char buf[32])
 {
 	long long	value;
