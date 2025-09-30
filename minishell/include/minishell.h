@@ -23,6 +23,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <errno.h>	
 
 # define RESET "\001\033[0m\002"
 # define CYAN "\001\033[36m\002"
@@ -221,6 +222,7 @@ void				handle_child_process(t_mini *mini, pid_t *pids,
 						int fds[][2], t_shell *sh);
 int					get_node_index(t_mini *mini, t_parcer *node);
 void				check_last_status(t_mini *mini, t_shell *envp);
+int		preflight_syntax(t_parcer *par, t_shell *sh);
 
 // proccess_execve
 int					wait_childrens(pid_t *pids, int num_cmd);
