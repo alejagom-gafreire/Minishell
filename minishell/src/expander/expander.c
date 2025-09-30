@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /* Post-expansion rules:
    - T_INFILE/T_OUTFILE: if "" => error (ambiguous redirect)
    - T_NAME_CMD/T_GENERAL:

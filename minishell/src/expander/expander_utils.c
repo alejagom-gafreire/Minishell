@@ -58,4 +58,3 @@ char	*expand_vars_two_pass(const char *str, t_shell *envp)
 	write_expanded(out, str, envp);
 	return (out);
 }
-

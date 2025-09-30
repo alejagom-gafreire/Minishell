@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-/* Creates a simple word node (GENERAL, PLAIN) without modifying anything else */
+/* Creates a simple word node (GENERAL,
+	PLAIN) without modifying anything else */
 t_lexer	*ws_new_field(const char *s, size_t len)
 {
 	t_lexer	*n;

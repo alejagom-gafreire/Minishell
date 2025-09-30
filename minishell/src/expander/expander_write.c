@@ -16,10 +16,11 @@
 Optimized expansion (two passes)
  Rules:
    - $?: replace with last_status
-   - $NAME: NAME = [A-Za-z_][A-Za-z0-9_]* -> getenv(NAME) or "" if it doesn't exist
+   - $NAME: NAME = [A-Za-z_][A-Za-z0-9_]*
+	-> getenv(NAME) or "" if it doesn't exist
    - $ followed by an invalid char / end: treated as literal '$'
    - No field splitting. No ${}, $1, $$,
-     etc. (remain literal except $? and $NAME)
+		etc. (remain literal except $? and $NAME)
 */
 
 /*
@@ -128,7 +129,7 @@ void	write_expanded(char *dst, const char *s, t_shell *envp)
 	wr.pos = 0;
 	while (s && s[i])
 	{
-		if (s[i + 1] == '?')
+		if (s[i + 1] == '?' && s[i] == '$')
 		{
 			write_status(wr.dts, &wr.pos, envp->last_status);
 			i += 2;

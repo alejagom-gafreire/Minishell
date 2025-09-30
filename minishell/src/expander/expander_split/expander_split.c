@@ -19,7 +19,6 @@
  * Does not delete the current node. If the expansion is empty or only IFS,
  * leaves the node with an empty string ""
  */
- 
 
 static int	ws_should_split(t_lexer *cur)
 {
