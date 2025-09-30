@@ -70,7 +70,7 @@ void	spinner_loading(void)
 		usleep(50000);
 		i++;
 	}
-	printf(BRIGHT_BLUE BOLD "\r          🎇✔ MiniShell lista!🎇  \n");
+	printf(BRIGHT_BLUE BOLD "\r          🎇✔ MiniShell ready!🎇  \n");
 }
 
 char	*create_prompt(void)
@@ -81,11 +81,7 @@ char	*create_prompt(void)
 	user = getenv("USER");
 	if (!user || !*user)
 		user = "user";
-	size = ft_strlen("🧠 ") + ft_strlen(CYAN BOLD) + ft_strlen(user)
-		+ ft_strlen(RESET) + ft_strlen(" in ") + ft_strlen(BLUE)
-		+ ft_strlen("Minishell") + ft_strlen(RESET)
-		+ ft_strlen(" ➤ ") + 1;
-	prompt = malloc(size);
+	prompt = ft_strdup("🤖 ");
 	if (!prompt)
 		return (NULL);
 	if (append_part(&prompt, BRIGHT_GREEN BOLD))
