@@ -67,14 +67,3 @@ void	wait_and_cleanup(t_mini *mini, int (*pipes)[2], pid_t *pids,
 	}
 	envp->last_status = wait_childrens(pids, mini->num_cmd);
 }
-
-// void	wait_and_cleanup(t_mini *mini, int (*pipes)[2], pid_t *pids,
-// 		t_shell *envp)
-// {
-// 	if (mini->num_cmd > 1)
-// 	{
-// 		close_pipes(pipes, mini->num_cmd -1);
-// 		// free(pipes);
-// 	}
-// 	envp->last_status = wait_childrens(pids, mini->num_cmd);
-// }
