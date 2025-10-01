@@ -93,18 +93,3 @@ void	check_line(char *line, t_shell *envp)
 	execute_cmd(mini, envp);
 	free_minishell(mini);
 }
-
-/*
-	printf("last status %d\n", envp->last_status);
-	printf("\n");
-	print_tokens(mini->lexer);
-	printf("\n");
-	print_parcer(mini->parcer);
-
-	t_lexer	*pru = mini->lexer;
-	while (pru != NULL)
-	{
-		printf("lista lexer: %s\n", pru->inf);
-		pru = pru->next;
-	}
-*/

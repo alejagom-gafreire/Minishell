@@ -14,27 +14,27 @@
 
 int	wait_childrens(pid_t *pids, int num_cmd)
 {
-	int	i;
-	int	status;
-	int	last_status;
+	int		status;
+	int		i;
+	pid_t	ret;
 
+	status = 0;
 	i = 0;
-	last_status = 0;
 	while (i < num_cmd)
 	{
-		if (pids[i] == -1)
+		if (pids[i] != -1)
 		{
-			i++;
-			continue ;
+			ret = -1;
+			while (ret == -1)
+				ret = waitpid(pids[i], &status, 0);
 		}
-		waitpid(pids[i], &status, 0);
-		if (WIFEXITED(status))
-			last_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			last_status = 128 + WTERMSIG(status);
 		i++;
 	}
-	return (last_status);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (status);
 }
 
 void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
@@ -73,7 +73,7 @@ void	exec_cmd(t_parcer *list, char **envp)
 	{
 		perror(list->argv[0]);
 		free(cmd_path);
-		exit(1);
+		exit(126);
 	}
 }
 

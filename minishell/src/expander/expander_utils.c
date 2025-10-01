@@ -12,11 +12,9 @@
 
 #include "minishell.h"
 
-/* ===================== Utils ===================== */
-
 /*
 	advance_nodes:
-	-	Helper para iterar por la lista enlazada
+	- Helper to iterate through the linked list
 */
 void	advance_nodes(t_lexer **prev, t_lexer **node)
 {
@@ -25,7 +23,7 @@ void	advance_nodes(t_lexer **prev, t_lexer **node)
 }
 /*
 	is_empty_tkn:
-	- indica si en el nodo la info esta vacía
+	- Indicates if the node's info is empty
 */
 
 int	is_empty_tkn(t_lexer *node)
@@ -40,9 +38,10 @@ void	free_lexer_node(t_lexer *node)
 	free(node->inf);
 	free(node);
 }
+
 /*
 	expand_vars_two_pass:
-	- Expande la cadena en dos pasadas
+	- Expands the string in two passes
 */
 
 char	*expand_vars_two_pass(const char *str, t_shell *envp)

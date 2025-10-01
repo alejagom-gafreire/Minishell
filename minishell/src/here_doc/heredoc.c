@@ -15,6 +15,7 @@
 static void	ft_line(int fd_write, char *delim)
 {
 	char	*line;
+	char	*nl;
 
 	while (1)
 	{
@@ -22,13 +23,15 @@ static void	ft_line(int fd_write, char *delim)
 		line = gnl_simple(STDIN_FILENO);
 		if (!line)
 			exit (0);
-		line[strcspn(line, "\n")] = '\0';
+		nl = ft_strchr(line, '\n');
+		if (nl)
+			*nl = '\0';
 		if (ft_strcmp(line, delim) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(fd_write, line, strlen(line));
+		write(fd_write, line, ft_strlen(line));
 		write(fd_write, "\n", 1);
 		free(line);
 	}

@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+int	preflight_syntax(t_parcer *n, t_shell *sh)
+{
+	if (sh->error_redirect == -1)
+		return (sh->last_status = 2, 1);
+	if (!n)
+		return (0);
+	while (n)
+	{
+		if (n->syntax_error)
+			return (sh->last_status = 2, 1);
+		if (n->redir_error)
+			return (sh->last_status = 1, 1);
+		n = n->next;
+	}
+	return (0);
+}
+
 int	init_pipes(t_mini *mini, int pipes[][2])
 {
 	int	i;
@@ -39,21 +56,15 @@ void	close_pipes(int pipes[][2], int num_pipes)
 	}
 }
 
-int	safe_pipes(t_mini *mini, int (**pipes)[2])
-{
-	*pipes = malloc(sizeof (int [mini->num_cmd - 1][2]));
-	if (!*pipes)
-		return (1);
-	return (0);
-}
-
 static int	setup_pipes(t_mini *mini, int (**pipes)[2])
 {
-	if (safe_pipes(mini, &(*pipes)))
+	*pipes = malloc(sizeof(int [mini->num_cmd - 1][2]));
+	if (!*pipes)
 		return (1);
-	if (init_pipes(mini, (*pipes)) == -1)
+	if (init_pipes(mini, *pipes) == -1)
 	{
 		free(*pipes);
+		*pipes = NULL;
 		return (1);
 	}
 	return (0);
@@ -61,26 +72,24 @@ static int	setup_pipes(t_mini *mini, int (**pipes)[2])
 
 void	execute_cmd(t_mini *mini, t_shell *envp)
 {
-	int		(*pipes)[2];
-	int		handled;
-	pid_t	*pids;
+	pid_t		*pids;
+	int			(*pipes)[2];
+	size_t		n;
 
-	if (!mini->parcer || mini->parcer->syntax_error)
-	{
-		check_last_status(mini, envp);
-		return ;
-	}
 	pipes = NULL;
-	pids = malloc(sizeof(pid_t) * mini->num_cmd);
+	if (preflight_syntax(mini->parcer, envp))
+		return ;
+	if (mini->num_cmd == 1 && mini->parcer && mini->parcer->builtin != NULL
+		&& mini->parcer->infile == -1 && mini->parcer->outfile == -1)
+		return ((void)(envp->last_status = exec_builtins(
+				mini->parcer, mini->parcer->argv, envp)));
+	n = (size_t)mini->num_cmd + (mini->num_cmd == 0);
+	pids = malloc(sizeof(pid_t) * n);
 	if (!pids)
-		return ;
+		return ((void)(envp->last_status = 1));
 	if (mini->num_cmd > 1 && setup_pipes(mini, &pipes))
-	{
-		free(pids);
-		return ;
-	}
-	handled = init_proccess(mini, pids, pipes, envp);
-	if (handled == 0)
+		return (free(pids), (void)(envp->last_status = 1));
+	if (init_proccess(mini, pids, pipes, envp) == 0)
 		wait_and_cleanup(mini, pipes, pids, envp);
 	free(pids);
 }

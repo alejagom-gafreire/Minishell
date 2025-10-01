@@ -12,18 +12,17 @@
 
 #include "minishell.h"
 
-/* ===================== Expansión por tokens ===================== */
-/* Reglas post-expansión:
-   - T_INFILE/T_OUTFILE: si "" => error (ambiguous redirect)
+/* Post-expansion rules:
+   - T_INFILE/T_OUTFILE: if "" => error (ambiguous redirect)
    - T_NAME_CMD/T_GENERAL:
-		* "" + kind == T_PLAIN => borrar token
-		* "" + kind == T_DQ/T_SQ => conservar argumento vacío
-   - Operadores: no se tocan
+        * "" + kind == T_PLAIN => delete token
+        * "" + kind == T_DQ/T_SQ => keep empty argument
+   - Operators: unchanged
 */
 
 /*
 	delete_current:
-	- Elimina el nodo actul de la listas enlazada del lexer
+	- Deletes the current node from the lexer's linked list
 */
 static void	delete_current(t_lexer **head, t_lexer **prev, t_lexer **node)
 {
@@ -44,8 +43,8 @@ static void	delete_current(t_lexer **head, t_lexer **prev, t_lexer **node)
 }
 
 /*
-	handle_redir:
-	- Se encarga de manejar las redirecciones
+	handle_plain_word:
+	- Se encarga de chequear palabras planas
 	- Chequea si esta vacio o espacios
 */
 static int	handle_redir(t_lexer **prev, t_lexer **node)
@@ -58,8 +57,8 @@ static int	handle_redir(t_lexer **prev, t_lexer **node)
 
 /*
 	handle_plain_word:
-	- Se encarga de chequear palabras planas
-	- Chequea si esta vacio o espacios
+	- Handles plain words
+	- Checks if it is empty or only spaces
 */
 static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 {
@@ -73,10 +72,9 @@ static int	handle_plain_word(t_lexer **head, t_lexer **prev, t_lexer **node)
 
 /*
 	expand_tokens:
-	- Se encarga de aplicar cualquier funcion anterior
-	- Chequea si esta vacio o espacios
+	- Applies any of the previous functions
+	- Checks if it is empty or only spaces
 */
-
 int	expand_tokens(t_lexer **lst, t_shell *envp)
 {
 	t_lexer	*node;

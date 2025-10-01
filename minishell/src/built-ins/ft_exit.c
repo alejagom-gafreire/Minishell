@@ -28,9 +28,6 @@ static int	check_argv(char *argv)
 	return (1);
 }
 
-/*
-	usamos printf o write
-*/
 int	exec_exit(char **argv)
 {
 	int	error_code;

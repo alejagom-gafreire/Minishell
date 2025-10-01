@@ -12,19 +12,19 @@
 
 #include "minishell.h"
 
-/* ¿Es letra o '_'? */
+/* Is it a letter or '_'? */
 static int	ws_is_name_start(char c)
 {
 	return ((c == '_') || ft_isalpha((unsigned char)c));
 }
 
-/* ¿Es letra, dígito o '_'? */
+/* Is it a letter, digit, or '_'? */
 static int	ws_is_name_char(char c)
 {
 	return (ws_is_name_start(c) || ft_isalnum((unsigned char)c));
 }
 
-/* NAME=VALUE (sin espacios alrededor del '=') → assignment word */
+/* NAME=VALUE (no spaces around '=') → assignment word */
 int	ws_is_assignment_word(const char *s)
 {
 	size_t	i;
@@ -37,7 +37,6 @@ int	ws_is_assignment_word(const char *s)
 	return (s[i] == '=');
 }
 
-/* === helpers seguros, no destructivos === */
 int	ws_is_ifs(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');

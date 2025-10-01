@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-/*
-	cambiar el exit por un error
-*/
-
 void	num_comands(t_mini *mini, t_shell *envp)
 {
 	int			i;

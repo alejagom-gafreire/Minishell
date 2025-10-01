@@ -1,30 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander_vars.c                                    :+:      :+:    :+:   */
+/*   prompt_create.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gafreire <gafreire@student.42.fr>          #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-09-28 15:44:51 by gafreire          #+#    #+#             */
-/*   Updated: 2025-09-28 15:44:51 by gafreire         ###   ########.fr       */
+/*   Created: 2025-09-29 15:51:12 by gafreire          #+#    #+#             */
+/*   Updated: 2025-09-29 15:51:12 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-	check_variable:
-	- Checks if the content requires expansion
-*/
-int	check_variable(t_lexer *node, t_shell *envp)
-{
-	char	*expand;
 
-	if (node->kind != T_DQ && node->kind != T_PLAIN)
-		return (0);
-	expand = expand_vars_two_pass(node->inf, envp);
-	if (!expand)
+int	append_part(char **dst, const char *add)
+{
+	char	*tmp;
+
+	if (!dst || !*dst)
 		return (1);
-	free(node->inf);
-	node->inf = expand;
+	tmp = ft_strjoin(*dst, add);
+	if (!tmp)
+	{
+		free(*dst);
+		*dst = NULL;
+		return (1);
+	}
+	free(*dst);
+	*dst = tmp;
+	return (0);
+}
+
+int	append_minish(char **p)
+{
+	if (append_part(p, BRIGHT_GREEN BOLD))
+		return (1);
+	if (append_part(p, "Minishell"))
+		return (1);
+	if (append_part(p, RESET))
+		return (1);
+	if (append_part(p, ": "))
+		return (1);
 	return (0);
 }

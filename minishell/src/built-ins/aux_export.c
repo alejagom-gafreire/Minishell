@@ -64,7 +64,6 @@ int	print_sorted(t_shell *envp)
 	while (envp->envi[count])
 		count++;
 	sorted = check_enviroment(envp->envi);
-	qsort(sorted, count, sizeof(char *), cmp_env);
 	while (i < count)
 	{
 		print = ft_strchr(sorted[i], '=');

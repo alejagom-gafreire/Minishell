@@ -18,7 +18,7 @@ int	exec_env(t_shell *envp, t_parcer *list)
 
 	if (list->argv[1])
 	{
-		printf("env: «%s»: No existe el archivo o el directorio\n",
+		printf("env: «%s»: No such file or directory\n",
 			list->argv[1]);
 		return (127);
 	}
@@ -26,7 +26,7 @@ int	exec_env(t_shell *envp, t_parcer *list)
 	{
 		if (list->cmd_args)
 		{
-			printf("env: «%s»: No existe el archivo o el directorio\n",
+			printf("env: «%s»: No such file or directory\n",
 				list->cmd_args);
 			return (1);
 		}

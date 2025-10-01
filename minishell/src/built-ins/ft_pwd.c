@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-/*
-	perror o printf
-	añadir nuestro env
-*/
 int	exec_pwd(void)
 {
 	char	*pwd;

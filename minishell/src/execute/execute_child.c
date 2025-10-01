@@ -67,9 +67,19 @@ static void	pipe_close_on_err(t_child_prcs *child_prcs, int k)
 
 static void	spawn_or_exec(t_child_prcs *child_prcs, t_parcer *node, int k)
 {
-	child_prcs->pids[k] = fork();
-	if (child_prcs->pids[k] == 0)
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		child_prcs->pids[k] = -1;
+		child_prcs->sh->last_status = 1;
+		pipe_close_on_err(child_prcs, k);
+		return ;
+	}
+	if (pid == 0)
 		child_exec(node, child_prcs->mini, child_prcs->fds, child_prcs->sh);
+	child_prcs->pids[k] = pid;
 }
 
 void	handle_child_process(t_mini *mini, pid_t *pids, int fds[][2],
@@ -79,6 +89,8 @@ void	handle_child_process(t_mini *mini, pid_t *pids, int fds[][2],
 	t_parcer		*node;
 	t_child_prcs	child_prcs;
 
+	if (preflight_syntax(mini->parcer, sh))
+		return ;
 	k = 0;
 	node = mini->parcer;
 	child_prcs.mini = mini;
@@ -87,14 +99,6 @@ void	handle_child_process(t_mini *mini, pid_t *pids, int fds[][2],
 	child_prcs.pids = pids;
 	while (k < mini->num_cmd && node)
 	{
-		if (node->syntax_error || node->redir_error)
-		{
-			sh->last_status = 1;
-			pipe_close_on_err(&child_prcs, k);
-			pids[k++] = -1;
-			node = node->next;
-			continue ;
-		}
 		spawn_or_exec(&child_prcs, node, k);
 		k++;
 		node = node->next;

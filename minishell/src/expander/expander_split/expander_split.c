@@ -13,15 +13,12 @@
 #include "minishell.h"
 
 /*
- * Hace word-splitting SOLO si:
+ * Performs word-splitting ONLY if:
  *   - node->kind == T_PLAIN
- *   - node->token es palabra normal (T_NAME_CMD o T_GENERAL)
- * No borra el nodo actual. Si la expansión queda vacía o solo IFS, deja el nodo
- * con cadena vacía "" (así no reventamos punteros); ya decidirás más tarde si
- * ese token vacío se descarta en tu pipeline de construcción de argv.
+ *   - node->token is a normal word (T_NAME_CMD or T_GENERAL)
+ * Does not delete the current node. If the expansion is empty or only IFS,
+ * leaves the node with an empty string ""
  */
-
-// --- helpers ---
 
 static int	ws_should_split(t_lexer *cur)
 {
@@ -83,8 +80,6 @@ static int	ws_append_field(char **pp, t_lexer **plast)
 	*pp = p;
 	return (0);
 }
-
-// --- función principal (≤25 líneas) ---
 
 int	split_plain_node(t_lexer **pnode)
 {

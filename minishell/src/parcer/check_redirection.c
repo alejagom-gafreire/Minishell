@@ -53,7 +53,7 @@ t_lexer	*handle_outfile(t_lexer *aux, t_parcer *new_parcer, t_shell **env)
 	}
 	if (!aux || !aux->next || aux->next->token != T_OUTFILE)
 	{
-		printf("error sintáctico cerca del elemento inesperado '%s'\n",
+		printf("syntax error near unexpected token '%s'\n",
 			aux->next->inf);
 		(*env)->error_redirect = -1;
 		return (aux->next);

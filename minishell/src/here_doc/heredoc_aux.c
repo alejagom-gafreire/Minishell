@@ -15,7 +15,7 @@
 static void	heredoc_sigint(int sig)
 {
 	(void)sig;
-	_exit(130);
+	exit(130);
 }
 
 void	init_signals_heredoc(void)
@@ -51,5 +51,5 @@ char	*gnl_simple(int fd)
 	if (r <= 0 && i == 0)
 		return (NULL);
 	buf[i] = '\0';
-	return (strdup(buf));
+	return (ft_strdup(buf));
 }

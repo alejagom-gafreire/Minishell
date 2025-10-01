@@ -38,7 +38,7 @@ void	print_banner(void)
 		"   ▒██▒   ░██▒░██░▒██░   ███░▒██▒ ███████▒██░  ██ ██████▒░██████▒\n"
 		"   ░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒   ▒ ░░  ▒░▓  ░ ░ ▒░▓  ▓░ ▒░▓  ░\n";
 	print_slow(banner, 700);
-	write(1, "\n          Bienvenido a MiniShell  \n", 36);
+	write(1, "\n          Welcome to MiniShell  \n", 35);
 	printf("\n");
 	printf("            🚀 🧠 🧠 🧠 🧠 🚀\n");
 	printf(BOLD "           Gabriel Simón Freire\n" RESET);
@@ -67,30 +67,32 @@ void	spinner_loading(void)
 	while (i < 30)
 	{
 		printf("\r%sStarting...", frames[i % n]);
-		fflush(stdout);
 		usleep(50000);
 		i++;
 	}
-	printf(BRIGHT_BLUE BOLD "\r          🎇✔ MiniShell lista!🎇  \n");
+	printf(BRIGHT_BLUE BOLD "\r          🎇✔ MiniShell ready!🎇  \n");
 }
 
 char	*create_prompt(void)
 {
-	char	*user;
-	size_t	size;
-	char	*prompt;
+	const char	*user;
+	char		*prompt;
 
 	user = getenv("USER");
-	if (!user)
+	if (!user || !*user)
 		user = "user";
-	size = ft_strlen("🧠 ") + ft_strlen(CYAN BOLD) + ft_strlen(user)
-		+ ft_strlen(RESET) + ft_strlen(" in ") + ft_strlen(BLUE)
-		+ ft_strlen("Minishell") + ft_strlen(RESET)
-		+ ft_strlen(" ➤ ") + 1;
-	prompt = malloc(size);
+	prompt = ft_strdup("🤖 ");
 	if (!prompt)
 		return (NULL);
-	sprintf(prompt, "🤖 %s%s%s ➤ %sMinishell%s: ", BRIGHT_GREEN BOLD, user,
-		RESET, BRIGHT_GREEN BOLD, RESET);
+	if (append_part(&prompt, BRIGHT_GREEN BOLD))
+		return (NULL);
+	if (append_part(&prompt, user))
+		return (NULL);
+	if (append_part(&prompt, RESET))
+		return (NULL);
+	if (append_part(&prompt, " ➤ "))
+		return (NULL);
+	if (append_minish(&prompt))
+		return (NULL);
 	return (prompt);
 }
