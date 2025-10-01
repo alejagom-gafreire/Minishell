@@ -15,10 +15,10 @@ CC = cc
 
 # Flags de compilación
 CFLAGS = -Wall -Werror -Wextra -I./include -I./libft -g3
-
+SANITIZE = -fsanitize=address,leak,undefined
 
 # Flags de linkeo
-
+LDFLAGS = $(SANITIZE)
 LDLIBS = -lreadline
 
 SRC = \

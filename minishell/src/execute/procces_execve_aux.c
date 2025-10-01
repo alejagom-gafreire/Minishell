@@ -14,48 +14,28 @@
 
 int	wait_childrens(pid_t *pids, int num_cmd)
 {
-	int	status = 0;
-	int	i;
+	int		status;
+	int		i;
 	pid_t	ret;
 
-	for (i = 0; i < num_cmd; i++)
+	status = 0;
+	i = 0;
+	while (i < num_cmd)
 	{
-		if (pids[i] == -1)
-			continue;
-		while ((ret = waitpid(pids[i], &status, 0)) == -1 && errno == EINTR)
-			; // retry si fue interrumpido
+		if (pids[i] != -1)
+		{
+			ret = -1;
+			while (ret == -1)
+				ret = waitpid(pids[i], &status, 0);
+		}
+		i++;
 	}
-	// 👉 devolver status del último comando (clásico minishell)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (status);
 }
-// int	wait_childrens(pid_t *pids, int num_cmd)
-// {
-// 	int	i;
-// 	int	status;
-// 	int	last_status;
-
-// 	i = 0;
-// 	last_status = 0;
-// 	while (i < num_cmd)
-// 	{
-// 		if (pids[i] == -1)
-// 		{
-// 			i++;
-// 			continue ;
-// 		}
-// 		waitpid(pids[i], &status, 0);
-// 		if (WIFEXITED(status))
-// 			last_status = WEXITSTATUS(status);
-// 		else if (WIFSIGNALED(status))
-// 			last_status = 128 + WTERMSIG(status);
-// 		i++;
-// 	}
-// 	return (last_status);
-// }
 
 void	fd_redirect(t_parcer **list, int *i, t_mini *mini, int pipes[][2])
 {
