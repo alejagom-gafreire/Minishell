@@ -30,13 +30,13 @@
 # define BLUE "\001\033[34m\002"
 # define BOLD "\001\033[1m\002"
 
-# define BRIGHT_RED "\x1b[91m"
-# define BRIGHT_GREEN "\x1b[92m"
-# define BRIGHT_YELLOW "\x1b[93m"
-# define BRIGHT_BLUE "\x1b[94m"
-# define BRIGHT_MAGENTA "\x1b[95m"
-# define BRIGHT_CYAN "\x1b[96m"
-# define BRIGHT_WHITE "\x1b[97m"
+# define BRIGHT_RED "\001\x1b[91m\002"
+# define BRIGHT_GREEN "\001\x1b[92m\002"
+# define BRIGHT_YELLOW "\001\x1b[93m\002"
+# define BRIGHT_BLUE "\001\x1b[94m\002"
+# define BRIGHT_MAGENTA "\001\x1b[95m\002"
+# define BRIGHT_CYAN "\001\x1b[96m\002"
+# define BRIGHT_WHITE "\001\x1b[97m\002"
 
 # define READ_END 0
 # define WRITE_END 1

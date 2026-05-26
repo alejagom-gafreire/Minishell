@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   aux_prompt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <marvin@42.fr>                   +#+  +:+       +#+        */
+/*   By: gafreire <gafreire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 19:25:20 by alejandro         #+#    #+#             */
-/*   Updated: 2025/09/17 19:25:22 by alejandro        ###   ########.fr       */
+/*   Updated: 2026/05/26 20:55:13 by gafreire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,13 @@ void	spinner_loading(void)
 	i = 0;
 	while (i < 30)
 	{
-		printf("\r%sStarting...", frames[i % n]);
+		printf("\r\033[2K%sStarting...", frames[i % n]);
+		fflush(stdout);
 		usleep(50000);
 		i++;
 	}
-	printf(BRIGHT_BLUE BOLD "\r          🎇✔ MiniShell ready!🎇  \n");
+	printf(BRIGHT_BLUE BOLD "\r\033[2K          🎇✔ MiniShell ready!🎇  \n");
+	fflush(stdout);
 }
 
 char	*create_prompt(void)
